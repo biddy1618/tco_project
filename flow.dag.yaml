@@ -36,7 +36,7 @@ nodes:
   type: python
   source:
     type: code
-    path: extraction.py
+    path: nodes/extraction.py
   inputs:
     user_input: ${spell_check.output}
   use_variants: false
@@ -44,7 +44,7 @@ nodes:
   type: python
   source:
     type: code
-    path: load_state.py
+    path: nodes/load_state.py
   inputs:
     chat_history: ${inputs.chat_history}
   use_variants: false
@@ -52,7 +52,7 @@ nodes:
   type: python
   source:
     type: code
-    path: mege_state.py
+    path: nodes/merge_state.py
   inputs:
     new_extraction: ${extraction.output}
     prev_state: ${load_state.output}
@@ -61,7 +61,7 @@ nodes:
   type: python
   source:
     type: code
-    path: validation.py
+    path: nodes/validation.py
   inputs:
     updated_json: ${mege_state.output}
   use_variants: false
@@ -86,7 +86,7 @@ nodes:
   type: python
   source:
     type: code
-    path: router.py
+    path: nodes/router.py
   inputs:
     prev: ${ask_or_finalize.output}
   use_variants: false
@@ -94,7 +94,7 @@ nodes:
   type: python
   source:
     type: code
-    path: wps_json_builder.py
+    path: nodes/wps_json_builder.py
   inputs:
     as_dict: ${router.output.as_dict}
     as_string: ${router.output.as_string}
@@ -103,7 +103,7 @@ nodes:
   type: python
   source:
     type: code
-    path: wps_api.py
+    path: nodes/wps_api.py
   inputs:
     api_key: y88XqCYtjLD2SvfGrnO3rnToqxxiuOg2Cth1vXeACIAzSeBZGtHS
     api_version: 2023-11-01
@@ -115,7 +115,7 @@ nodes:
   type: python
   source:
     type: code
-    path: pwht_check.py
+    path: nodes/pwht_check.py
   inputs:
     line_class: ${validation.output.state.line_class}
     search_result: ${wps_api.output}
@@ -165,7 +165,7 @@ nodes:
   type: python
   source:
     type: code
-    path: nde_py.py
+    path: nodes/nde_py.py
   inputs:
     input1: ${nde.output}
     line_class: ${validation.output.state.line_class}
@@ -177,7 +177,7 @@ nodes:
   type: python
   source:
     type: code
-    path: material.py
+    path: nodes/material.py
   inputs:
     search_output: ${nde.output}
   use_variants: false
@@ -185,7 +185,7 @@ nodes:
   type: python
   source:
     type: code
-    path: template.py
+    path: nodes/template.py
   inputs:
     facts: ${ask_or_finalize.output}
     material: ${material.output}

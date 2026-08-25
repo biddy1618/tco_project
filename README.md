@@ -1,45 +1,76 @@
-# PF Job Pack Project
+# TCO Job Pack Project
 
-Local working copy for the Prompt Flow to MAF migration and job-pack generation POC.
+Prompt Flow → Microsoft Agent Framework (MAF) migration and job-pack generation POC.
 
-## Proposed layout
+The flow turns a free-text piping repair request into a structured job-pack
+scope. It runs today as an Azure ML **Prompt Flow** DAG; the logic has been
+factored into a runtime-agnostic Python package to make the MAF migration
+straightforward.
 
-- `src/pf_jobpack/` - Python package code for the implementation.
-- `prompts/` - Jinja and prompt templates.
-- `configs/` - Flow and runtime configuration.
-- `data/raw/` - Source inputs and reference artifacts.
-- `data/processed/` - Derived data and cleaned outputs.
-- `docs/` - Project notes, specs, and migration references.
-- `scripts/` - Utility scripts and one-off helpers.
-- `tests/unit/` - Unit tests.
-- `tests/integration/` - Integration and parity tests.
-- `artifacts/` - Generated outputs and local run results.
+## Layout
 
-## Current state
+```
+flow.dag.yaml         Prompt Flow graph (nodes, edges, LLM + package nodes)
+flow.meta.yaml        Prompt Flow metadata
+requirements.txt      Flow runtime dependencies
 
-The current Prompt Flow still runs from the repo root because `flow.dag.yaml` points to root-level templates and Python modules. I have already moved the two safe reference artifacts into the new layout:
+pf_jobpack/           Pure-Python core logic (NO promptflow import)
+  extraction.py         free text/JSON -> 15-field scope state
+  state.py              load / merge / validate / route conversation state
+  search.py             Azure AI Search query building + HTTP client
+  pwht.py               PWHT flag evaluation
+  nde.py                NDE lookup evaluation
+  material.py           material (CS/SS) classification
+  template.py           job-pack scope text assembly
 
-- `docs/Narrative markup rev2 2.docx`
-- `data/raw/Tracker (version 1)_ID003 1.xlsx`
+nodes/                Thin Prompt Flow @tool adapters (DAG entry points).
+                      Each just calls the matching pf_jobpack function.
 
-The flow implementation files stay at the root for now so the graph keeps working. We can move them later in a controlled pass after we update the DAG paths.
+prompts/              Jinja2 templates for the LLM nodes
+  spell_check.jinja2
+  ask_or_finalize.jinja2
+  final.jinja2
 
-Design note: see [docs/flow-design.md](docs/flow-design.md) for the compact flow outline.
+archive/              Untouched original export, kept for reference only.
+  baseline-2026-08-24/  Original PF files + source data (Tracker, Procedures,
+                        Samples, Isometrics, Templates).
+```
 
-## How Prompt Flow DAGs work
+## Design principle
 
-Prompt Flow treats the flow as a directed acyclic graph, not a linear script.
+- **`pf_jobpack/`** holds all business logic and imports nothing from
+  Prompt Flow, so it can be unit-tested locally and reused by the future MAF
+  agents unchanged.
+- **`nodes/`** contains only glue: a `@tool`-decorated function per DAG node
+  that forwards its inputs to `pf_jobpack`. This is the only layer that is
+  Prompt Flow specific.
 
-- `inputs` define the entry points exposed to the user or upstream caller.
-- Each `node` has a type such as `llm`, `python`, or `package`.
-- A node receives values through `${...}` references to earlier node outputs or flow inputs.
-- The graph must stay acyclic, so data only moves forward.
-- `outputs` map one or more internal node results to the public flow result.
-- `activate` blocks let a node run only when a condition is met.
-- `source.path` points to the prompt template or Python file that implements the node.
+See [docs/flow-structure.md](docs/flow-structure.md) for the node-by-node map.
 
-In this project, the flow is a staged pipeline: spell-correct the user input, extract structured fields, merge them with history, validate completeness, ask for missing details or finalize, then look up WPS/NDE data and assemble the final job pack text.
+## Running locally
 
-## Next move
+Use an isolated environment (do not install into the base system):
 
-Once we are ready to refactor safely, the order should be: move prompts and docs, then relocate Python code into `src/pf_jobpack/`, then update `flow.dag.yaml` to point at the new paths.
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+pf flow test --flow . --inputs question="Replace leaking pipe 051-TL01-1/2-150H03 at TP-001"
+```
+
+The `nde` node is a `promptflow_vectordb` package tool and the `spell_check` /
+`ask_or_finalize` / `final` nodes call Azure OpenAI, so a full run needs the
+`pf-openai-use2-id-auth` connection and Azure AI Search access configured.
+
+## Security note
+
+`flow.dag.yaml` still contains a hardcoded Azure AI Search `api_key` on the
+`wps_api` node (inherited from the original export). This key is also present in
+git history under `archive/`. It should be **rotated** and moved to a Prompt
+Flow connection / environment variable rather than committed in the DAG.
+
+## Data
+
+There is no separate `data/` directory. Source reference data lives under
+`archive/baseline-2026-08-24/docs/jp/` — notably `Tracker (version 1)_ID003.xlsx`
+and the `Procedures/` WPS/NDE tables used to build the Azure AI Search indexes.
