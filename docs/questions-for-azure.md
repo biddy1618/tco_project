@@ -1,4 +1,4 @@
-# Open checks for the VDI agent
+# Internal Azure checklist (do not include in shared zips).
 
 Known facts live in [azure-environment.md](azure-environment.md). Do not
 repeat them here. When a check returns a new fact, update the inventory.

@@ -1,61 +1,40 @@
-# Azure + VDI environment inventory
+# Azure environment
 
-Living facts about the corporate VDI, Azure subscription, connections, and
-indexes this project uses. **No secrets.** Update this file when a check
-changes a value; do not duplicate it into prompt files.
+Subscription, connections, deployments, and Search indexes this project uses.
+**No secrets.** Update this file when a check changes a value.
 
 Related:
 
-- [questions-for-azure.md](questions-for-azure.md) — copy-paste prompts only
 - [flow-structure.md](flow-structure.md) — Prompt Flow DAG and logic audit
 - `flow.dag.yaml` — runtime wiring (endpoints, connection names, deployments)
+- [maf/README.md](../maf/README.md) — Agent Framework slices
 
 Last updated: 2026-08-26.
 
 ---
 
-## 1. Corporate VDI (MAF workstation)
+## 1. Runtime for MAF slices
 
-| Item | Value | Status |
-|---|---|---|
-| Host | Windows VDI, user `dauba1` | confirmed |
-| Work dir seen | `C:\Users\dauba1\Work` | confirmed |
-| Conda env | `maf` (`conda activate maf`) | confirmed |
-| Python | 3.11.15 (meets MAF's 3.10+ requirement) | confirmed |
-| Package index | `artifactory.chevron.com/artifactory/api/pypi` | confirmed |
-| Index paths | `pypi-local/simple`, `pypi-local-dev/simple`, `pypi/simple` | confirmed |
-| Azure CLI | installed; `az login` already done for this user | confirmed |
-| `azure-ai-evaluation` | **not** installed — do not install until parity-check phase | confirmed |
-
-There is **no** `maf new` / `az maf create` CLI. A MAF “project” is a Python
-package that imports `agent_framework`.
-
-### Installed MAF packages (conda env `maf`, 2026-08-26)
-
-| Package | Version |
+| Item | Value |
 |---|---|
-| `agent-framework` | 1.14.0 |
-| `agent-framework-core` | 1.14.0 |
-| `agent-framework-openai` | 1.13.0 |
-| `agent-framework-foundry` | 1.11.0 |
-| `agent-framework-azure-ai-search` | 1.0.0b260813 |
-| `azure-identity` | 1.25.3 |
-| `azure-ai-projects` | 2.3.0 |
-| `azure-search-documents` | 12.0.0 |
+| Python | 3.10+ (3.11 verified) |
+| Packages | `maf/requirements.txt` (`agent-framework==1.14.0`, `azure-identity`) |
+| Package index | `artifactory.chevron.com/artifactory/api/pypi` (`pypi-local/simple`, `pypi-local-dev/simple`, `pypi/simple`) |
+| Azure CLI | `az login`; subscription **T332 - TCO** |
+| `azure-ai-evaluation` | not required until a later parity-check phase |
 
-Many other `agent-framework-*` extras are already present. Do **not** pip
-install more of them.
+There is no `maf new` / `az maf create` CLI. A MAF project is a Python package
+that imports `agent_framework`.
 
-### MAF chat-client API (this installed version)
+### MAF chat-client API (`agent-framework` 1.14.0)
 
-`agent-framework` **1.14.0 does not export `AzureOpenAIChatClient`**. That
-class was removed. Use:
+This version does **not** export `AzureOpenAIChatClient`. Use:
 
-| Class | Module | Azure OpenAI API |
+| Class | Module | API |
 |---|---|---|
-| `OpenAIChatClient` | `agent_framework.openai` | Responses (works on VDI; smoke-tested 2026-08-26) |
+| `OpenAIChatClient` | `agent_framework.openai` | Responses (verified 2026-08-26) |
 | `OpenAIChatCompletionClient` | `agent_framework.openai` | Chat Completions (fallback) |
-| `FoundryChatClient` | `agent_framework.foundry` | Foundry project endpoint only |
+| `FoundryChatClient` | `agent_framework.foundry` | Foundry project endpoint only — **not used here** |
 
 Force Azure routing with `azure_endpoint=` + `credential=AzureCliCredential()`
 from `azure.identity.aio`. Pass the **deployment name** as `model=`. Do not
@@ -72,23 +51,17 @@ rely on env vars alone (`OPENAI_API_KEY` would send traffic to public OpenAI).
 | Tenant id | `fd799da1-bfc1-4234-a91c-72b3a1cb9e26` |
 | Subscription name | **T332 - TCO** |
 | Subscription id | `baa67dbf-45d0-4d84-b662-527186361068` |
-| Account state | Enabled |
-| Signed-in user | `Dauren.Baitursyn@tengizchevroil.com` |
-| Auth type | Azure CLI user (`az login`) |
+| Auth | Azure CLI (`az login`) + `AzureCliCredential` |
 
-`az account show` on the VDI already had this subscription as default.
+### Access proven
 
-### Rights we have actually proven
-
-| Access | Proven? | How |
-|---|---|---|
-| List OpenAI deployments on `pf-t332-openai-use2` | **yes** | `az cognitiveservices account deployment list` returned dozens of names |
-| Call a chat completion as this user | **yes** | `maf_smoke.py` returned `ok` with `OpenAIChatClient` |
-| Foundry project (`*.services.ai.azure.com`) | **no** | `az cognitiveservices account list` showed only classic OpenAI and AIServices endpoints |
-| Azure AI Search as AAD (no key) | **yes** | `az account get-access-token --resource https://search.azure.com` returned an expiry |
-| Role name on the OpenAI resource (e.g. Cognitive Services User) | **inferred only** | listing deployments and smoke testing succeeded; exact RBAC role still untested |
-
-Do not assume Contributor. Listing deployments ≠ permission to invoke a model.
+| Access | Proven? |
+|---|---|
+| List OpenAI deployments on `pf-t332-openai-use2` | yes |
+| Invoke `gpt-4o-mini-gs-2024-07-18` via `OpenAIChatClient` | yes |
+| Foundry project (`*.services.ai.azure.com`) | **none** — classic Azure OpenAI only |
+| AAD token for Azure AI Search | yes |
+| Exact RBAC role names | not listed (invoke already works) |
 
 ---
 
@@ -113,52 +86,45 @@ From `flow.dag.yaml` connection resource IDs:
 | Resource group | `pf-T332-t-cog` |
 | Resource name | `pf-t332-openai-use2` |
 | Endpoint | `https://pf-t332-openai-use2.openai.azure.com/` |
-| Kind | classic Azure OpenAI (`*.openai.azure.com`), not Foundry project host |
+| Kind | classic Azure OpenAI (`*.openai.azure.com`), not a Foundry project host |
 
-This is the endpoint Prompt Flow already uses (`api_base` on the `nde` node
-and the `pf-openai-use2-id-auth` connection).
+Prompt Flow uses the same endpoint via `pf-openai-use2-id-auth`.
 
 ### Azure AI Search
 
 | Item | Value |
 |---|---|
 | Endpoint | `https://pf-t332-cog-srch-test-euw1-cvx.search.windows.net` |
-| API version used by the flow | `2023-11-01` (confirmed working 2026-08-25) |
-| Indexes this flow uses | `ndeee`, `wps-diain` |
-| Semantic config (`ndeee`) | `ndeee-semantic-configuration` — exists |
-| Semantic config (`wps-diain`) | `wps-diain-semantic-configuration` — exists |
+| API version | `2023-11-01` |
+| Indexes | `ndeee`, `wps-diain` |
+| Semantic config (`ndeee`) | `ndeee-semantic-configuration` |
+| Semantic config (`wps-diain`) | `wps-diain-semantic-configuration` |
 
-`flow.dag.yaml` still has a **hardcoded Search API key** on `wps_api` (legacy
-export). Do not copy it here. Rotate it and move it to a connection / env var.
+`flow.dag.yaml` still has a hardcoded Search API key on `wps_api`. Do not copy
+it here. Rotate it and move it to a connection / environment variable.
 
 ---
 
 ## 4. Model deployments
 
-Resource: `pf-t332-openai-use2` / RG `pf-T332-t-cog`. Listed from the VDI on
-2026-08-26. The flow only needs the three below.
+Resource: `pf-t332-openai-use2` / RG `pf-T332-t-cog`. The flow only needs:
 
-| Role in this project | Deployment name | Use |
+| Role | Deployment name | Use |
 |---|---|---|
-| Smoke test / cheap chat | `gpt-4o-mini-gs-2024-07-18` | Q4 Step 5; PF `spell_check` |
-| Production chat | `gpt-4o-gs-2024-05-13` | PF `ask_or_finalize`, `final` |
+| Cheap chat | `gpt-4o-mini-gs-2024-07-18` | PF / MAF `spell_check` |
+| Production chat | `gpt-4o-gs-2024-05-13` | `ask_or_finalize`, `final` |
 | Embeddings | `text-embedding-ada-002-gs-2` | PF `nde` mlindex embeddings |
 
-Many other deployments exist on the same resource (gpt-4o / gpt-4.1 / gpt-5 /
-o-series, transcribe, TTS, image). **Do not call them** for this project’s
-smoke test or first MAF slice.
+Other deployments exist on the same resource. Do not call them for this POC.
 
 ---
 
-## 5. Search indexes (answered 2026-08-25)
+## 5. Search indexes (2026-08-25)
 
-Queried live with `api-version=2023-11-01` and an AAD token, subscription
-**T332 - TCO**. There is **no** separate material/CS-SS index; material lives
-inside `ndeee`.
+Queried live with `api-version=2023-11-01`. There is **no** separate
+material/CS-SS index; material lives inside `ndeee`.
 
 ### `ndeee` (NDE / PMI / material)
-
-Retrievable fields that matter:
 
 | Field | Type | Retrievable | Searchable |
 |---|---|---|---|
@@ -168,8 +134,8 @@ Retrievable fields that matter:
 | `material` | Edm.String | **no** | no |
 | `nde_percent` | Edm.String | **no** | no |
 
-Keyword search must target `line_class` (the flow does). `content` is a full
-sentence, not a bare line class. Sample (`150A20`, `top=1`):
+Keyword search must target `line_class`. `content` is a full sentence. Sample
+(`150A20`, `top=1`):
 
 ```json
 {
@@ -179,9 +145,8 @@ sentence, not a bare line class. Sample (`150A20`, `top=1`):
 }
 ```
 
-Implications already applied in code: map `nde` `field_mapping.content` to
-`content`; parse PMI as a number from the string `"100"`; parse material from
-the `content` sentence.
+Code implications (already applied): map `nde` `field_mapping.content` to
+`content`; parse PMI from the string `"100"`; parse material from `content`.
 
 ### `wps-diain` (WPS / PWHT)
 
@@ -192,27 +157,12 @@ the `content` sentence.
 | `dia_in2` | Edm.Double |
 | `pwht` | Edm.String |
 
-`pwht` values across 266 docs: `N` (128), `Y` (103), blank (18),
-`N see Note (7)` (17). Blank is treated as `"No"` in `pf_jobpack/pwht.py` so
-the field-weld NDE line still emits.
-
-### Other indexes
-
-33 indexes exist on the service. Only `ndeee` and `wps-diain` are used by this
-flow. Full list from 2026-08-25 is in git history of the old answers section
-if needed; do not query the others.
+`pwht` across 266 docs: `N` (128), `Y` (103), blank (18), `N see Note (7)` (17).
+Blank is treated as `"No"` in `pf_jobpack/pwht.py`.
 
 ---
 
-## 6. Still unknown / next checks
+## 6. Still open
 
-Tracked by [questions-for-azure.md](questions-for-azure.md):
-
-- [x] Foundry project endpoint (`*.services.ai.azure.com`) exists or not
-- [x] `OpenAIChatClient` can complete a chat as this user against
-  `gpt-4o-mini-gs-2024-07-18`
-- [x] AAD token for `https://search.azure.com` works from the VDI
-- [ ] Exact RBAC roles on `pf-t332-openai-use2` and the Search service
-
-After Q4 comes back, update this file (not the questions file) with the
-working client name and any Foundry URL.
+- Exact RBAC role names on the OpenAI and Search resources
+- MAF slice 3 (Search lookups + job-pack `template` + `final`)

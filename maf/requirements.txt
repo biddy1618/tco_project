@@ -1,0 +1,11 @@
+# MAF slices (`python -m maf.slice1` / `slice2`).
+# Python 3.10+. Isolated env; do not mix with the Prompt Flow runtime.
+#
+# If `import agent_framework` already works, skip pip.
+# Use the corporate Artifactory PyPI index, not public PyPI:
+#   pip install -r maf/requirements.txt
+#
+# Do not `pip freeze` a full workstation env into this file.
+
+agent-framework==1.14.0
+azure-identity>=1.25.0

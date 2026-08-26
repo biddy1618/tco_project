@@ -6,65 +6,70 @@ Framework rewrite, built **one slice at a time**. Python logic stays in
 
 | Slice | PF nodes | Status |
 |---|---|---|
-| 1 | `spell_check` → `extraction` | run on VDI |
-| 2 | `load_state` → `merge_state` → `validation` → `ask_or_finalize` (+ `router`) | **run on VDI** |
+| 1 | `spell_check` → `extraction` | working |
+| 2 | `load_state` → `merge_state` → `validation` → `ask_or_finalize` (+ `router`) | working |
 | 3 | complete-gate → WPS/NDE/material → `template` → `final` | not started |
 
 Client: `OpenAIChatClient` + `AzureCliCredential` against classic Azure OpenAI
 (`https://pf-t332-openai-use2.openai.azure.com/`). No Foundry project. See
 [docs/azure-environment.md](../docs/azure-environment.md).
 
-## Run slice 1 (corporate VDI)
+Python 3.10+. Install with `pip install -r maf/requirements.txt` unless
+`agent_framework` is already on the interpreter. From the **repo root**:
 
-Python 3.10+ (conda env `maf`). From the **repo root** so `pf_jobpack` imports:
-
-```powershell
-conda activate maf
+```bash
 az account show   # must be T332 - TCO
-cd path\to\tco_jp_project
 python -m maf.slice1
-```
-
-Default input is Tracker TC-001. Pass other text as an argument:
-
-```powershell
-python -m maf.slice1 "051-TL01-1/2-150H03. Repleacement of damaged pipe section."
-```
-
-Optional env overrides (defaults are already the T332 resource):
-
-```powershell
-$env:AZURE_OPENAI_ENDPOINT = "https://pf-t332-openai-use2.openai.azure.com/"
-$env:AZURE_OPENAI_CHAT_MODEL = "gpt-4o-mini-gs-2024-07-18"
-```
-
-Expect JSON with `corrected` (spell-check output) and `state` (15-field dict).
-On TC-001, `state.line_class` should be a legacy-mapped class (e.g. `150H25`
-from `150H03`) and `state.placeholders_TP` should include `TP-001` / `TP-002`.
-
-## Run slice 2 (corporate VDI)
-
-Same env. First turn with empty history (default TC-001). Validation treats
-`false` and `[]` as filled, so TC-001 is usually **complete** and
-`ask_or_finalize` should return JSON (`route.kind` = `json`):
-
-```powershell
 python -m maf.slice2
 ```
 
-Incomplete first turn (model should **ask** one question, `route.kind` = `string`):
+Optional env overrides:
 
-```powershell
+```bash
+export AZURE_OPENAI_ENDPOINT="https://pf-t332-openai-use2.openai.azure.com/"
+export AZURE_OPENAI_CHAT_MODEL="gpt-4o-mini-gs-2024-07-18"
+```
+
+Windows PowerShell: `$env:AZURE_OPENAI_ENDPOINT = "..."`.
+
+## Slice 1
+
+Default input is Tracker TC-001. Expect JSON with `corrected` and `state`
+(15 fields). `state.line_class` is legacy-mapped (e.g. `150H03` → `150H25`);
+`placeholders_TP` should include `TP-001` / `TP-002`. `dia_in` is often `[]`
+because `1/2` in the line id is not parsed as NPS.
+
+```bash
+python -m maf.slice1 "051-TL01-1/2-150H03. Repleacement of damaged pipe section."
+```
+
+## Slice 2
+
+Merge + validate + ask-or-finalize. Empty `[]` from extraction does **not**
+overwrite `null` in merge, so TC-001 usually **asks for diameter**
+(`missing: ["dia_in"]`, `route.kind` = `string`):
+
+```bash
+python -m maf.slice2
 python -m maf.slice2 "replace the leaking valve"
 ```
 
-Second turn, carrying `merge_state` like Prompt Flow `chat_history`:
+Carry `merge_state` across turns (Prompt Flow `chat_history`):
 
-```powershell
+```bash
 python -m maf.slice2 --history history.json "replace the leaking valve"
 python -m maf.slice2 --history history.json "line class 150H03, 2 inch, insulated, no heat tracing"
 ```
 
 `--history` is created if missing and appended after each successful run.
-Output JSON: `answer` (what the user would see), `complete`, `missing`,
-`merge_state` (feed the next turn), `route` (`json` vs `string`).
+Output: `answer`, `complete`, `missing`, `merge_state`, `route` (`json` vs
+`string`).
+
+## Requirements
+
+| File | For |
+|---|---|
+| `requirements.txt` (repo root) | Prompt Flow / Azure ML |
+| `maf/requirements.txt` | MAF slices only (`agent-framework`, `azure-identity`) |
+
+Do not `pip freeze` a full workstation env into either file.

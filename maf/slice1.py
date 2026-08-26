@@ -1,7 +1,6 @@
 """Slice 1: spell_check (LLM) -> extraction (pf_jobpack).
 
-Maps Prompt Flow nodes ``spell_check`` and ``extraction``. Run on the VDI
-with ``conda activate maf`` from the repo root:
+Maps Prompt Flow nodes ``spell_check`` and ``extraction``. From the repo root:
 
     python -m maf.slice1
 """
