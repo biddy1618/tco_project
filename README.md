@@ -34,6 +34,9 @@ prompts/              Jinja2 templates for the LLM nodes
 archive/              Untouched original export, kept for reference only.
   baseline-2026-08-24/  Original PF files + source data (Tracker, Procedures,
                         Samples, Isometrics, Templates).
+
+maf/                  Microsoft Agent Framework rewrite (one slice at a time).
+                      Does not replace Prompt Flow until a slice is proven.
 ```
 
 ## Design principle
@@ -48,7 +51,7 @@ archive/              Untouched original export, kept for reference only.
 See [docs/flow-structure.md](docs/flow-structure.md) for the node-by-node map,
 [docs/azure-environment.md](docs/azure-environment.md) for VDI / Azure facts,
 and [docs/questions-for-azure.md](docs/questions-for-azure.md) for copy-paste
-agent checklists.
+agent checklists. The MAF side-by-side rewrite starts at [maf/README.md](maf/README.md).
 
 ## Running locally
 

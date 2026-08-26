@@ -18,6 +18,8 @@ env/
 
 # Generated outputs
 job_pack.docx
+.env
+maf/.env
 
 # OS / editor
 .DS_Store
