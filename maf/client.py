@@ -10,6 +10,8 @@ from agent_framework.openai import OpenAIChatClient
 # Defaults match docs/azure-environment.md (not secrets).
 DEFAULT_ENDPOINT = "https://pf-t332-openai-use2.openai.azure.com/"
 DEFAULT_DEPLOYMENT = "gpt-4o-mini-gs-2024-07-18"
+# PF ``ask_or_finalize`` / ``final`` node.
+ASK_OR_FINALIZE_DEPLOYMENT = "gpt-4o-gs-2024-05-13"
 
 
 def make_chat_client(

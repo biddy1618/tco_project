@@ -6,8 +6,8 @@ Framework rewrite, built **one slice at a time**. Python logic stays in
 
 | Slice | PF nodes | Status |
 |---|---|---|
-| 1 | `spell_check` → `extraction` | **this folder, run on VDI** |
-| 2 | `load_state` → `merge_state` → `validation` → `ask_or_finalize` | not started |
+| 1 | `spell_check` → `extraction` | run on VDI |
+| 2 | `load_state` → `merge_state` → `validation` → `ask_or_finalize` (+ `router`) | **run on VDI** |
 | 3 | complete-gate → WPS/NDE/material → `template` → `final` | not started |
 
 Client: `OpenAIChatClient` + `AzureCliCredential` against classic Azure OpenAI
@@ -41,3 +41,30 @@ $env:AZURE_OPENAI_CHAT_MODEL = "gpt-4o-mini-gs-2024-07-18"
 Expect JSON with `corrected` (spell-check output) and `state` (15-field dict).
 On TC-001, `state.line_class` should be a legacy-mapped class (e.g. `150H25`
 from `150H03`) and `state.placeholders_TP` should include `TP-001` / `TP-002`.
+
+## Run slice 2 (corporate VDI)
+
+Same env. First turn with empty history (default TC-001). Validation treats
+`false` and `[]` as filled, so TC-001 is usually **complete** and
+`ask_or_finalize` should return JSON (`route.kind` = `json`):
+
+```powershell
+python -m maf.slice2
+```
+
+Incomplete first turn (model should **ask** one question, `route.kind` = `string`):
+
+```powershell
+python -m maf.slice2 "replace the leaking valve"
+```
+
+Second turn, carrying `merge_state` like Prompt Flow `chat_history`:
+
+```powershell
+python -m maf.slice2 --history history.json "replace the leaking valve"
+python -m maf.slice2 --history history.json "line class 150H03, 2 inch, insulated, no heat tracing"
+```
+
+`--history` is created if missing and appended after each successful run.
+Output JSON: `answer` (what the user would see), `complete`, `missing`,
+`merge_state` (feed the next turn), `route` (`json` vs `string`).

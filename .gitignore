@@ -20,6 +20,7 @@ env/
 job_pack.docx
 .env
 maf/.env
+history.json
 
 # OS / editor
 .DS_Store
