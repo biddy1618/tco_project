@@ -39,12 +39,19 @@ def check_pwht_flag(search_result: Any, line_class: str) -> Union[str, None]:
         return _DIA_MISMATCH_MSG
 
     # Case 5: matched -> evaluate PWHT.
+    #
+    # Live data (wps-diain, 266 docs) has: N (128), Y (103), blank (18),
+    # "N see Note (7)" (17). A blank value means the WPS table doesn't call for
+    # PWHT, so we default it to "No" rather than None. Returning None here would
+    # silence BOTH the PWHT branches and the wps_result == 'No' field-weld NDE
+    # branch (line 57a) in the template, dropping NDE from the job pack for
+    # those line classes. "N see Note (7)" starts with N -> "No" (safe).
     pwht = row.get("pwht")
-    if not pwht or not isinstance(pwht, str):
-        return None
+    if not isinstance(pwht, str):
+        return "No"
 
     pwht_clean = pwht.strip().upper()
     if not pwht_clean:
-        return None
+        return "No"
 
     return "Yes" if pwht_clean.startswith("Y") else "No"

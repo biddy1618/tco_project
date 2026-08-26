@@ -1,40 +1,56 @@
-"""Material classification (CS / SS / Null).
+"""Material classification (CS / SS / Null) from the NDE lookup.
 
-Faithful port of the original ``material.py`` node.
+Port of the original ``material.py`` node with two fixes confirmed against the
+live ``ndeee`` index (2026-08-25):
+
+* The material text lives inside the index ``content`` sentence
+  (e.g. ``"... Material Alloy 20. PMI 100.0."``); the dedicated ``material``
+  field is ``retrievable=false``. The flow's ``nde`` node therefore maps
+  ``content -> content`` so this sentence is available, and we read it via the
+  shared, shape-tolerant :func:`pf_jobpack.lookup.get_result_content` helper
+  (the original only handled ``metadata`` being a dict/int, which the live
+  ``pmi_percent`` string broke).
+* The CS check was a strict ``fullmatch`` on ``CS|LTCS|LTCS NACE``, so real
+  values like ``CS BITUM COATED`` / ``LTCS GALV`` / ``LTCS NACE - API 5L X60``
+  fell through to ``Null``. It is now an anchored prefix match so any
+  carbon-steel variant classifies as ``CS`` (behavioural change — see
+  docs/flow-structure.md §6).
 """
 
 from __future__ import annotations
 
 import re
-from typing import Any, Dict, List
+from typing import Any, List
+
+from pf_jobpack.lookup import get_result_content
+
+# Carbon-steel families: match a standalone CS / LTCS token anywhere in the
+# material text so coated / galvanized / NACE / API-grade / lined variants
+# ("CS BITUM COATED", "LTCS GALV", "LTCS NACE - API 5L X60 (SMLS)",
+# "PTFE lined LTCS", "ASTM A105 CS") are still classified as CS.
+_CS_WORD = re.compile(r"\b(LTCS|CS)\b", re.IGNORECASE)
+_SS_WORD = re.compile(r"\bSS\b", re.IGNORECASE)
+_MATERIAL_RE = re.compile(r"Material\s+(.+?)(?:\.|$)", re.IGNORECASE)
 
 
-def check_material_ss(search_output: List[Dict[str, Any]]) -> str:
+def check_material_ss(search_output: List[dict]) -> str:
     if not search_output:
         return "No"
 
-    first_item = search_output[0]
-    content = ""
-
-    metadata = first_item.get("metadata")
-    if isinstance(metadata, dict):
-        content = metadata.get("content", "")
-    elif isinstance(metadata, int):
-        additional_fields = first_item.get("additional_fields", {})
-        if isinstance(additional_fields, dict):
-            content = additional_fields.get("content", "")
-
-    if not isinstance(content, str) or not content.strip():
+    content = get_result_content(search_output[0])
+    if not content.strip():
         return "No"
 
-    match = re.search(r"Material\s+(.+?)(?:\.|$)", content, re.IGNORECASE)
+    match = _MATERIAL_RE.search(content)
     if not match:
         return "No"
 
     material_text = match.group(1).strip()
 
-    if re.fullmatch(r'(LTCS NACE|LTCS|CS)', material_text.strip().upper()):
-        return "CS"
-    if re.search(r'\bSS\b', material_text.upper()):
+    # SS is checked first: "316/L SS", "CrNi SS" etc. never start with CS/LTCS,
+    # so ordering here only matters for safety.
+    if _SS_WORD.search(material_text):
         return "SS"
+    if _CS_WORD.search(material_text):
+        return "CS"
     return "Null"

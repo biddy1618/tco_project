@@ -15,7 +15,7 @@ outputs:
     is_chat_output: true
   merge_state:
     type: string
-    reference: ${mege_state.output}
+    reference: ${merge_state.output}
 nodes:
 - name: spell_check
   type: llm
@@ -48,7 +48,7 @@ nodes:
   inputs:
     chat_history: ${inputs.chat_history}
   use_variants: false
-- name: mege_state
+- name: merge_state
   type: python
   source:
     type: code
@@ -63,7 +63,7 @@ nodes:
     type: code
     path: nodes/validation.py
   inputs:
-    updated_json: ${mege_state.output}
+    updated_json: ${merge_state.output}
   use_variants: false
 - name: ask_or_finalize
   type: llm
@@ -148,7 +148,7 @@ nodes:
         endpoint: https://pf-t332-cog-srch-test-euw1-cvx.search.windows.net/
         engine: azure-sdk
         field_mapping:
-          content: line_class
+          content: content
           embedding: null
           metadata: pmi_percent
         index: ndeee

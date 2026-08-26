@@ -26,6 +26,23 @@ def build_job_pack(facts: str, nde_result: str, wps_result: str, material: str) 
     if isinstance(wps_result, str) and len(wps_result.split()) > 6:
         return wps_result
 
+    # ``scope_type`` is a *list* (the extractor can emit several of the six
+    # values: Flange/Valve/Piping section/Elbow replacement, TLR, Pipe
+    # extension). The original template compared it with ``==`` against single
+    # strings, which is always False for a list — silently breaking, e.g., the
+    # "skip SHOP WORK for a pure valve replacement" rule. Normalise to a set and
+    # use membership everywhere.
+    raw_scope = facts.get("scope_type")
+    if isinstance(raw_scope, str):
+        scope_types = {raw_scope} if raw_scope else set()
+    elif isinstance(raw_scope, (list, tuple, set)):
+        scope_types = {str(s) for s in raw_scope}
+    else:
+        scope_types = set()
+
+    def has_scope(name: str) -> bool:
+        return name in scope_types
+
     output_lines = []
     lines = []
     mvp = False
@@ -69,13 +86,13 @@ def build_job_pack(facts: str, nde_result: str, wps_result: str, material: str) 
         "\nPrior to commencing any fabrication works verify dimensions, pipe routing and field weld locations on site."
     )
 
-    if facts["scope_type"] == 'machinery nozzle':
+    if has_scope('machinery nozzle'):
         output_lines.append("\nNOTE: When allocating FW & FFW locations for machinery nozzle connections, consider the possibility of final piping adjustment after nozzle alignment completion.")
         lines.append('18a')
-    if facts["scope_type"] == 'fixed equipment nozzle or vessel nozzle':
+    if has_scope('fixed equipment nozzle or vessel nozzle'):
         output_lines.append("\nNOTE: When allocating FW & FFW locations for fixed equipment nozzle connections, consider the possibility of final piping adjustment after nozzle alignment completion.")
         lines.append('18b')
-    if facts["scope_type"] == 'PSV connection':
+    if has_scope('PSV connection'):
         output_lines.append("\nNOTE: When allocating FW & FFW locations for PSV inlet/outlet connections, consider the possibility of final piping adjustment after nozzle alignment completion.")
         lines.append('18b')
 
@@ -91,11 +108,12 @@ def build_job_pack(facts: str, nde_result: str, wps_result: str, material: str) 
             "\nPerform excavation and install concrete foundation as per isometric drawing 00-YYYY-L-ZZZZ."
         )
 
-    if facts["replace_existing_equipment_diff_weight"] and (facts['scope_type'] == 'vessel replacement' or facts['scope_type'] == 'Valve replacement'):
+    if facts["replace_existing_equipment_diff_weight"] and (has_scope('vessel replacement') or has_scope('Valve replacement')):
         output_lines.append("\nConsider the weight of the new equipment indicated on drawing XXXX during developing execution steps and lifting plan.")
         output_lines.append("\nNOTE: DTEC completed required engineering studies of existing/new piping, foundation & supports and confirmed new equipment weight is within allowable loads.")
 
-    if facts['scope_type'] != 'Valve replacement':
+    # Skip SHOP WORK only when the job is *solely* a valve replacement.
+    if scope_types != {'Valve replacement'}:
         output_lines.append("\nSHOP WORK:")
 
         output_lines.append('\nWithdraw materials required for this Job Pack from TCO Warehouse according to Material Request(s).')
@@ -103,7 +121,7 @@ def build_job_pack(facts: str, nde_result: str, wps_result: str, material: str) 
         if nde_result == "Yes":
             output_lines.append('\nPerform Positive Material Identification (PMI) as per TCO RE QM SWP-20 Procedure on all corrosion resistant alloy (CRA) materials and weld consumables.')
 
-        if facts['spool_prefab'] or ('TLR' in facts['scope_type']) or ('Flange replacement' in facts['scope_type']):
+        if facts['spool_prefab'] or has_scope('TLR') or has_scope('Flange replacement'):
             output_lines.append('\nPrefabricate pipe spools as per isometric drawing(s) 00-YYYY-L-ZZZZ. Use TCO-approved Welding Procedure Specification(s) (WPSs) indicated on isometric drawing(s). BP shall comply with TCO Guideline 16-0015-MI for socket-welded joints.')
             lines.append('29a')
         # MVP
@@ -114,16 +132,16 @@ def build_job_pack(facts: str, nde_result: str, wps_result: str, material: str) 
         if wps_result == "Yes":
             output_lines.append('\nPerform PWHT as specified by WPS and per TES PIM-SU-2505.')
             lines.append('30a')
-        if wps_result == "Yes" and facts['scope_type'] == 'pipeline':
+        if wps_result == "Yes" and has_scope('pipeline'):
             output_lines.append('\nPerform PWHT as specified by WPS and per TES W-ST-2011.')
             lines.append('30b')
-        if wps_result == "Yes" and facts['scope_type'] == 'gas injection':
+        if wps_result == "Yes" and has_scope('gas injection'):
             output_lines.append('\nPerform PWHT as specified by WPS and per TES W-ST-2016.')
             lines.append('30c')
-        if wps_result == "Yes" and facts['scope_type'] == 'wellhead':
+        if wps_result == "Yes" and has_scope('wellhead'):
             output_lines.append('\nPerform PWHT as specified by WPS and per TES W-ST-2026.')
             lines.append('30d')
-        if wps_result == "Yes" and facts['scope_type'] == 'heavy wall piping':
+        if wps_result == "Yes" and has_scope('heavy wall piping'):
             output_lines.append('\nPerform PWHT as specified by WPS and per TES W-ST-2028.')
             lines.append('30e')
 
@@ -132,10 +150,10 @@ def build_job_pack(facts: str, nde_result: str, wps_result: str, material: str) 
             lines.append('31a')
         if '31a' not in lines:
             # for TLR
-            if 'TLR' in facts['scope_type'] and ('29a' in lines or '29b' in lines) and ('30a' not in lines):
+            if has_scope('TLR') and ('29a' in lines or '29b' in lines) and ('30a' not in lines):
                 output_lines.append('\nPerform non-destructive examination (NDE) as specified on drawing 00-YYYY-L-ZZZZ.')
             # for Flange
-            if 'Flange replacement' in facts['scope_type'] and ('29a' in lines or '29b' in lines) and ('30a' not in lines):
+            if has_scope('Flange replacement') and ('29a' in lines or '29b' in lines) and ('30a' not in lines):
                 output_lines.append('\nPerform non-destructive examination (NDE) as specified on drawing 00-YYYY-L-ZZZZ.')
 
         if facts['spool_prefab'] and ('29a' in lines or '29b' in lines) and ('30a' in lines):
@@ -148,7 +166,7 @@ def build_job_pack(facts: str, nde_result: str, wps_result: str, material: str) 
         if ('29a' in lines) or ('29b' in lines):
             output_lines.append('\nNOTE: BP must check with MaxTrax admin on NDE requirements prior to commence welding works.')
 
-        if (facts['spool_prefab'] or ('29a' in lines or '29b' in lines)) and ('TLR' not in facts['scope_type']) and ('Flange replacement' not in facts['scope_type']):
+        if (facts['spool_prefab'] or ('29a' in lines or '29b' in lines)) and not has_scope('TLR') and not has_scope('Flange replacement'):
             output_lines.append('\nPerform shop hydrostatic testing of flanged spools as specified on isometric drawing(s) 00-YYYY-L-ZZZZ in accordance with TES PIM-SU-3541-TCO.')
             lines.append('34a')
 
@@ -174,7 +192,7 @@ def build_job_pack(facts: str, nde_result: str, wps_result: str, material: str) 
         output_lines.append('\nRemove all cladding and insulation to the extent required.')
         lines.append('42')
 
-    if facts["scope_type"] == 'machinery nozzle':
+    if has_scope('machinery nozzle'):
         output_lines.append('\n.Invite Machinery Maintenance team to install dial gauges prior to existing piping dismantle to record “Zero” position of the compressor/pump.')
         lines.append('44a')
     if '44a' in lines:
@@ -232,7 +250,7 @@ def build_job_pack(facts: str, nde_result: str, wps_result: str, material: str) 
         output_lines.append("\nInstall piping as specified on isometric drawing 00-YYYY-L-ZZZZ. For field welds use TCO-approved WPSs indicated on isometric drawing(s).")
         lines.append('52a')
 
-    if facts["scope_type"] == 'machinery nozzle':
+    if has_scope('machinery nozzle'):
         output_lines.append('\nNOTE: Verify the piping alignment with respect to machinery suction/discharge nozzle before the field welding. Flange alignment shall be parallel to pump nozzle with ability to insert/remove bolting without any binding. Flange-face gaps shall only accommodate Gasket including Spec Blind as applicable. API 686 shall be followed for alignment requirements')
 
     if wps_result == "Yes":
@@ -254,7 +272,7 @@ def build_job_pack(facts: str, nde_result: str, wps_result: str, material: str) 
         output_lines.append("\nPerform field hydrostatic testing of new piping as specified on isometric drawing(s) 00-YYYY-L-ZZZZ in accordance with TES PIM-SU-3541-TCO")
         lines.append('58a')
 
-    if '52a' in lines and facts['scope_type'] == 'pipeline':
+    if '52a' in lines and has_scope('pipeline'):
         output_lines.append("\nPerform shop hydrostatic testing of ASME B31.4 / B31.8 pipeline components in accordance with TCO Procedure X-000-L-PRO-0001 as per isometric drawing(s) 00-YYYY-L-ZZZZ – 4-hour duration.")
 
     if '58a' in lines and material == "SS":
@@ -284,7 +302,7 @@ def build_job_pack(facts: str, nde_result: str, wps_result: str, material: str) 
     if '18c' in lines:
         output_lines.append("\nNOTE: PSV connections flange alignment to be witnessed and accepted stress-free by TCO Designs & Technical Engineering Center (DTEC) and RE QM Bolting Team prior to PSSR.")
 
-    if facts['scope_type'] == 'swing elbow':
+    if has_scope('swing elbow'):
         output_lines.append('\nNOTE: Swing Elbow connection flange alignment to be witnessed and accepted stress-free by TCO Designs & Technical Engineering Center (DTEC) and RE QM Bolting Team prior to PSSR.')
 
     if '62' in lines:
