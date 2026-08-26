@@ -45,7 +45,10 @@ archive/              Untouched original export, kept for reference only.
   that forwards its inputs to `pf_jobpack`. This is the only layer that is
   Prompt Flow specific.
 
-See [docs/flow-structure.md](docs/flow-structure.md) for the node-by-node map.
+See [docs/flow-structure.md](docs/flow-structure.md) for the node-by-node map,
+[docs/azure-environment.md](docs/azure-environment.md) for VDI / Azure facts,
+and [docs/questions-for-azure.md](docs/questions-for-azure.md) for copy-paste
+agent checklists.
 
 ## Running locally
 

@@ -156,7 +156,7 @@ they need a domain decision. Each item is tagged with its current status.
 
 2. **`material` + `nde_py` broken by the `ndeee` field mapping and string types
    (HIGH — CONFIRMED against live Azure 2026-08-25 — FIXED, see
-   [questions-for-azure.md](questions-for-azure.md) A1/A3).** There is **no
+   [azure-environment.md](azure-environment.md) §5).** There is **no
    separate material index**; material genuinely lives in `ndeee`, so
    `material: ${nde.output}` is the right source. The break is in *how* the data
    comes back:
