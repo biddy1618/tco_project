@@ -256,6 +256,8 @@ Flow. You only run checks and report facts.
    continue with the next step that does not depend on it.
 9. When you finish, fill the **Report template** at the bottom. Use PASS /
    FAIL / SKIP / UNKNOWN only.
+10. Do **not** import or mention `AzureOpenAIChatClient` as a required class.
+    On this installed version it does not exist. Use `OpenAIChatClient`.
 
 ### Already known (do not re-ask the human)
 
@@ -270,7 +272,7 @@ still match. If they differ, report the new values.
 | `agent-framework` | 1.14.0 |
 | `agent-framework-core` | 1.14.0 |
 | `agent-framework-foundry` | 1.11.0 |
-| `agent-framework-openai` | 1.13.0 |
+| `agent-framework-openai` | 1.13.0 (imports from the 1.14.0 meta-package) |
 | `agent-framework-azure-ai-search` | 1.0.0b260813 |
 | Azure CLI subscription name | `T332 - TCO` |
 | Azure CLI subscription id | `baa67dbf-45d0-4d84-b662-527186361068` |
@@ -286,6 +288,19 @@ still match. If they differ, report the new values.
 There is **no** `maf new` or `az maf create` command. A MAF project is a
 Python package that imports `agent_framework`. Readiness = Python 3.10+ +
 packages import + Azure auth + a successful chat completion.
+
+**API fact for this installed version (do not ignore):** `agent-framework`
+1.14.0 does **not** export `AzureOpenAIChatClient`. That class was removed.
+The correct Azure OpenAI clients are:
+
+- `OpenAIChatClient` — Responses API (try this first)
+- `OpenAIChatCompletionClient` — Chat Completions API (fallback)
+
+Both live in `agent_framework.openai`. Force Azure routing by passing
+`azure_endpoint=` and `credential=` (do not rely on env vars alone). The
+deployment name is the `model=` argument. Do **not** import
+`AzureOpenAIChatClient`. Do **not** stop the smoke test because that name
+is missing.
 
 ### Step 0 — working directory
 
@@ -303,22 +318,28 @@ conda env.
 
 ```powershell
 python -c "import agent_framework; print('agent_framework', getattr(agent_framework, '__version__', 'NO_VERSION'))"
-python -c "from agent_framework.openai import AzureOpenAIChatClient; print('AzureOpenAIChatClient OK')"
+python -c "import agent_framework.openai as m; print([n for n in dir(m) if 'Client' in n])"
+python -c "from agent_framework.openai import OpenAIChatClient, OpenAIChatCompletionClient; print('OpenAI clients OK')"
 python -c "from agent_framework.foundry import FoundryChatClient; print('FoundryChatClient OK')"
-python -c "from azure.identity import AzureCliCredential, get_bearer_token_provider; print('azure-identity OK')"
+python -c "from azure.identity.aio import AzureCliCredential; print('azure.identity.aio OK')"
 ```
 
-Then print the constructor signature (needed if the smoke script fails):
+Expected client names in `dir(...)`: `OpenAIChatClient` and
+`OpenAIChatCompletionClient`. `AzureOpenAIChatClient` must **not** appear.
+If it is missing, that is **PASS**, not FAIL.
+
+Then print constructor signatures (needed if the smoke script fails):
 
 ```powershell
-python -c "from agent_framework.openai import AzureOpenAIChatClient; import inspect; print(inspect.signature(AzureOpenAIChatClient.__init__))"
-python -c "from agent_framework.foundry import FoundryChatClient; import inspect; print(inspect.signature(FoundryChatClient.__init__))"
+python -c "from agent_framework.openai import OpenAIChatClient; import inspect; print('OpenAIChatClient', inspect.signature(OpenAIChatClient.__init__))"
+python -c "from agent_framework.openai import OpenAIChatCompletionClient; import inspect; print('OpenAIChatCompletionClient', inspect.signature(OpenAIChatCompletionClient.__init__))"
+python -c "from agent_framework.foundry import FoundryChatClient; import inspect; print('FoundryChatClient', inspect.signature(FoundryChatClient.__init__))"
 ```
 
 Do **not** install anything if these imports succeed.
 
-If `AzureOpenAIChatClient` import fails, report the traceback and stop the
-OpenAI smoke test (Step 5). Do not guess a different class name.
+If `OpenAIChatClient` import fails, paste the traceback and stop Step 5.
+If only `AzureOpenAIChatClient` is missing, continue — that is expected.
 
 ### Step 2 — Azure CLI subscription
 
@@ -361,7 +382,8 @@ How to interpret:
   `FOUNDRY_PROJECT_ENDPOINT`.
 - If you only see `https://pf-t332-openai-use2.openai.azure.com/` (or other
   `*.openai.azure.com`) → classic Azure OpenAI only. That is **OK**. The
-  migration will use `AzureOpenAIChatClient`.
+  migration will use `OpenAIChatClient` (or `OpenAIChatCompletionClient`)
+  with `azure_endpoint=` + `credential=`.
 - `kind` values you may see: `OpenAI`, `AIServices`, `CognitiveServices`.
   Record them. Do not guess what they mean beyond the endpoint hostname.
 
@@ -393,25 +415,25 @@ Create this file exactly. Path:
 If that folder does not exist, create the file in the current working
 directory and report the full path.
 
+This uses **`OpenAIChatClient`** (Responses API) against the classic Azure
+OpenAI endpoint. `model=` is the **deployment name**. `credential=` forces
+Azure routing so a stray `OPENAI_API_KEY` cannot send the call to public
+OpenAI.
+
 File contents (copy exactly):
 
 ```python
 import asyncio
-from azure.identity import AzureCliCredential, get_bearer_token_provider
-from agent_framework.openai import AzureOpenAIChatClient
+from azure.identity.aio import AzureCliCredential
+from agent_framework.openai import OpenAIChatClient
 
 ENDPOINT = "https://pf-t332-openai-use2.openai.azure.com/"
 DEPLOYMENT = "gpt-4o-mini-gs-2024-07-18"
 
-token_provider = get_bearer_token_provider(
-    AzureCliCredential(),
-    "https://cognitiveservices.azure.com/.default",
-)
-
-client = AzureOpenAIChatClient(
-    endpoint=ENDPOINT,
-    deployment_name=DEPLOYMENT,
-    ad_token_provider=token_provider,
+client = OpenAIChatClient(
+    model=DEPLOYMENT,
+    azure_endpoint=ENDPOINT,
+    credential=AzureCliCredential(),
 )
 
 agent = client.as_agent(
@@ -435,23 +457,70 @@ python maf_smoke.py
 
 **If the constructor fails** with `TypeError` / unexpected keyword:
 
-1. Look at the signature from Step 1.
-2. Adjust **only** the keyword names to match the installed package
-   (`deployment_name` vs `model`, `ad_token_provider` vs `credential`, etc.).
+1. Look at the `OpenAIChatClient` signature from Step 1.
+2. Adjust **only** the keyword names to match the installed package.
+   Allowed names to try: `model`, `azure_endpoint`, `credential`,
+   `endpoint`, `base_url`, `api_version`. Do **not** invent
+   `AzureOpenAIChatClient`.
 3. Re-run once.
 4. In the report, write the **working constructor keyword names**.
 
-**If it succeeds:** the printed text should contain `ok` (case may differ).
-Mark Step 5 PASS. Paste the printed output (it is not a secret).
+**If `as_agent` is missing:** use this instead, then re-run once:
 
-**If it fails:** paste the full traceback. Common meanings (do not fix unless
-the human asks):
+```python
+from agent_framework import Agent
+agent = Agent(client=client, name="Smoke", instructions="Reply with exactly: ok")
+```
+
+**If it succeeds:** the printed text should contain `ok` (case may differ).
+Mark Step 5 PASS. Paste the printed output (it is not a secret). Write
+`working client: OpenAIChatClient`.
+
+**If it fails because Responses API is not available** on this deployment
+(error mentions `responses`, `/v1/responses`, `404`, or `api-version`):
+do **not** mark FAIL yet. Create `C:\Users\dauba1\Work\maf_smoke_chat.py`
+with this fallback (Chat Completions API) and run it once:
+
+```python
+import asyncio
+from azure.identity.aio import AzureCliCredential
+from agent_framework.openai import OpenAIChatCompletionClient
+
+ENDPOINT = "https://pf-t332-openai-use2.openai.azure.com/"
+DEPLOYMENT = "gpt-4o-mini-gs-2024-07-18"
+
+client = OpenAIChatCompletionClient(
+    model=DEPLOYMENT,
+    azure_endpoint=ENDPOINT,
+    credential=AzureCliCredential(),
+)
+
+agent = client.as_agent(
+    name="Smoke",
+    instructions="Reply with exactly: ok",
+)
+
+async def main():
+    result = await agent.run("ping")
+    print(result)
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+If the fallback succeeds, mark Step 5 PASS and write
+`working client: OpenAIChatCompletionClient`. That is still enough to
+start the migration.
+
+**If both scripts fail:** paste both full tracebacks. Common meanings
+(do not fix unless the human asks):
 
 | Error text contains | Meaning |
 |---|---|
 | `CredentialUnavailableError` | `az login` token not usable |
 | `401` or `403` | no Cognitive Services User (or equivalent) on `pf-t332-openai-use2` |
-| `404` | wrong deployment name |
+| `404` on the deployment name | wrong `model=` value |
+| `ImportError: AzureOpenAIChatClient` | you used the old class; switch to `OpenAIChatClient` |
 | `ModuleNotFoundError` | missing import; report it, do not pip install |
 
 ### Step 6 — Foundry smoke test (only if Step 3 found a Foundry endpoint)
@@ -498,7 +567,7 @@ If the constructor kwargs are wrong, use the Step 1 signature, change only
 kwargs, retry once.
 
 If this fails but Step 5 passed, that is OK. Report FAIL for Step 6 and
-recommend `AzureOpenAIChatClient`.
+recommend `OpenAIChatClient` (or whichever client passed Step 5).
 
 ### Step 7 — do not install leftover packages
 
@@ -535,9 +604,12 @@ Machine / user:
 Step 0 Python version:
 Step 0 interpreter path:
 Step 1 agent_framework version:
-Step 1 AzureOpenAIChatClient import: PASS/FAIL
+Step 1 exported openai clients (paste dir list):
+Step 1 OpenAIChatClient import: PASS/FAIL
+Step 1 OpenAIChatCompletionClient import: PASS/FAIL
 Step 1 FoundryChatClient import: PASS/FAIL
-Step 1 AzureOpenAIChatClient signature:
+Step 1 OpenAIChatClient signature:
+Step 1 OpenAIChatCompletionClient signature:
 Step 1 FoundryChatClient signature:
 Step 2 subscription name:
 Step 2 subscription id:
@@ -546,6 +618,7 @@ Step 3 Foundry endpoint found?: YES/NO
 Step 3 FOUNDRY_PROJECT_ENDPOINT (or NO_FOUNDRY_PROJECT):
 Step 4 gpt-4o-mini-gs-2024-07-18 present?: YES/NO
 Step 5 OpenAI smoke test: PASS/FAIL
+Step 5 working client: OpenAIChatClient / OpenAIChatCompletionClient / NONE
 Step 5 output or error:
 Step 5 working constructor kwargs (if changed):
 Step 6 Foundry smoke test: PASS/FAIL/SKIP
@@ -554,8 +627,9 @@ Step 7 azure-ai-evaluation installed?: YES/NO (must be NO)
 Step 8 Search AAD token: PASS/FAIL/SKIP
 
 Recommended chat client for migration:
-  [ ] AzureOpenAIChatClient  (classic https://pf-t332-openai-use2.openai.azure.com/)
-  [ ] FoundryChatClient      (only if Step 6 PASS)
+  [ ] OpenAIChatClient            (classic Azure OpenAI, Responses API)
+  [ ] OpenAIChatCompletionClient  (classic Azure OpenAI, Chat Completions fallback)
+  [ ] FoundryChatClient           (only if Step 6 PASS)
 
 Ready to start a 2-executor MAF slice?: YES/NO
 Blockers (if NO):
