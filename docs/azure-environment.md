@@ -53,7 +53,7 @@ class was removed. Use:
 
 | Class | Module | Azure OpenAI API |
 |---|---|---|
-| `OpenAIChatClient` | `agent_framework.openai` | Responses (try first) |
+| `OpenAIChatClient` | `agent_framework.openai` | Responses (works on VDI; smoke-tested 2026-08-26) |
 | `OpenAIChatCompletionClient` | `agent_framework.openai` | Chat Completions (fallback) |
 | `FoundryChatClient` | `agent_framework.foundry` | Foundry project endpoint only |
 
@@ -83,10 +83,10 @@ rely on env vars alone (`OPENAI_API_KEY` would send traffic to public OpenAI).
 | Access | Proven? | How |
 |---|---|---|
 | List OpenAI deployments on `pf-t332-openai-use2` | **yes** | `az cognitiveservices account deployment list` returned dozens of names |
-| Call a chat completion as this user | **not yet** | Q4 Step 5 smoke test |
-| Foundry project (`*.services.ai.azure.com`) | **unknown** | Q4 Step 3 |
-| Azure AI Search as AAD (no key) | **not yet** | Q4 Step 8 |
-| Role name on the OpenAI resource (e.g. Cognitive Services User) | **inferred only** | listing deployments succeeded; inference still untested |
+| Call a chat completion as this user | **yes** | `maf_smoke.py` returned `ok` with `OpenAIChatClient` |
+| Foundry project (`*.services.ai.azure.com`) | **no** | `az cognitiveservices account list` showed only classic OpenAI and AIServices endpoints |
+| Azure AI Search as AAD (no key) | **yes** | `az account get-access-token --resource https://search.azure.com` returned an expiry |
+| Role name on the OpenAI resource (e.g. Cognitive Services User) | **inferred only** | listing deployments and smoke testing succeeded; exact RBAC role still untested |
 
 Do not assume Contributor. Listing deployments ≠ permission to invoke a model.
 
@@ -208,10 +208,10 @@ if needed; do not query the others.
 
 Tracked by [questions-for-azure.md](questions-for-azure.md):
 
-- [ ] Foundry project endpoint (`*.services.ai.azure.com`) exists or not
-- [ ] `OpenAIChatClient` (or Completions fallback) can complete a chat as
-      this user against `gpt-4o-mini-gs-2024-07-18`
-- [ ] AAD token for `https://search.azure.com` works from the VDI
+- [x] Foundry project endpoint (`*.services.ai.azure.com`) exists or not
+- [x] `OpenAIChatClient` can complete a chat as this user against
+  `gpt-4o-mini-gs-2024-07-18`
+- [x] AAD token for `https://search.azure.com` works from the VDI
 - [ ] Exact RBAC roles on `pf-t332-openai-use2` and the Search service
 
 After Q4 comes back, update this file (not the questions file) with the
