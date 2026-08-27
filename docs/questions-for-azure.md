@@ -5,9 +5,9 @@ returns a new fact, update that inventory. Do not put workstation hostnames
 in the inventory.
 
 **Closed:** classic OpenAI smoke; Search AAD token; Foundry project portal;
-`FoundryChatClient` smoke on
-`https://pf-t332-t-aif-use2-c3.cognitiveservices.azure.com/` with
-`gpt-4o-mini-gs-2024-07-18`. See inventory §2 and §7.
+`FoundryChatClient` smoke; Foundry account has the three PF deployments
+(`gpt-4o-mini-gs-2024-07-18`, `gpt-4o-gs-2024-05-13`,
+`text-embedding-ada-002-gs-2`). See inventory §2, §7.
 
 **Open (step 0):** can this identity **push a container image** and
 **create a Foundry hosted agent** in

@@ -8,4 +8,5 @@
 # Do not `pip freeze` a full workstation env into this file.
 
 agent-framework==1.14.0
+agent-framework-foundry
 azure-identity>=1.25.0

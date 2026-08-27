@@ -10,8 +10,9 @@ Framework rewrite, built **one slice at a time**. Python logic stays in
 | 2 | `load_state` → `merge_state` → `validation` → `ask_or_finalize` (+ `router`) | working |
 | 3 | complete-gate → WPS/NDE/material → `template` → `final` | not started |
 
-Client: `OpenAIChatClient` + `AzureCliCredential` against classic Azure OpenAI
-(`https://pf-t332-openai-use2.openai.azure.com/`). No Foundry project. See
+Client: `FoundryChatClient` + `AzureCliCredential` against
+`https://pf-t332-t-aif-use2-c3.cognitiveservices.azure.com/` (same deployment
+names as Prompt Flow). Classic Azure OpenAI is an opt-in fallback. See
 [docs/azure-environment.md](../docs/azure-environment.md).
 
 Python 3.10+. Install with `pip install -r maf/requirements.txt` unless
@@ -26,11 +27,16 @@ python -m maf.slice2
 Optional env overrides:
 
 ```bash
+# Default Foundry endpoint (unset = use the documented default)
+export FOUNDRY_PROJECT_ENDPOINT="https://pf-t332-t-aif-use2-c3.cognitiveservices.azure.com/"
+
+# Force classic Azure OpenAI instead of Foundry
 export AZURE_OPENAI_ENDPOINT="https://pf-t332-openai-use2.openai.azure.com/"
+
 export AZURE_OPENAI_CHAT_MODEL="gpt-4o-mini-gs-2024-07-18"
 ```
 
-Windows PowerShell: `$env:AZURE_OPENAI_ENDPOINT = "..."`.
+Windows PowerShell: `$env:FOUNDRY_PROJECT_ENDPOINT = "..."`.
 
 ## Slice 1
 

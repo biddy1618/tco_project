@@ -9,7 +9,7 @@ Related:
 - `flow.dag.yaml` — runtime wiring (endpoints, connection names, deployments)
 - [maf/README.md](../maf/README.md) — Agent Framework slices
 
-Last updated: 2026-08-26.
+Last updated: 2026-08-27.
 
 ---
 
@@ -32,13 +32,14 @@ This version does **not** export `AzureOpenAIChatClient`. Use:
 
 | Class | Module | API |
 |---|---|---|
-| `OpenAIChatClient` | `agent_framework.openai` | Responses (verified 2026-08-26) |
-| `OpenAIChatCompletionClient` | `agent_framework.openai` | Chat Completions (fallback) |
-| `FoundryChatClient` | `agent_framework.foundry` | Foundry project endpoint only — **not used here** |
+| `FoundryChatClient` | `agent_framework.foundry` | **MAF default** (verified invoke 2026-08-27) |
+| `OpenAIChatClient` | `agent_framework.openai` | Classic Azure OpenAI fallback if `AZURE_OPENAI_ENDPOINT` is set |
+| `OpenAIChatCompletionClient` | `agent_framework.openai` | Chat Completions (unused) |
 
-Force Azure routing with `azure_endpoint=` + `credential=AzureCliCredential()`
-from `azure.identity.aio`. Pass the **deployment name** as `model=`. Do not
-rely on env vars alone (`OPENAI_API_KEY` would send traffic to public OpenAI).
+Default Foundry endpoint:
+`https://pf-t332-t-aif-use2-c3.cognitiveservices.azure.com/`.
+`credential=AzureCliCredential()` from `azure.identity.aio`. Pass the
+**deployment name** as `model=`. Do not rely on `OPENAI_API_KEY` alone.
 
 ---
 
@@ -58,7 +59,9 @@ rely on env vars alone (`OPENAI_API_KEY` would send traffic to public OpenAI).
 | Access | Proven? |
 |---|---|
 | List OpenAI deployments on `pf-t332-openai-use2` | yes |
-| Invoke `gpt-4o-mini-gs-2024-07-18` via `OpenAIChatClient` | yes |
+| Invoke `gpt-4o-mini-gs-2024-07-18` via `OpenAIChatClient` (classic) | yes |
+| Invoke `gpt-4o-mini-gs-2024-07-18` via `FoundryChatClient` | yes |
+| List deployments on Foundry account `pf-t332-t-aif-use2-c3` | yes (2026-08-27) |
 | Foundry project (`*.services.ai.azure.com`) on the classic OpenAI path | **none** |
 | AAD token for Azure AI Search | yes |
 | Exact RBAC role names | not listed (invoke already works) |
@@ -202,9 +205,34 @@ Smoke test details:
 - Deployment used: `gpt-4o-mini-gs-2024-07-18`
 - Result: `ok`
 
+### Deployments on this Foundry account (2026-08-27)
+
+Listed with `az cognitiveservices account deployment list` on
+`pf-t332-t-aif-use2-c3` / RG `pf-T332-t-aif-c3`. The three Prompt Flow names
+are present:
+
+| Deployment name | Present |
+|---|---|
+| `gpt-4o-mini-gs-2024-07-18` | yes |
+| `gpt-4o-gs-2024-05-13` | yes |
+| `text-embedding-ada-002-gs-2` | yes |
+
+Other chat deployments on the same account (not used by this POC):
+`gpt-4o-gs-2024-08-06`, `gpt-4o-gs-2024-11-20`, `gpt-4o-gb-2024-05-13`,
+`gpt-4o-gb-2024-08-06`, `gpt-4o-gb-2024-11-20`, `o3-mini-gs-2025-01-31`,
+`o3-mini-gb-2025-01-31`, `o3-gs-2025-04-16`, `o3-gb-2025-04-16`,
+`o4-mini-gs-2025-04-16`, `o4-mini-gb-2025-04-16`, `gpt-4_1-gs-2025-04-14`,
+`gpt-4_1-gb-2025-04-14`, `gpt-4_1-mini-gs-2025-04-14`,
+`gpt-4_1-mini-gb-2025-04-14`.
+
+MAF uses the same three PF names on this Foundry endpoint. Hosted-agent
+container publish is a separate, blocked path (see §8).
+
 What this means, based only on what was checked:
 
 - The Foundry project page is reachable in the browser.
+- The three Prompt Flow deployment names exist on this Foundry account
+  (`gpt-4o-mini`, `gpt-4o`, embeddings).
 - The AIServices account endpoint is reachable from Python with `FoundryChatClient`.
 - Your access to the target project is group-based, not a direct user RBAC assignment.
 - The current project is backed by an `AIServices` account, not a git repository.
