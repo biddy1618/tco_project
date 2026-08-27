@@ -59,9 +59,12 @@ rely on env vars alone (`OPENAI_API_KEY` would send traffic to public OpenAI).
 |---|---|
 | List OpenAI deployments on `pf-t332-openai-use2` | yes |
 | Invoke `gpt-4o-mini-gs-2024-07-18` via `OpenAIChatClient` | yes |
-| Foundry project (`*.services.ai.azure.com`) | **none** — classic Azure OpenAI only |
+| Foundry project (`*.services.ai.azure.com`) on the classic OpenAI path | **none** |
 | AAD token for Azure AI Search | yes |
 | Exact RBAC role names | not listed (invoke already works) |
+
+Note: the Foundry check above is for the classic OpenAI resource path. A
+separate Foundry-backed project is documented in section 7 below.
 
 ---
 
@@ -171,8 +174,8 @@ Blank is treated as `"No"` in `pf_jobpack/pwht.py`.
 
 ## 7. Microsoft Foundry target project (2026-08-27)
 
-This is the Foundry project the browser opened for
-`pf-t332-t-aif-use2-c3-jobpack-project`.
+This is a separate Foundry-backed project for `pf-t332-t-aif-use2-c3-jobpack-project`.
+It is not the classic Azure OpenAI resource documented above.
 
 | Item | Value | Explicitly checked |
 |---|---|---|
@@ -182,6 +185,7 @@ This is the Foundry project the browser opened for
 | Portal area reached | `build/agents` | browser snapshot |
 | Portal nav visible | Agents, Deployments, Services, Tools, Knowledge, Memory, Guardrails, Data, Evaluations | browser snapshot |
 | Portal note shown | This project logs traces; some members with Log Analytics Reader in AppInsights may be able to view user data | browser snapshot |
+| Account endpoint | `https://pf-t332-t-aif-use2-c3.cognitiveservices.azure.com/` | `az cognitiveservices account show` |
 | Target resource name | `pf-t332-t-aif-use2-c3` | `az resource show` |
 | Target resource type | `Microsoft.CognitiveServices/accounts` | `az resource show` |
 | Target resource kind | `AIServices` | `az resource show` |
@@ -189,3 +193,19 @@ This is the Foundry project the browser opened for
 | Direct RBAC for `Dauren.Baitursyn@tengizchevroil.com` | none returned | `az role assignment list --assignee` |
 | Group RBAC on target RG | `pf-T332-ai-services-consumers` -> `Reader`; `Chevron AI Services Operator` | `az role assignment list --include-groups` |
 | Source workspace RBAC | `pf-T332-dsws-tc-amlop` -> `Chevron Limited AML Operator` | `az role assignment list` on the source workspace |
+| `FoundryChatClient` smoke test | PASS | `foundry_smoke.py` returned `ok` |
+
+Smoke test details:
+
+- Client: `FoundryChatClient`
+- Endpoint used: `https://pf-t332-t-aif-use2-c3.cognitiveservices.azure.com/`
+- Deployment used: `gpt-4o-mini-gs-2024-07-18`
+- Result: `ok`
+
+What this means, based only on what was checked:
+
+- The Foundry project page is reachable in the browser.
+- The AIServices account endpoint is reachable from Python with `FoundryChatClient`.
+- Your access to the target project is group-based, not a direct user RBAC assignment.
+- The current project is backed by an `AIServices` account, not a git repository.
+- I did not check any git-backed sync or import feature, so "push code" is not something I can confirm here; the checked path is portal/project asset migration, not a repo push.
