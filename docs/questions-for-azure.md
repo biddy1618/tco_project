@@ -4,11 +4,14 @@ Known facts live in [azure-environment.md](azure-environment.md). When a check
 returns a new fact, update that inventory. Do not put workstation hostnames
 in the inventory.
 
-**Closed:** classic OpenAI smoke (`OpenAIChatClient` on
-`pf-t332-openai-use2`), Search AAD token, portal open of Foundry project
-`pf-t332-t-aif-use2-c3-jobpack-project`. See inventory §2 and §7.
+**Closed:** classic OpenAI smoke; Search AAD token; Foundry project portal;
+`FoundryChatClient` smoke on
+`https://pf-t332-t-aif-use2-c3.cognitiveservices.azure.com/` with
+`gpt-4o-mini-gs-2024-07-18`. See inventory §2 and §7.
 
-**Open:** can we **invoke** that Foundry/AIServices resource from Python?
+**Open (step 0):** can this identity **push a container image** and
+**create a Foundry hosted agent** in
+`pf-t332-t-aif-use2-c3-jobpack-project`?
 
 **Human:** paste `azure-environment.md`, then everything under **Prompt**.
 
@@ -17,126 +20,171 @@ in the inventory.
 ## Prompt
 
 You are on a Windows machine with conda env `maf` and `az login` on
-**T332 - TCO**. Confirm only the unknowns below. Do not install packages.
-Do not print secrets or access tokens. Do not re-test classic
-`pf-t332-openai-use2` (already proven).
+subscription **T332 - TCO**. Confirm only the unknowns below.
 
-`conda activate maf` first.
+Do **not** install packages. Do **not** install Docker, `azd`, or CLI
+extensions. Do **not** `docker login`, `az acr login`, push an image, or
+create/update any agent. Do **not** print secrets, passwords, or access
+tokens. Do **not** re-test classic `pf-t332-openai-use2` or re-run
+`foundry_smoke.py` (already proven).
 
-Resource already identified:
+`az account show` must be **T332 - TCO**
+(`baa67dbf-45d0-4d84-b662-527186361068`). If it is not, stop and say so.
 
-- Account: `pf-t332-t-aif-use2-c3` (kind `AIServices`, eastus2)
+Already known (do not rediscover unless a command fails):
+
+- Foundry / AIServices account: `pf-t332-t-aif-use2-c3` (eastus2)
 - Foundry project: `pf-t332-t-aif-use2-c3-jobpack-project`
+- Account endpoint:
+  `https://pf-t332-t-aif-use2-c3.cognitiveservices.azure.com/`
+- Group RBAC on the account RG (previous check):
+  `pf-T332-ai-services-consumers` → Reader;
+  `Chevron AI Services Operator`
 
-### 1. Project / account endpoint
+Hosted-agent deploy needs **Foundry Project Manager** (or equivalent
+data-plane write) on the project, plus an **Azure Container Registry**
+this identity can **push** to. Reader on the RG is not enough.
 
-```powershell
-az cognitiveservices account show -n pf-t332-t-aif-use2-c3 --query "{name:name, kind:kind, endpoint:properties.endpoint, rg:resourceGroup, location:location}" -o json
-az cognitiveservices account list --query "[?kind=='AIServices' || contains(properties.endpoint, 'services.ai.azure.com')].{name:name, kind:kind, endpoint:properties.endpoint, rg:resourceGroup}" -o json
-```
-
-Copy the **exact** `endpoint` string. Prefer a URL containing
-`services.ai.azure.com`. If only `cognitiveservices.azure.com` or
-`openai.azure.com` appears, still paste it.
-
-Optional (portal): Foundry project **Overview** → copy **Project endpoint**.
-If it differs from the CLI endpoint, paste **both**.
-
-### 2. Resource group name
+### 1. Who is signed in (names only)
 
 ```powershell
-az resource list --name pf-t332-t-aif-use2-c3 --query "[].{name:name, rg:resourceGroup, type:type}" -o json
+az account show --query "{name:name, id:id, user:user.name, tenantId:tenantId}" -o json
 ```
 
-### 3. Deployments on the Foundry / AIServices account
-
-Replace `RESOURCE_GROUP` with the RG from step 2:
+### 2. Foundry account resource group + ids
 
 ```powershell
-az cognitiveservices account deployment list -g RESOURCE_GROUP -n pf-t332-t-aif-use2-c3 --query "[].{name:name, model:properties.model.name, version:properties.model.version}" -o table
+az resource list --name pf-t332-t-aif-use2-c3 --query "[].{name:name, rg:resourceGroup, type:type, id:id}" -o json
 ```
 
-If that command 404s, try:
+Save `rg` as `ACCOUNT_RG` for later steps.
+
+Find the Foundry **project** ARM resource (name may match the project or
+sit under the account). Try both:
 
 ```powershell
-az cognitiveservices account deployment list -g RESOURCE_GROUP -n pf-t332-t-aif-use2-c3 -o table
+az resource list --name pf-t332-t-aif-use2-c3-jobpack-project --query "[].{name:name, rg:resourceGroup, type:type, id:id}" -o json
+az resource list -g ACCOUNT_RG --query "[?contains(type, 'Microsoft.CognitiveServices') || contains(type, 'Microsoft.MachineLearningServices')].{name:name, type:type, id:id}" -o json
 ```
 
-In the report, say whether these names exist (YES/NO):
+If the project id is found, save it as `PROJECT_ID`. If not found, write
+`PROJECT_ID=NOT_FOUND` and still run the remaining steps on the account
+and RG.
 
-- `gpt-4o-mini-gs-2024-07-18`
-- `gpt-4o-gs-2024-05-13`
-- `text-embedding-ada-002-gs-2`
+### 3. Roles on the account, its RG, and the project
 
-Also list **up to 10** other **chat** deployment names (skip image/whisper/tts).
-
-If zero deployments: write `NO_DEPLOYMENTS` and skip step 4.
-
-### 4. FoundryChatClient smoke test (required if step 1 has a URL)
-
-Write `foundry_smoke.py` in the current directory. Use the **endpoint from
-step 1**. For `model=`, use `gpt-4o-mini-gs-2024-07-18` if it exists in
-step 3; otherwise the first chat deployment from step 3.
-
-Do **not** import `AzureOpenAIChatClient`.
-
-```python
-import asyncio
-from azure.identity.aio import AzureCliCredential
-from agent_framework.foundry import FoundryChatClient
-
-ENDPOINT = "PASTE_ENDPOINT_FROM_STEP_1"
-DEPLOYMENT = "PASTE_DEPLOYMENT_FROM_STEP_3"
-
-client = FoundryChatClient(
-    project_endpoint=ENDPOINT,
-    model=DEPLOYMENT,
-    credential=AzureCliCredential(),
-)
-agent = client.as_agent(name="Smoke", instructions="Reply with exactly: ok")
-
-async def main():
-    print(await agent.run("ping"))
-
-asyncio.run(main())
-```
-
-Then: `python foundry_smoke.py`
-
-- If constructor `TypeError`: print
-  `from agent_framework.foundry import FoundryChatClient; import inspect; print(inspect.signature(FoundryChatClient.__init__))`
-  then retry **once** with matching kwargs only (`endpoint` vs
-  `project_endpoint`, sync `AzureCliCredential` from `azure.identity` if
-  `aio` fails).
-- PASS if output contains `ok`.
-- FAIL: paste the **full traceback**. Do not guess a fix.
-  401/403 = likely missing invoke role. 404 = wrong endpoint or deployment.
-
-### 5. Optional: who can invoke (names only, no tokens)
+Replace `ACCOUNT_RG` (and `PROJECT_ID` if you have it). Include group
+assignments. Names and role titles only — no object ids required.
 
 ```powershell
-az role assignment list --scope (az cognitiveservices account show -n pf-t332-t-aif-use2-c3 --query id -o tsv) --include-groups --query "[].{principal:principalName, role:roleDefinitionName}" -o table
+az role assignment list --include-groups --scope (az cognitiveservices account show -n pf-t332-t-aif-use2-c3 --query id -o tsv) --query "[].{principal:principalName, role:roleDefinitionName}" -o table
+
+az role assignment list --include-groups --scope (az group show -n ACCOUNT_RG --query id -o tsv) --query "[].{principal:principalName, role:roleDefinitionName}" -o table
 ```
 
-If too long, paste only rows whose role contains `OpenAI`, `Cognitive`,
-`AI User`, `AI Developer`, or `Contributor`.
+If `PROJECT_ID` exists:
+
+```powershell
+az role assignment list --include-groups --scope PROJECT_ID --query "[].{principal:principalName, role:roleDefinitionName}" -o table
+```
+
+In the report, mark YES/NO whether **this user or a group they belong
+to** has any of these role names (current or old Azure AI names count):
+
+- Foundry Project Manager / Azure AI Project Manager
+- Foundry User / Azure AI User
+- Foundry Owner / Azure AI Owner
+- Contributor
+- Owner
+- AcrPush
+- AcrPull
+- ACR Contributor / Container Registry Contributor
+
+If the tables are long, paste only rows whose role contains `Foundry`,
+`Azure AI`, `ACR`, `Acr`, `Container Registry`, `Contributor`, `Owner`,
+`Operator`, or `User`.
+
+### 4. Azure Container Registries in this subscription
+
+```powershell
+az acr list --query "[].{name:name, rg:resourceGroup, login:loginServer, sku:sku.name, location:location}" -o table
+```
+
+If that returns none, also search the Foundry account RG:
+
+```powershell
+az acr list -g ACCOUNT_RG -o table
+az resource list -g ACCOUNT_RG --resource-type Microsoft.ContainerRegistry/registries --query "[].{name:name, id:id}" -o json
+```
+
+If still none: write `NO_ACR` and skip step 5. Do **not** create a
+registry.
+
+If one or more exist: list every `name` + `loginServer`. Prefer a
+registry in `ACCOUNT_RG` or with `t332` / `tco` / `foundry` / `aif` in
+the name; if none match, list all (cap at 10).
+
+### 5. Can this identity push? (no actual push)
+
+For **each** registry from step 4 (max 3 if there are many — pick the
+preferred one first):
+
+```powershell
+az acr show -n REGISTRY_NAME --query "{name:name, rg:resourceGroup, adminUserEnabled:adminUserEnabled, login:loginServer}" -o json
+
+az role assignment list --include-groups --scope (az acr show -n REGISTRY_NAME --query id -o tsv) --query "[].{principal:principalName, role:roleDefinitionName}" -o table
+```
+
+Then a **dry** permission check (does not upload an image):
+
+```powershell
+az acr login -n REGISTRY_NAME
+```
+
+- If `az acr login` succeeds: write `ACR_LOGIN=PASS` for that registry.
+  Do **not** `docker push`.
+- If it fails: paste the **error message only** (no token). Typical
+  403/`authorization` = no push/login role.
+
+Optional (skip if it errors): `az acr repository list -n REGISTRY_NAME -o table`
+proves data-plane list; empty is OK.
+
+### 6. gpt-4o on the Foundry account (needed for later host tests)
+
+Replace `ACCOUNT_RG`:
+
+```powershell
+az cognitiveservices account deployment list -g ACCOUNT_RG -n pf-t332-t-aif-use2-c3 --query "[].{name:name, model:properties.model.name}" -o table
+```
+
+YES/NO for:
+
+- `gpt-4o-mini-gs-2024-07-18` (already used in smoke; confirm still there)
+- `gpt-4o-gs-2024-05-13` (classic OpenAI name for ask_or_finalize)
 
 ### Report
 
 ```text
-Account endpoint:
-Project endpoint (portal, if different):
-Resource group:
-gpt-4o-mini-gs-2024-07-18 on this account?: YES/NO
-gpt-4o-gs-2024-05-13 on this account?: YES/NO
-text-embedding-ada-002-gs-2 on this account?: YES/NO
-Other chat deployments (max 10):
-FoundryChatClient smoke: PASS/FAIL/SKIP
-Smoke deployment used:
-Smoke output or error:
-Invoke-related role names (optional):
-Ready to point maf/client.py at Foundry?: YES/NO
+Subscription / user (from step 1):
+Foundry account RG:
+Project ARM type + id (or NOT_FOUND):
+
+Foundry Project Manager (or Azure AI Project Manager)?: YES/NO
+Foundry User (or Azure AI User)?: YES/NO
+Contributor/Owner on account RG?: YES/NO
+
+ACR list (name, loginServer, rg) or NO_ACR:
+Preferred ACR for hosted-agent images:
+az acr login on preferred ACR: PASS/FAIL/SKIP
+ACR roles on preferred registry (names only):
+
+gpt-4o-mini-gs-2024-07-18 on Foundry account?: YES/NO
+gpt-4o-gs-2024-05-13 on Foundry account?: YES/NO
+
+Ready to push an image (ACR login PASS + AcrPush or Contributor)?: YES/NO
+Ready to create a hosted agent in this project (Project Manager or Foundry User)?: YES/NO
+Blocker if either is NO (one sentence):
 ```
 
-Stop. Do not change `maf/` code. The human will copy facts into
-`docs/azure-environment.md`.
+Stop. Do not change `maf/` code, do not create resources, do not install
+Docker. The human will copy facts into `docs/azure-environment.md`.
