@@ -1,11 +1,14 @@
 # Internal Azure checklist (do not include in shared zips).
 
-Known facts live in [azure-environment.md](azure-environment.md). Do not
-repeat them here. When a check returns a new fact, update the inventory.
+Known facts live in [azure-environment.md](azure-environment.md). When a check
+returns a new fact, update that inventory. Do not put workstation hostnames
+in the inventory.
 
-**Closed (do not re-ask):** Q1–Q3 search schemas and the three flow
-deployments — see inventory §4–§5. VDI Python 3.11 / conda `maf` / Artifactory /
-`az account` on **T332 - TCO** / deployment list — inventory §1–§4.
+**Closed:** classic OpenAI smoke (`OpenAIChatClient` on
+`pf-t332-openai-use2`), Search AAD token, portal open of Foundry project
+`pf-t332-t-aif-use2-c3-jobpack-project`. See inventory §2 and §7.
+
+**Open:** can we **invoke** that Foundry/AIServices resource from Python?
 
 **Human:** paste `azure-environment.md`, then everything under **Prompt**.
 
@@ -13,34 +16,81 @@ deployments — see inventory §4–§5. VDI Python 3.11 / conda `maf` / Artifac
 
 ## Prompt
 
-You are on the corporate Windows VDI. Confirm only the unknowns below.
-Use the pasted inventory for env name, endpoints, and class names. Do not
-install packages. Do not print secrets. Do not re-list deployments.
+You are on a Windows machine with conda env `maf` and `az login` on
+**T332 - TCO**. Confirm only the unknowns below. Do not install packages.
+Do not print secrets or access tokens. Do not re-test classic
+`pf-t332-openai-use2` (already proven).
 
 `conda activate maf` first.
 
-### 1. Foundry endpoint or classic OpenAI only?
+Resource already identified:
+
+- Account: `pf-t332-t-aif-use2-c3` (kind `AIServices`, eastus2)
+- Foundry project: `pf-t332-t-aif-use2-c3-jobpack-project`
+
+### 1. Project / account endpoint
 
 ```powershell
-az cognitiveservices account list --query "[].{name:name, kind:kind, endpoint:properties.endpoint, rg:resourceGroup}" -o json
+az cognitiveservices account show -n pf-t332-t-aif-use2-c3 --query "{name:name, kind:kind, endpoint:properties.endpoint, rg:resourceGroup, location:location}" -o json
+az cognitiveservices account list --query "[?kind=='AIServices' || contains(properties.endpoint, 'services.ai.azure.com')].{name:name, kind:kind, endpoint:properties.endpoint, rg:resourceGroup}" -o json
 ```
 
-If any endpoint contains `services.ai.azure.com`, copy that URL as
-`FOUNDRY_PROJECT_ENDPOINT`. Otherwise write `NO_FOUNDRY_PROJECT`.
+Copy the **exact** `endpoint` string. Prefer a URL containing
+`services.ai.azure.com`. If only `cognitiveservices.azure.com` or
+`openai.azure.com` appears, still paste it.
 
-### 2. Can this user call a chat deployment?
+Optional (portal): Foundry project **Overview** → copy **Project endpoint**.
+If it differs from the CLI endpoint, paste **both**.
 
-Write `C:\Users\dauba1\Work\maf_smoke.py` and run `python maf_smoke.py`.
-Do **not** import `AzureOpenAIChatClient` (removed in 1.14.0).
+### 2. Resource group name
+
+```powershell
+az resource list --name pf-t332-t-aif-use2-c3 --query "[].{name:name, rg:resourceGroup, type:type}" -o json
+```
+
+### 3. Deployments on the Foundry / AIServices account
+
+Replace `RESOURCE_GROUP` with the RG from step 2:
+
+```powershell
+az cognitiveservices account deployment list -g RESOURCE_GROUP -n pf-t332-t-aif-use2-c3 --query "[].{name:name, model:properties.model.name, version:properties.model.version}" -o table
+```
+
+If that command 404s, try:
+
+```powershell
+az cognitiveservices account deployment list -g RESOURCE_GROUP -n pf-t332-t-aif-use2-c3 -o table
+```
+
+In the report, say whether these names exist (YES/NO):
+
+- `gpt-4o-mini-gs-2024-07-18`
+- `gpt-4o-gs-2024-05-13`
+- `text-embedding-ada-002-gs-2`
+
+Also list **up to 10** other **chat** deployment names (skip image/whisper/tts).
+
+If zero deployments: write `NO_DEPLOYMENTS` and skip step 4.
+
+### 4. FoundryChatClient smoke test (required if step 1 has a URL)
+
+Write `foundry_smoke.py` in the current directory. Use the **endpoint from
+step 1**. For `model=`, use `gpt-4o-mini-gs-2024-07-18` if it exists in
+step 3; otherwise the first chat deployment from step 3.
+
+Do **not** import `AzureOpenAIChatClient`.
 
 ```python
 import asyncio
 from azure.identity.aio import AzureCliCredential
-from agent_framework.openai import OpenAIChatClient
+from agent_framework.foundry import FoundryChatClient
 
-client = OpenAIChatClient(
-    model="gpt-4o-mini-gs-2024-07-18",
-    azure_endpoint="https://pf-t332-openai-use2.openai.azure.com/",
+ENDPOINT = "PASTE_ENDPOINT_FROM_STEP_1"
+DEPLOYMENT = "PASTE_DEPLOYMENT_FROM_STEP_3"
+
+client = FoundryChatClient(
+    project_endpoint=ENDPOINT,
+    model=DEPLOYMENT,
     credential=AzureCliCredential(),
 )
 agent = client.as_agent(name="Smoke", instructions="Reply with exactly: ok")
@@ -51,52 +101,42 @@ async def main():
 asyncio.run(main())
 ```
 
-- PASS if the output contains `ok` → working client `OpenAIChatClient`.
-- If the error is about Responses / `/v1/responses` / api-version: retry once
-  with `OpenAIChatCompletionClient` instead of `OpenAIChatClient` (same kwargs).
-  PASS → working client `OpenAIChatCompletionClient`.
-- Any other error: FAIL, paste the traceback. Stop.
+Then: `python foundry_smoke.py`
 
-### 3. Foundry client — only if §1 found a URL
+- If constructor `TypeError`: print
+  `from agent_framework.foundry import FoundryChatClient; import inspect; print(inspect.signature(FoundryChatClient.__init__))`
+  then retry **once** with matching kwargs only (`endpoint` vs
+  `project_endpoint`, sync `AzureCliCredential` from `azure.identity` if
+  `aio` fails).
+- PASS if output contains `ok`.
+- FAIL: paste the **full traceback**. Do not guess a fix.
+  401/403 = likely missing invoke role. 404 = wrong endpoint or deployment.
 
-Skip if `NO_FOUNDRY_PROJECT`. Otherwise:
-
-```python
-import asyncio, os
-from azure.identity import AzureCliCredential
-from agent_framework.foundry import FoundryChatClient
-
-os.environ["FOUNDRY_PROJECT_ENDPOINT"] = "PASTE_URL_FROM_STEP_1"
-client = FoundryChatClient(
-    project_endpoint=os.environ["FOUNDRY_PROJECT_ENDPOINT"],
-    model="gpt-4o-mini-gs-2024-07-18",
-    credential=AzureCliCredential(),
-)
-agent = client.as_agent(name="Smoke", instructions="Reply with exactly: ok")
-print(asyncio.run(agent.run("ping")))
-```
-
-PASS / FAIL / SKIP.
-
-### 4. Optional: Search AAD token (no queries)
-
-Only if §2 passed:
+### 5. Optional: who can invoke (names only, no tokens)
 
 ```powershell
-az account get-access-token --resource https://search.azure.com --query expiresOn -o tsv
+az role assignment list --scope (az cognitiveservices account show -n pf-t332-t-aif-use2-c3 --query id -o tsv) --include-groups --query "[].{principal:principalName, role:roleDefinitionName}" -o table
 ```
+
+If too long, paste only rows whose role contains `OpenAI`, `Cognitive`,
+`AI User`, `AI Developer`, or `Contributor`.
 
 ### Report
 
 ```text
-Foundry endpoint: <URL or NO_FOUNDRY_PROJECT>
-Chat smoke: PASS/FAIL
-Working client: OpenAIChatClient / OpenAIChatCompletionClient / NONE
-Chat output or error:
-Foundry smoke: PASS/FAIL/SKIP
-Search AAD token: PASS/FAIL/SKIP
-Ready for a 2-executor MAF slice?: YES/NO
+Account endpoint:
+Project endpoint (portal, if different):
+Resource group:
+gpt-4o-mini-gs-2024-07-18 on this account?: YES/NO
+gpt-4o-gs-2024-05-13 on this account?: YES/NO
+text-embedding-ada-002-gs-2 on this account?: YES/NO
+Other chat deployments (max 10):
+FoundryChatClient smoke: PASS/FAIL/SKIP
+Smoke deployment used:
+Smoke output or error:
+Invoke-related role names (optional):
+Ready to point maf/client.py at Foundry?: YES/NO
 ```
 
-Stop. Do not write workflow code. The human will copy new facts into
+Stop. Do not change `maf/` code. The human will copy facts into
 `docs/azure-environment.md`.
