@@ -22,6 +22,7 @@ from agent_framework import Executor, WorkflowBuilder, WorkflowContext, handler
 
 from maf.client import ASK_OR_FINALIZE_DEPLOYMENT, agent_text, make_chat_client
 from maf.prompts import ASK_OR_FINALIZE, SPELL_CHECK
+from maf.trace import debug, setup, step
 from pf_jobpack.extraction import build_scope_json_from_input
 from pf_jobpack.state import load_state, merge_state, route_prev, validate_state
 
@@ -47,7 +48,9 @@ class LoadStateExecutor(Executor):
 
     @handler
     async def load(self, turn: dict, ctx: WorkflowContext[dict]) -> None:
-        prev = load_state(turn.get("chat_history") or [])
+        history = turn.get("chat_history") or []
+        prev = load_state(history)
+        step("load_state", history_turns=len(history))
         await ctx.send_message(
             {
                 "question": turn.get("question") or "",
@@ -68,6 +71,7 @@ class SpellCheckExecutor(Executor):
 
     @handler
     async def correct(self, payload: dict, ctx: WorkflowContext[dict]) -> None:
+        step("spell_check")
         result = await self._agent.run(payload["question"])
         await ctx.send_message({**payload, "corrected": agent_text(result)})
 
@@ -78,6 +82,11 @@ class ExtractionExecutor(Executor):
     @handler
     async def extract(self, payload: dict, ctx: WorkflowContext[dict]) -> None:
         new_extraction = build_scope_json_from_input(payload["corrected"])
+        step(
+            "extraction",
+            line_class=new_extraction.get("line_class"),
+            scope_type=new_extraction.get("scope_type"),
+        )
         await ctx.send_message({**payload, "new_extraction": new_extraction})
 
 
@@ -87,6 +96,7 @@ class MergeStateExecutor(Executor):
     @handler
     async def merge(self, payload: dict, ctx: WorkflowContext[dict]) -> None:
         merged = merge_state(payload["prev_state"], payload["new_extraction"])
+        step("merge_state")
         await ctx.send_message({**payload, "merge_state": merged})
 
 
@@ -96,6 +106,11 @@ class ValidationExecutor(Executor):
     @handler
     async def validate(self, payload: dict, ctx: WorkflowContext[dict]) -> None:
         checked = validate_state(payload["merge_state"])
+        step(
+            "validation",
+            complete=checked["complete"],
+            missing=checked["missing"],
+        )
         await ctx.send_message({**payload, **checked})
 
 
@@ -116,8 +131,11 @@ class AskOrFinalizeExecutor(Executor):
         user = _ask_user_message(
             payload["state"], payload["complete"], payload["missing"]
         )
+        step("ask_or_finalize", complete=payload["complete"])
         result = await self._agent.run(user)
-        await ctx.send_message({**payload, "answer": agent_text(result)})
+        text = agent_text(result)
+        debug("ask_or_finalize", answer=text)
+        await ctx.send_message({**payload, "answer": text})
 
 
 class RouterExecutor(Executor):
@@ -127,13 +145,15 @@ class RouterExecutor(Executor):
     async def route(
         self, payload: dict, ctx: WorkflowContext[Never, dict]
     ) -> None:
+        routed = route_prev(payload["answer"])
+        step("router", kind=routed.get("kind"))
         await ctx.yield_output(
             {
                 "answer": payload["answer"],
                 "complete": payload["complete"],
                 "missing": payload["missing"],
                 "merge_state": payload["merge_state"],
-                "route": route_prev(payload["answer"]),
+                "route": routed,
             }
         )
 
@@ -179,8 +199,11 @@ def _append_history(path: Path, question: str, merge_state_out: dict) -> None:
 
 
 async def run(question: str, chat_history: list | None = None) -> dict:
+    setup()
+    history = chat_history or []
+    step("slice2", history_turns=len(history))
     result = await build_workflow().run(
-        {"question": question, "chat_history": chat_history or []}
+        {"question": question, "chat_history": history}
     )
     outputs = result.get_outputs()
     if not outputs:

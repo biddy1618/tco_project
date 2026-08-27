@@ -23,6 +23,7 @@ from agent_framework import Executor, WorkflowBuilder, WorkflowContext, handler
 from maf.client import ASK_OR_FINALIZE_DEPLOYMENT, agent_text, make_chat_client
 from maf.prompts import FINAL
 from maf.search_client import WPS_INDEX, nde_lookup_items, run_search
+from maf.trace import debug, setup, step
 from maf.slice2 import (
     TC001,
     AskOrFinalizeExecutor,
@@ -47,9 +48,9 @@ class RouteContinueExecutor(Executor):
 
     @handler
     async def route(self, payload: dict, ctx: WorkflowContext[dict]) -> None:
-        await ctx.send_message(
-            {**payload, "route": route_prev(payload["answer"])}
-        )
+        routed = route_prev(payload["answer"])
+        step("router", kind=routed.get("kind"))
+        await ctx.send_message({**payload, "route": routed})
 
 
 class WpsBuilderExecutor(Executor):
@@ -62,6 +63,10 @@ class WpsBuilderExecutor(Executor):
             as_string=routed.get("as_string") or "",
             as_dict=routed.get("as_dict") or {},
         )
+        step(
+            "wps_json_builder",
+            passthrough=isinstance(body, str),
+        )
         await ctx.send_message({**payload, "wps_body": body})
 
 
@@ -71,6 +76,12 @@ class WpsApiExecutor(Executor):
     @handler
     async def search(self, payload: dict, ctx: WorkflowContext[dict]) -> None:
         result = run_search(WPS_INDEX, payload["wps_body"])
+        hits = (
+            len(result.get("value") or [])
+            if isinstance(result, dict)
+            else 0
+        )
+        step("wps_api", index=WPS_INDEX, hits=hits)
         await ctx.send_message({**payload, "wps_raw": result})
 
 
@@ -81,6 +92,7 @@ class PwhtExecutor(Executor):
     async def check(self, payload: dict, ctx: WorkflowContext[dict]) -> None:
         line_class = (payload.get("state") or {}).get("line_class") or ""
         wps_result = check_pwht_flag(payload["wps_raw"], line_class)
+        step("pwht_check", line_class=line_class, wps_result=wps_result)
         await ctx.send_message({**payload, "wps_result": wps_result})
 
 
@@ -90,12 +102,13 @@ class NdeExecutor(Executor):
     @handler
     async def lookup(self, payload: dict, ctx: WorkflowContext[dict]) -> None:
         if not payload.get("complete"):
+            step("nde", skipped=True)
             await ctx.send_message({**payload, "nde_hits": []})
             return
         line_class = (payload.get("state") or {}).get("line_class") or ""
-        await ctx.send_message(
-            {**payload, "nde_hits": nde_lookup_items(line_class)}
-        )
+        hits = nde_lookup_items(line_class)
+        step("nde", line_class=line_class, hits=len(hits))
+        await ctx.send_message({**payload, "nde_hits": hits})
 
 
 class NdePyExecutor(Executor):
@@ -104,10 +117,12 @@ class NdePyExecutor(Executor):
     @handler
     async def evaluate(self, payload: dict, ctx: WorkflowContext[dict]) -> None:
         if not payload.get("complete"):
+            step("nde_py", skipped=True)
             await ctx.send_message({**payload, "nde_result": None})
             return
         line_class = (payload.get("state") or {}).get("line_class") or ""
         nde_result = check_nde_search(payload.get("nde_hits") or [], line_class)
+        step("nde_py", nde_result=nde_result)
         await ctx.send_message({**payload, "nde_result": nde_result})
 
 
@@ -117,6 +132,7 @@ class MaterialExecutor(Executor):
     @handler
     async def classify(self, payload: dict, ctx: WorkflowContext[dict]) -> None:
         material = check_material_ss(payload.get("nde_hits") or [])
+        step("material", material=material)
         await ctx.send_message({**payload, "material": material})
 
 
@@ -135,6 +151,11 @@ class TemplateExecutor(Executor):
             source = pack.get("final_text") or json.dumps(pack, default=str)
         else:
             source = pack
+        step(
+            "template",
+            passthrough=not isinstance(pack, dict),
+            chars=len(str(source)),
+        )
         await ctx.send_message({**payload, "template": source})
 
 
@@ -154,10 +175,13 @@ class FinalExecutor(Executor):
     async def format_pack(
         self, payload: dict, ctx: WorkflowContext[Never, dict]
     ) -> None:
+        step("final")
         result = await self._agent.run(str(payload.get("template") or ""))
+        text = agent_text(result)
+        debug("final", answer=text)
         await ctx.yield_output(
             {
-                "answer": agent_text(result),
+                "answer": text,
                 "complete": payload.get("complete"),
                 "missing": payload.get("missing"),
                 "merge_state": payload["merge_state"],
@@ -206,8 +230,11 @@ def build_workflow():
 
 
 async def run(question: str, chat_history: list | None = None) -> dict:
+    setup()
+    history = chat_history or []
+    step("slice3", history_turns=len(history))
     result = await build_workflow().run(
-        {"question": question, "chat_history": chat_history or []}
+        {"question": question, "chat_history": history}
     )
     outputs = result.get_outputs()
     if not outputs:

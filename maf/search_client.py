@@ -14,6 +14,7 @@ import urllib.request
 from typing import Any
 
 from pf_jobpack.search import acs_search
+from maf.trace import step, warn
 
 SEARCH_ENDPOINT = os.environ.get(
     "AZURE_SEARCH_ENDPOINT",
@@ -35,6 +36,7 @@ def run_search(index_name: str, body: Any) -> Any:
     """POST /indexes/{index}/docs/search. Strings pass through (PF ``wps_api``)."""
     key = os.environ.get("AZURE_SEARCH_API_KEY")
     if key:
+        step("search", index=index_name, auth="api_key")
         return acs_search(
             SEARCH_ENDPOINT, index_name, key, SEARCH_API_VERSION, body
         )
@@ -45,11 +47,16 @@ def run_search(index_name: str, body: Any) -> Any:
             if isinstance(parsed, dict):
                 body = parsed
             else:
+                step("search", index=index_name, passthrough=True)
                 return body.strip()
         except json.JSONDecodeError:
+            step("search", index=index_name, passthrough=True)
             return body.strip()
     if not isinstance(body, dict):
+        step("search", index=index_name, passthrough=True)
         return str(body) if body is not None else ""
+
+    step("search", index=index_name, auth="aad")
 
     url = (
         f"{SEARCH_ENDPOINT}/indexes/{index_name}/docs/search"
@@ -69,6 +76,7 @@ def run_search(index_name: str, body: Any) -> Any:
         with urllib.request.urlopen(req, timeout=60) as resp:
             return json.loads(resp.read().decode("utf-8"))
     except urllib.error.URLError as exc:
+        warn("search", index=index_name, error=str(exc))
         return {"error": "search_failed", "detail": str(exc), "value": []}
 
 

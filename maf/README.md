@@ -39,6 +39,15 @@ export AZURE_OPENAI_CHAT_MODEL="gpt-4o-mini-gs-2024-07-18"
 
 Windows PowerShell: `$env:FOUNDRY_PROJECT_ENDPOINT = "..."`.
 
+Logs go to **stderr** (JSON still prints on stdout). Each node logs when it
+runs (`load_state`, `spell_check`, `nde skipped=True`, …). More detail:
+
+```bash
+export MAF_LOG=DEBUG
+```
+
+PowerShell: `$env:MAF_LOG = "DEBUG"`.
+
 ## Slice 1
 
 Default input is Tracker TC-001. Expect JSON with `corrected` and `state`

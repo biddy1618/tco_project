@@ -16,6 +16,7 @@ from agent_framework import Executor, WorkflowBuilder, WorkflowContext, handler
 
 from maf.client import agent_text, make_chat_client
 from maf.prompts import SPELL_CHECK
+from maf.trace import setup, step
 from pf_jobpack.extraction import build_scope_json_from_input
 
 # Tracker TC-001 "deducted prompt" (same text used while learning the PF DAG).
@@ -38,6 +39,7 @@ class SpellCheckExecutor(Executor):
 
     @handler
     async def correct(self, question: str, ctx: WorkflowContext[str]) -> None:
+        step("spell_check")
         result = await self._agent.run(question)
         await ctx.send_message(agent_text(result))
 
@@ -50,6 +52,11 @@ class ExtractionExecutor(Executor):
         self, corrected: str, ctx: WorkflowContext[Never, dict]
     ) -> None:
         state = build_scope_json_from_input(corrected)
+        step(
+            "extraction",
+            line_class=state.get("line_class"),
+            scope_type=state.get("scope_type"),
+        )
         await ctx.yield_output({"corrected": corrected, "state": state})
 
 
@@ -64,6 +71,8 @@ def build_workflow():
 
 
 async def run(question: str) -> dict:
+    setup()
+    step("slice1")
     result = await build_workflow().run(question)
     outputs = result.get_outputs()
     if not outputs:
