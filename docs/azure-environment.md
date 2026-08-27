@@ -209,3 +209,89 @@ What this means, based only on what was checked:
 - Your access to the target project is group-based, not a direct user RBAC assignment.
 - The current project is backed by an `AIServices` account, not a git repository.
 - I did not check any git-backed sync or import feature, so "push code" is not something I can confirm here; the checked path is portal/project asset migration, not a repo push.
+
+---
+
+## 8. Hosted-agent readiness check (2026-08-27)
+
+This section answers the remaining open question: can this identity push a
+container image and create a Foundry hosted agent in
+`pf-t332-t-aif-use2-c3-jobpack-project`?
+
+### Project ARM resource
+
+| Item | Value | Explicitly checked |
+|---|---|---|
+| Project ARM id | `/subscriptions/baa67dbf-45d0-4d84-b662-527186361068/resourceGroups/pf-T332-t-aif-c3/providers/Microsoft.CognitiveServices/accounts/pf-t332-t-aif-use2-c3/projects/pf-t332-t-aif-use2-c3-jobpack-project` | `az resource list` |
+| Project ARM type | `Microsoft.CognitiveServices/accounts/projects` | `az resource list` |
+
+### Project RBAC
+
+| Item | Value | Explicitly checked |
+|---|---|---|
+| Project role assignment | `pf-t332-t-aif-use2-c3-jobpack-project-mgmt` -> `Chevron Azure AI User` | `az role assignment list` |
+| Project-management group members | `Data Foundation Data Science and ML Operations`; `pf-t332-t-aif-use2-c3-jobpack-project-consumers` | `az ad group member list` |
+| Project consumers group members | `Dauren.Baitursyn@tengizchevroil.com`; `Nurmukhambet.Izimgali@tengizchevroil.com` | `az ad group member list` |
+
+### ACR / image push
+
+| Item | Value | Explicitly checked |
+|---|---|---|
+| ACR inventory in subscription | no ACR found | `az acr list` |
+| ACR inventory in target RG | no ACR found | `az acr list -g pf-T332-t-aif-c3` |
+
+What this means, based only on what was checked:
+
+- The identity is covered by the project-management access path through the
+  nested project consumers group.
+- The project has `Chevron Azure AI User`, not a `Project Manager` or `Owner`
+  role.
+- There is no Azure Container Registry available in the subscription or the
+  target resource group, so there is nowhere to push a hosted-agent image.
+- Ready to push an image: **NO**.
+- Ready to create a hosted agent in this project: **NO** (blocked by missing
+  ACR/image-push target, and no project-manager role was found).
+
+---
+
+## 9. Portal-visible ACRs checked from the VDI (2026-08-27)
+
+These are the registries visible in the Azure portal screenshot that were
+checked directly with Azure CLI. They are **not** in the T332 subscription.
+
+### `cdmacr`
+
+| Item | Value | Explicitly checked |
+|---|---|---|
+| Subscription | `T101 - IT Foundation` | `az acr list --subscription` |
+| Resource group | `cdm-t101-20210831` | `az acr show` |
+| Login server | `cdmacr.azurecr.io` | `az acr show` |
+| SKU | `Standard` | `az acr show` |
+| Admin user | `false` | `az acr show` |
+| ACR login token test | PASS (token issued) | `az acr login --expose-token` |
+| Registry-scope RBAC for this user or matching groups | none found | `az role assignment list` + membership check |
+
+### `pfs019taifusscc3acr`
+
+| Item | Value | Explicitly checked |
+|---|---|---|
+| Subscription | `S019 - Tiger Teams Sandbox with Sub Level Access` | `az acr list --subscription` |
+| Resource group | `pf-S019-t-aif-c3` | `az acr show` |
+| Login server | `pfs019taifusscc3acr.azurecr.io` | `az acr show` |
+| SKU | `Basic` | `az acr show` |
+| Admin user | `true` | `az acr show` |
+| ACR login token test | PASS (token issued) | `az acr login --expose-token` |
+| Registry-scope `AcrPush` assignment | present, but not tied to the signed-in user in the membership check | `az role assignment list` + `az ad user get-member-groups` |
+
+What this means, based only on what was checked:
+
+- The portal-visible registries exist and the identity can obtain ACR login
+  tokens for both.
+- `cdmacr` does not show a push-capable registry-scope assignment for this
+  identity or its matching groups.
+- `pfs019taifusscc3acr` has an `AcrPush` assignment, but the signed-in user was
+  not found in the matching membership check, so push access for this identity
+  is **not proven**.
+- These registries are in different subscriptions from the Foundry target, so
+  they could be used as an image store only if the identity also has the right
+  push path and the hosted-agent workflow accepts an external ACR.
