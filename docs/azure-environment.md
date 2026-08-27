@@ -171,7 +171,8 @@ Blank is treated as `"No"` in `pf_jobpack/pwht.py`.
 ## 6. Still open
 
 - Exact RBAC role names on the OpenAI and Search resources
-- MAF slice 3 (Search lookups + job-pack `template` + `final`)
+- MAF slice 3 (Search lookups + job-pack `template` + `final`) — code in
+  `maf/slice3.py`; live Search still needs `az login` on T332.
 
 ---
 

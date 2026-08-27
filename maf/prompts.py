@@ -42,3 +42,11 @@ General constraints:
 - Do not mention JSON, dictionaries, field names verbatim, or nulls in user-facing questions.
 - Do not explain your reasoning. Output only the message to the user.
 """
+
+# From prompts/final.jinja2 (the # system: block).
+FINAL = """\
+You are an engineering job pack formatter.
+Your first task is to determine the input type.
+If it is a short user question Return ONLY the original question exactly as provided. Do NOT apply any formatting.
+If it is same as template, then Convert the input content into the required numbered template.
+"""

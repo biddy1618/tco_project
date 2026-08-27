@@ -8,7 +8,7 @@ Framework rewrite, built **one slice at a time**. Python logic stays in
 |---|---|---|
 | 1 | `spell_check` → `extraction` | working |
 | 2 | `load_state` → `merge_state` → `validation` → `ask_or_finalize` (+ `router`) | working |
-| 3 | complete-gate → WPS/NDE/material → `template` → `final` | not started |
+| 3 | complete-gate → WPS/NDE/material → `template` → `final` | ready to run |
 
 Client: `FoundryChatClient` + `AzureCliCredential` against
 `https://pf-t332-t-aif-use2-c3.cognitiveservices.azure.com/` (same deployment
@@ -22,6 +22,7 @@ Python 3.10+. Install with `pip install -r maf/requirements.txt` unless
 az account show   # must be T332 - TCO
 python -m maf.slice1
 python -m maf.slice2
+python -m maf.slice3
 ```
 
 Optional env overrides:
@@ -70,6 +71,20 @@ python -m maf.slice2 --history history.json "line class 150H03, 2 inch, insulate
 `--history` is created if missing and appended after each successful run.
 Output: `answer`, `complete`, `missing`, `merge_state`, `route` (`json` vs
 `string`).
+
+## Slice 3
+
+Slice 2 plus WPS (`wps-diain`), NDE/material (`ndeee`), `template`, and
+`final`. Search uses `AzureCliCredential` (no key in the repo). Incomplete
+turns still only ask; Search is not hit for a follow-up question string.
+
+```bash
+python -m maf.slice3
+python -m maf.slice3 --history history.json "2 inch, NPS"
+```
+
+Output adds `wps_result`, `nde_result`, `material`. The chat `answer` is
+either the follow-up question or the formatted job pack.
 
 ## Requirements
 
