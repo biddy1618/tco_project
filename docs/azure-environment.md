@@ -166,3 +166,26 @@ Blank is treated as `"No"` in `pf_jobpack/pwht.py`.
 
 - Exact RBAC role names on the OpenAI and Search resources
 - MAF slice 3 (Search lookups + job-pack `template` + `final`)
+
+---
+
+## 7. Microsoft Foundry target project (2026-08-27)
+
+This is the Foundry project the browser opened for
+`pf-t332-t-aif-use2-c3-jobpack-project`.
+
+| Item | Value | Explicitly checked |
+|---|---|---|
+| Portal URL | `https://ai.azure.com/nextgen/r/uqZ9v0XQTYS2YlJxhjYQaA,pf-T332-t-aif-c3,,pf-t332-t-aif-use2-c3,pf-t332-t-aif-use2-c3-jobpack-project/build/agents?tid=fd799da1-bfc1-4234-a91c-72b3a1cb9e26` | browser opened successfully |
+| Page title | `Microsoft Foundry` | browser snapshot |
+| Project name | `pf-t332-t-aif-use2-c3-jobpack-project` | browser snapshot |
+| Portal area reached | `build/agents` | browser snapshot |
+| Portal nav visible | Agents, Deployments, Services, Tools, Knowledge, Memory, Guardrails, Data, Evaluations | browser snapshot |
+| Portal note shown | This project logs traces; some members with Log Analytics Reader in AppInsights may be able to view user data | browser snapshot |
+| Target resource name | `pf-t332-t-aif-use2-c3` | `az resource show` |
+| Target resource type | `Microsoft.CognitiveServices/accounts` | `az resource show` |
+| Target resource kind | `AIServices` | `az resource show` |
+| Target resource location | `eastus2` | `az resource show` |
+| Direct RBAC for `Dauren.Baitursyn@tengizchevroil.com` | none returned | `az role assignment list --assignee` |
+| Group RBAC on target RG | `pf-T332-ai-services-consumers` -> `Reader`; `Chevron AI Services Operator` | `az role assignment list --include-groups` |
+| Source workspace RBAC | `pf-T332-dsws-tc-amlop` -> `Chevron Limited AML Operator` | `az role assignment list` on the source workspace |
