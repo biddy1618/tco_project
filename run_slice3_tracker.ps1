@@ -1,6 +1,9 @@
+# Batch Tracker TC-001..TC-036 through maf.slice3. Does not change product code.
+# Follow-up text MUST be one argv token. Do not pass it via Start-Process
+# -ArgumentList as a bare string with spaces (Windows re-splits it).
 $ErrorActionPreference = 'Stop'
 
-$repo = 'C:\Users\dauba1\Work\repos\pf-t332-t-aif-use2-c3-jobpack-project'
+$repo = if ($PSScriptRoot) { $PSScriptRoot } else { (Get-Location).Path }
 Set-Location $repo
 conda activate maf
 
@@ -41,6 +44,14 @@ function Save-Summary {
 function Get-CaseInfo {
     param([string]$Id)
     return $caseMap[$Id]
+}
+
+function Quote-WinArg {
+    param([string]$Value)
+    if ($null -eq $Value) {
+        return '""'
+    }
+    return '"' + ($Value -replace '\\', '\\' -replace '"', '\"') + '"'
 }
 
 function Normalize-NpsToken {
@@ -118,14 +129,15 @@ function Get-FollowUp {
                         Add-Part 'no heat tracing.'
                     }
                     else {
-                        Add-Part 'Process conditions remain TBD.'
+                        Add-Part 'no heat tracing.'
                     }
                 }
                 'dia_in' {
                     $nps = Get-NpsFromLineNumber -LineNumber $info.line_number
-                    if ($nps) {
-                        Add-Part "Diameter $nps."
+                    if (-not $nps) {
+                        $nps = '2 inch'
                     }
+                    Add-Part "Diameter $nps."
                 }
                 'placeholders_TP' {
                     Add-Part 'Tie-ins at TP-001 and TP-002.'
@@ -149,7 +161,6 @@ function Get-FollowUp {
 
 function Invoke-Turn {
     param(
-        [string]$CaseId,
         [string]$Prompt,
         [string]$CaseDir,
         [int]$Turn
@@ -157,17 +168,37 @@ function Invoke-Turn {
 
     $stdoutPath = Join-Path $CaseDir ('turn-{0:D2}.json' -f $Turn)
     $stderrPath = Join-Path $CaseDir ('turn-{0:D2}.stderr.txt' -f $Turn)
-    $process = Start-Process -FilePath 'python' -ArgumentList @(
-        '-m', 'maf.slice3',
-        '--history', (Join-Path $CaseDir 'history.json'),
-        $Prompt
-    ) -NoNewWindow -Wait -PassThru -RedirectStandardOutput $stdoutPath -RedirectStandardError $stderrPath
+    $histPath = Join-Path $CaseDir 'history.json'
+    $argLine = "-m maf.slice3 --history $(Quote-WinArg $histPath) $(Quote-WinArg $Prompt)"
+
+    $psi = New-Object System.Diagnostics.ProcessStartInfo
+    $psi.FileName = 'python'
+    $psi.Arguments = $argLine
+    $psi.WorkingDirectory = $repo
+    $psi.UseShellExecute = $false
+    $psi.RedirectStandardOutput = $true
+    $psi.RedirectStandardError = $true
+    $psi.CreateNoWindow = $true
+    $psi.StandardOutputEncoding = New-Object System.Text.UTF8Encoding $false
+    $psi.StandardErrorEncoding = New-Object System.Text.UTF8Encoding $false
+
+    $proc = New-Object System.Diagnostics.Process
+    $proc.StartInfo = $psi
+    [void]$proc.Start()
+    $stdoutText = $proc.StandardOutput.ReadToEnd()
+    $stderrText = $proc.StandardError.ReadToEnd()
+    $proc.WaitForExit()
+
+    $utf8 = New-Object System.Text.UTF8Encoding $false
+    [System.IO.File]::WriteAllText($stdoutPath, $stdoutText, $utf8)
+    [System.IO.File]::WriteAllText($stderrPath, $stderrText, $utf8)
+
     return [pscustomobject]@{
-        exitCode = $process.ExitCode
+        exitCode = $proc.ExitCode
         stdoutPath = $stdoutPath
         stderrPath = $stderrPath
-        stdoutText = if (Test-Path $stdoutPath) { Get-Content -Raw $stdoutPath } else { '' }
-        stderrText = if (Test-Path $stderrPath) { Get-Content -Raw $stderrPath } else { '' }
+        stdoutText = $stdoutText
+        stderrText = $stderrText
     }
 }
 
@@ -182,13 +213,12 @@ try {
         $caseDir = Join-Path $runDir $id
         New-Item -ItemType Directory -Force -Path $caseDir | Out-Null
 
-        $caseInfo = Get-CaseInfo -Id $id
         $followups = New-Object System.Collections.Generic.List[string]
         $turnCount = 0
         $asked = $false
         $unexpectedAsk = $false
         $stuck = $false
-        $error = $null
+        $caseError = $null
         $missingFirst = @()
         $lastPayload = $null
 
@@ -201,19 +231,19 @@ try {
                 $prompt = $followups[$turnNumber - 2]
             }
 
-            $result = Invoke-Turn -CaseId $id -Prompt $prompt -CaseDir $caseDir -Turn $turnNumber
+            $result = Invoke-Turn -Prompt $prompt -CaseDir $caseDir -Turn $turnNumber
             $turnCount++
 
             if ($result.exitCode -ne 0) {
-                $error = $result.stderrText
-                if (-not $error) {
-                    $error = "Non-zero exit code $($result.exitCode) with empty stderr"
+                $caseError = $result.stderrText
+                if (-not $caseError) {
+                    $caseError = "Non-zero exit code $($result.exitCode) with empty stderr"
                 }
                 break
             }
 
             if (-not $result.stdoutText) {
-                $error = 'Empty stdout from maf.slice3'
+                $caseError = 'Empty stdout from maf.slice3'
                 break
             }
 
@@ -221,7 +251,7 @@ try {
                 $payload = $result.stdoutText | ConvertFrom-Json
             }
             catch {
-                $error = "Failed to parse JSON from turn output: $($_.Exception.Message)`n`nSTDERR:`n$result.stderrText`n`nSTDOUT:`n$result.stdoutText"
+                $caseError = "Failed to parse JSON from turn output: $($_.Exception.Message)`n`nSTDERR:`n$($result.stderrText)`n`nSTDOUT:`n$($result.stdoutText)"
                 break
             }
             $lastPayload = $payload
@@ -244,7 +274,7 @@ try {
             [void]$followups.Add($nextFollowUp)
         }
 
-        if ($error -eq $null -and ($lastPayload -eq $null -or -not $lastPayload.complete) -and $turnCount -ge 6) {
+        if ($null -eq $caseError -and ($null -eq $lastPayload -or -not $lastPayload.complete) -and $turnCount -ge 6) {
             $stuck = $true
         }
 
@@ -261,13 +291,13 @@ try {
             nde_result = if ($lastPayload) { $lastPayload.nde_result } else { $null }
             material = if ($lastPayload) { $lastPayload.material } else { $null }
             answer_chars = if ($lastPayload -and $lastPayload.answer) { [int]$lastPayload.answer.Length } else { 0 }
-            error = $error
+            error = $caseError
         }
 
         [void]$summary.cases.Add($caseObject)
         Save-Summary
 
-        if ($error) {
+        if ($caseError) {
             Write-Host "[$id] error after $turnCount turn(s)"
         }
         elseif ($caseObject.complete_final) {

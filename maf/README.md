@@ -98,9 +98,9 @@ python -m maf.slice3
 python -m maf.slice3 --history history.json "2 inch, NPS"
 ```
 
-To batch all Tracker cases (answer follow-ups, save JSON, **do not change
-code**), follow [docs/maf-tracker-eval-run.md](../docs/maf-tracker-eval-run.md).
-Write artifacts under `maf/runs/` and copy that folder back for review.
+To batch all Tracker cases, run `.\run_slice3_tracker.ps1` from the repo root
+(see [docs/maf-tracker-eval-run.md](../docs/maf-tracker-eval-run.md)). Artifacts
+go under `maf/runs/`. Copy that folder back for review.
 
 Output adds `wps_result`, `nde_result`, `material`. The chat `answer` is
 either the follow-up question or the formatted job pack.
