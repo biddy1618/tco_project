@@ -37,3 +37,17 @@ class TestPwht:
     def test_empty_value_returns_message(self):
         out = check_pwht_flag({"value": []}, "150A20")
         assert isinstance(out, str) and "recheck" in out.lower()
+
+    def test_space_in_paren_suffix_still_matches(self):
+        # Extractor emits 300H21(A); index rows are 300H21 (A).
+        assert check_pwht_flag(_acs("300H21 (A)", "N"), "300H21(A)") == "No"
+
+    def test_skips_neighbor_class_ranked_first(self):
+        # TC-027: semantic search returned 2 hits; value[0] was not 300H21(A).
+        result = {
+            "value": [
+                {"line_class": "300H25 (A)", "pwht": "Y"},
+                {"line_class": "300H21 (A)", "pwht": "N"},
+            ]
+        }
+        assert check_pwht_flag(result, "300H21(A)") == "No"
