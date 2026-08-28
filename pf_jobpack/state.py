@@ -92,6 +92,13 @@ def merge_state(prev_state: dict, new_extraction: dict) -> dict:
 
         merged[k] = v
 
+    # Extraction returns [] when no TPs are in the text. Merge used to leave
+    # EMPTY_STATE's null, and validation treated null as missing — so Tracker
+    # prompts with "[tie-in IDs TBD]" asked for TPs. ID003 still emitted a pack
+    # and skipped TP-specific site lines. [] is already "present" for validate.
+    if merged.get("placeholders_TP") is None:
+        merged["placeholders_TP"] = []
+
     return merged
 
 

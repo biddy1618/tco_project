@@ -49,9 +49,26 @@ class TestValidateState:
         assert result["complete"] is False
         assert set(result["missing"]) == {"line_class", "scope_type"}
 
+    def test_empty_tp_list_is_present(self):
+        state = {f: "v" for f in REQUIRED_FIELDS}
+        state["placeholders_TP"] = []
+        result = validate_state(state)
+        assert "placeholders_TP" not in result["missing"]
+        assert result["complete"] is True
+
     def test_accepts_json_string_with_fences(self):
         result = validate_state('```json\n{"line_class": "150A20"}\n```')
         assert result["state"]["line_class"] == "150A20"
+
+
+class TestMergeTieIns:
+    def test_null_placeholders_become_empty_list(self):
+        merged = merge_state(dict(EMPTY_STATE), {"placeholders_TP": []})
+        assert merged["placeholders_TP"] == []
+
+    def test_real_tps_still_merge(self):
+        merged = merge_state(dict(EMPTY_STATE), {"placeholders_TP": ["TP-001"]})
+        assert merged["placeholders_TP"] == ["TP-001"]
 
 
 class TestRoutePrev:

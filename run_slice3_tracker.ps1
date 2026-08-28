@@ -1,6 +1,6 @@
-# Batch Tracker TC-001..TC-036 through maf.slice3. Does not change product code.
-# Follow-up text MUST be one argv token. Do not pass it via Start-Process
-# -ArgumentList as a bare string with spaces (Windows re-splits it).
+# Batch Tracker TC-001..TC-036 through maf.slice3.
+# Follow-up text MUST be one argv token (quoted). Do not use Start-Process
+# -ArgumentList with an unquoted sentence — Windows re-splits on spaces.
 $ErrorActionPreference = 'Stop'
 
 $repo = if ($PSScriptRoot) { $PSScriptRoot } else { (Get-Location).Path }
@@ -97,7 +97,9 @@ function Get-FollowUp {
         }
     }
 
-    foreach ($field in @('scope_type', 'insulation', 'heat_tracing', 'dia_in', 'placeholders_TP')) {
+    # Do not invent TP-001/TP-002 when placeholders_TP is missing — ID003
+    # omitted those site lines when the prompt said TBD.
+    foreach ($field in @('scope_type', 'insulation', 'heat_tracing', 'dia_in')) {
         if ($missingSet -contains $field) {
             switch ($field) {
                 'scope_type' {
@@ -109,7 +111,7 @@ function Get-FollowUp {
                         'Section + support' { Add-Part 'Replace the pipe section.' }
                         'Pipe extension' { Add-Part 'Pipe extension.' }
                         'Elbow replacement' { Add-Part 'Elbow replacement.' }
-                        'Tee/branch repl.' { Add-Part 'Tee replacement.' }
+                        'Tee/branch repl.' { Add-Part 'Tee replacement. Replace the pipe section.' }
                         default { Add-Part 'Replace the pipe section.' }
                     }
                 }
@@ -139,9 +141,6 @@ function Get-FollowUp {
                     }
                     Add-Part "Diameter $nps."
                 }
-                'placeholders_TP' {
-                    Add-Part 'Tie-ins at TP-001 and TP-002.'
-                }
             }
         }
     }
@@ -157,6 +156,46 @@ function Get-FollowUp {
     }
 
     return ($ordered -join ' ')
+}
+
+function Get-RouteKind {
+    param($Payload)
+    if ($Payload.route -and $Payload.route.kind) {
+        return [string]$Payload.route.kind
+    }
+    return ''
+}
+
+function Get-AskText {
+    param($Payload)
+    $parts = New-Object System.Collections.Generic.List[string]
+    if ($Payload.answer) {
+        [void]$parts.Add([string]$Payload.answer)
+    }
+    if ($Payload.route -and $Payload.route.as_string) {
+        [void]$parts.Add([string]$Payload.route.as_string)
+    }
+    return ($parts -join ' ')
+}
+
+function Test-IsPackTurn {
+    param($Payload)
+    if (-not $Payload) {
+        return $false
+    }
+    return [bool]($Payload.complete -and ((Get-RouteKind -Payload $Payload) -eq 'json'))
+}
+
+function Get-TurnFollowUp {
+    param(
+        [string]$Id,
+        $Payload
+    )
+    $ask = Get-AskText -Payload $Payload
+    if ($ask -match 'I&E Job Pack') {
+        return 'I&E Job Pack YY-NNNN'
+    }
+    return (Get-FollowUp -Id $Id -Missing @($Payload.missing))
 }
 
 function Invoke-Turn {
@@ -258,7 +297,8 @@ try {
 
             if ($turnNumber -eq 1) {
                 $missingFirst = @($payload.missing)
-                if (-not $payload.complete) {
+                $kind = Get-RouteKind -Payload $payload
+                if (-not $payload.complete -or $kind -eq 'string') {
                     $asked = $true
                     if ($expectedPackIds -contains $id) {
                         $unexpectedAsk = $true
@@ -266,15 +306,15 @@ try {
                 }
             }
 
-            if ($payload.complete) {
+            if (Test-IsPackTurn -Payload $payload) {
                 break
             }
 
-            $nextFollowUp = Get-FollowUp -Id $id -Missing @($payload.missing)
+            $nextFollowUp = Get-TurnFollowUp -Id $id -Payload $payload
             [void]$followups.Add($nextFollowUp)
         }
 
-        if ($null -eq $caseError -and ($null -eq $lastPayload -or -not $lastPayload.complete) -and $turnCount -ge 6) {
+        if ($null -eq $caseError -and -not (Test-IsPackTurn -Payload $lastPayload) -and $turnCount -ge 6) {
             $stuck = $true
         }
 
@@ -283,7 +323,7 @@ try {
             turns = $turnCount
             asked = $asked
             unexpected_ask = $unexpectedAsk
-            complete_final = [bool]($lastPayload -and $lastPayload.complete)
+            complete_final = [bool](Test-IsPackTurn -Payload $lastPayload)
             stuck = $stuck
             missing_first = $missingFirst
             followups = @($followups)

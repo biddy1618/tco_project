@@ -320,6 +320,9 @@ def detect_scope_type(user_input: str) -> list:
     if re.search(r'\breplac(e|ed|ement)\b', text) and re.search(r'\b(elbow|elbows)\b', text):
         detected.add("Elbow replacement")
 
+    if re.search(r'\breplac(e|ed|ement)\b', text) and re.search(r'\b(tee|tees)\b', text):
+        detected.add("Tee replacement")
+
     if re.search(r'\b(extend|extends|extending|extended)\b', text, re.IGNORECASE) and \
             re.search(r'\b(pipe|piping|pipes)\b', text, re.IGNORECASE):
         detected.add("Pipe extension")

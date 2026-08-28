@@ -39,6 +39,9 @@ class TestScopeType:
     def test_elbow(self):
         assert "Elbow replacement" in detect_scope_type("replace the elbow")
 
+    def test_tee(self):
+        assert "Tee replacement" in detect_scope_type("Tee replacement.")
+
     def test_multiple_scopes_can_coexist(self):
         scopes = detect_scope_type("replace the valve and replace the pipe")
         assert "Valve replacement" in scopes
@@ -81,6 +84,9 @@ class TestIeDocNo:
 
     def test_absent_returns_false(self):
         assert extract_ie_doc_no("no doc here") is False
+
+    def test_placeholder_yy_nnnn(self):
+        assert extract_ie_doc_no("I&E Job Pack YY-NNNN") == "YY-NNNN"
 
 
 class TestSpecialService:

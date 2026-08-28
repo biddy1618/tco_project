@@ -1,7 +1,5 @@
 """Tracker test IDs resolve to deducted prompts; TC-001 is first-turn complete."""
 
-import pytest
-
 from maf.cases import deducted_prompt, load_cases, resolve_question
 from pf_jobpack.extraction import build_scope_json_from_input
 from pf_jobpack.state import load_state, merge_state, validate_state
@@ -26,8 +24,12 @@ def test_resolve_free_text_unchanged():
 
 
 def test_unknown_test_id():
-    with pytest.raises(KeyError, match="TC-099"):
+    try:
         deducted_prompt("TC-099")
+    except KeyError as exc:
+        assert "TC-099" in str(exc)
+        return
+    raise AssertionError("expected KeyError")
 
 
 def test_literal_tc_002_is_not_the_case():
@@ -46,3 +48,13 @@ def test_tc001_first_turn_is_complete():
     assert merged["placeholders_TP"] == ["TP-001", "TP-002"]
     assert result["complete"] is True, result["missing"]
     assert result["missing"] == []
+
+
+def test_tc002_tbd_tieins_do_not_block():
+    """[tie-in IDs TBD] is not a missing field — ID003 still emitted a pack."""
+    prompt = deducted_prompt("TC-002")
+    merged = merge_state(load_state([]), build_scope_json_from_input(prompt))
+    result = validate_state(merged)
+    assert merged["placeholders_TP"] == []
+    assert "placeholders_TP" not in result["missing"]
+    assert result["complete"] is True, result["missing"]

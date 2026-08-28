@@ -40,35 +40,25 @@ conda activate maf
 ```
 
 The script creates `maf/runs/YYYYMMDD-HHMM-slice3/` (plus a zip), loops
-`TC-001` … `TC-036`, and on a clarifying question sends one canned follow-up
-as a **single** argument.
+`TC-001` … `TC-036`. A turn is **done** only when `complete` is true **and**
+`route.kind` is `json` (a job pack). If the model asks for an I&E Job Pack
+(electric tracing), reply `I&E Job Pack YY-NNNN` — that is the placeholder in
+Nur’s ID003 packs. Do not invent tie-in IDs when the deducted prompt says TBD.
 
-Turn 1 input is the test ID. Later turns are follow-up text, never `TC-00N`
-again.
-
-Cap is 6 turns per case (`stuck` if still incomplete). One case failing does
+Cap is 6 turns per case (`stuck` if still not a pack). One case failing does
 not abort the rest unless Azure auth is broken.
 
 ## What success looks like
 
-| Field | Question turn | Pack turn |
-|---|---|---|
-| `complete` | `false` | `true` |
-| `missing` | non-empty | `[]` |
-| `route.kind` | `"string"` | `"json"` |
-| `answer` | one question | PSW / Shop / Site job pack |
+A **pack turn** is `complete=true` **and** `route.kind=json`. Electric tracing
+often has `complete=true` with `route.kind=string` (I&E question) — keep going.
 
-**Expected (no Azure, extract/merge only):** these 19 IDs pack on turn 1 —
-`TC-001`, `TC-003`, `TC-005`, `TC-006`, `TC-008`–`TC-012`, `TC-015`–`TC-021`,
-`TC-024`, `TC-025`, `TC-034`. If they ask, the script sets `unexpected_ask`.
+TBD tie-ins should **not** ask for TP-001/TP-002. Scope/insulation/diameter
+canned replies stay in `Get-FollowUp`. Tee/branch: `Tee replacement. Replace
+the pipe section.`
 
-The other 17 often ask (empty tie-ins count as missing). Canned replies live
-in the script (`Get-FollowUp`). Example: TC-002 →
-`Tie-ins at TP-001 and TP-002.`
-
-A previous run already proved slice 3 works: TC-001 went through Search +
-`final`. TC-002 turn 1 asked for TPs. Turn 2 failed only because of argv
-quoting in an older runner.
+Turn 1 input is the test ID. Later turns are follow-up text, never `TC-00N`
+again.
 
 ## Artifacts
 
