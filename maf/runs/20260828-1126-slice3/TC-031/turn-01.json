@@ -1,0 +1,34 @@
+{
+  "answer": "1. Scope Type:\n   \n2. Insulation Details:\n\n3. Diameter Information:",
+  "complete": false,
+  "missing": [
+    "scope_type",
+    "insulation",
+    "dia_in"
+  ],
+  "merge_state": {
+    "line_class": "150P21",
+    "scope_type": null,
+    "insulation": null,
+    "heat_tracing": false,
+    "hydrogen_bake_out": false,
+    "ie_doc_no": false,
+    "dia_in": null,
+    "existing_spring_support_reuse": true,
+    "placeholders_TP": [],
+    "spool_prefab": false,
+    "has_tie_ins": false,
+    "pump_compressor_vessel_psv_in_scope": false,
+    "new_piping_route": false,
+    "insufficient_vessel_internal_data": false,
+    "replace_existing_equipment_diff_weight": false
+  },
+  "route": {
+    "kind": "string",
+    "as_dict": {},
+    "as_string": "Could you provide the scope type, insulation details, and the diameter information?"
+  },
+  "wps_result": "Could you provide the scope type, insulation details, and the diameter information?",
+  "nde_result": null,
+  "material": "No"
+}

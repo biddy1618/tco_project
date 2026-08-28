@@ -1,0 +1,18 @@
+16:42:56 INFO slice3 history_turns=2
+16:42:56 INFO load_state history_turns=2
+16:42:56 INFO spell_check
+16:43:00 INFO extraction line_class='' scope_type=['Flange replacement']
+16:43:00 INFO merge_state
+16:43:00 INFO validation complete=True missing=[]
+16:43:00 INFO ask_or_finalize complete=True
+16:43:02 INFO router kind='string'
+16:43:02 INFO wps_json_builder passthrough=True
+16:43:02 INFO search index='wps-diain' passthrough=True
+16:43:02 INFO wps_api index='wps-diain' hits=0
+16:43:02 INFO pwht_check line_class='150K21' wps_result='What is the I&E Job Pack? Type your answer like "I&E Job Pack YY-NNNN".'
+16:43:02 INFO search index='ndeee' auth='aad'
+16:43:04 INFO nde line_class='150K21' hits=1
+16:43:04 INFO nde_py nde_result='No'
+16:43:04 INFO material material='CS'
+16:43:04 INFO template passthrough=True chars=71
+16:43:04 INFO final

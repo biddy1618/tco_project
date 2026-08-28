@@ -1,0 +1,18 @@
+16:39:15 INFO slice3 history_turns=0
+16:39:16 INFO load_state history_turns=0
+16:39:16 INFO spell_check
+16:39:20 INFO extraction line_class='150H25 (B)' scope_type=['Piping section replacement']
+16:39:20 INFO merge_state
+16:39:20 INFO validation complete=True missing=[]
+16:39:20 INFO ask_or_finalize complete=True
+16:39:23 INFO router kind='json'
+16:39:23 INFO wps_json_builder passthrough=False
+16:39:23 INFO search index='wps-diain' auth='aad'
+16:39:24 INFO wps_api index='wps-diain' hits=4
+16:39:24 INFO pwht_check line_class='150H25 (B)' wps_result='No'
+16:39:24 INFO search index='ndeee' auth='aad'
+16:39:26 INFO nde line_class='150H25 (B)' hits=1
+16:39:26 INFO nde_py nde_result='No'
+16:39:26 INFO material material='CS'
+16:39:26 INFO template passthrough=False chars=3044
+16:39:26 INFO final

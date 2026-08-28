@@ -1,0 +1,68 @@
+{
+  "answer": "1. PRESENT SITUATION:\n\n2. PROPOSED SOLUTION:\n\n3. SCOPE OF WORK:\n\n    a. BUSINESS PARTNER (BP) shall strictly follow all relevant TCO Safety Instructions.\n\n    b. BUSINESS PARTNER (BP) shall follow all Quality Management (QM) requirements designated in the Quality Control package.\n\n4. PRELIMINARY SITE WORK (PSW):\n\n    a. Prior to start of mechanical activities, perform wall thickness testing at TP25-0087/001, TP25-0087/002, TP25-0087/003 to confirm that wall thickness is adequate for welding. Results shall be reviewed and approved by Fixed Equipment Reliability (FER) Unit Inspector.\n\n    NOTE: Perform the wall thickness test by marking out and recording a matrix as directed by the TCO FER Unit Inspector.\n\n    b. Prior to commencing any fabrication works verify dimensions, pipe routing and field weld locations on site.\n\n5. SHOP WORK:\n\n    a. Withdraw materials required for this Job Pack from TCO Warehouse according to Material Request(s).\n\n    b. Prefabricate pipe spools as per isometric drawing(s) 00-YYYY-L-ZZZZ. Use TCO-approved Welding Procedure Specification(s) (WPSs) indicated on isometric drawing(s). BP shall comply with TCO Guideline 16-0015-MI for socket-welded joints.\n\n    c. Perform non-destructive examination (NDE) as specified on drawing 00-YYYY-L-ZZZZ.\n\n    NOTE: BP must check with MaxTrax admin on NDE requirements prior to commencing welding works.\n\n    d. Abrasive blast and coat new piping spools and supports, as specified on isometric drawing 00-YYYY-L-ZZZZ in accordance with TES COM-SU-5191-TCO.\n\n    NOTE: Mask-off field-weld joints and flange faces prior to coating.\n\n6. SITE WORK:\n\n    a. Perform relevant job safety assessments (PPHA & JSA) and obtain required Permits-to-Work (PTWs).\n\n    b. Demarcate work area as necessary and erect scaffolding for access.\n\n    NOTE: TCO Operations shall isolate, depressurize, drain and ready for Hot Work, Equipment and Piping associated with this Project, if and as applicable, and shall hand it over to BUSINESS PARTNER (BP); fully accessible, safe and Locked-Out-Tagged-Out (LOTO) as scheduled and agreed between TCO Operations and BP.\n\n    c. Remove all cladding and insulation to the extent required.\n\n    d. Arrange with Tengiz Turnaround Team (TTT) I&E Coordinator [OR] Zone Maintenance to isolate, LOTO and remove electric trace heating and instruments from associated piping per I&E Job Pack YY-NNNN.\n\n    NOTE: BP to match mark, call a unit operator, show the mark and record location prior to cutting and removal to aid in reinstatement of heat tracing.\n\n    e. Apply and sign special tape, which determines the place of cutting the pipe, according to SP-26 at TP25-0087/001, TP25-0087/002, TP25-0087/003. Follow all the steps of SP-26.\n\n    f. Cold Cut, unbolt and remove existing piping and pipe supports per 'Destruct Detail' of isometric drawing 00-YYYY-L-ZZZZ.\n\n    g. Make good any remaining foundations and/or metal structures and perform coating repairs per TES COM-SU-5191-TCO.\n\n    h. Bevel cut ends of existing piping at the tie-in points TP25-0087/001, TP25-0087/002, TP25-0087/003 for field welding as shown on isometric drawing(s) 00-YYYY-L-ZZZZ.\n\n    i. Inspect the prepared weld bevel ends 100% VT and 100 % MT/PT for defects.\n\n    NOTE: Perform inspection of weld bevels and nipo-flange landings PRIOR to welding.\n\n    j. Install piping as specified on isometric drawing 00-YYYY-L-ZZZZ. For field welds use TCO-approved WPSs indicated on isometric drawing(s).\n\n    k. Perform NDE of field welds, as specified on isometric drawing(s) 00-YYYY-L-ZZZZ.\n\n    NOTE: BP must check with MaxTrax admin on NDE requirements prior to commencing welding works.\n\n    l. Perform field hydrostatic testing of new piping as specified on isometric drawing(s) 00-YYYY-L-ZZZZ in accordance with TES PIM-SU-3541-TCO\n\n    m. Perform surface preparation and touch-up field welds and any other coating damages in accordance with TES COM-SU-4743-TCO and coating system(s) per TES COM-SU-5191-TCO specified on drawings.\n\n    n. Arrange with TTT I&E Coordinator [OR] Zone Maintenance to reinstate/install related electric trace heating and instruments, as per I&E Job Pack YY-NNNN.\n\n    o. All QM piping passport documentation (A-category Checklists) to be verified and signed by TCO-approved QM Inspector prior to PSSR, but not later than 24 hours after mechanical scope completion.\n\n    p. Advise xxxxx yyyyy/zzzzz mmmm, DTEC KTL Plant Support / DTEC T/A / SGP/SGI, / FUPO Engineer at ext. 0000 about work completion and invite all necessary people to PSSR.\n\n    q. Job Pack Coordinator shall submit the completed PIC check-list to Operations department after being signed by Quality Management group. (Form is provided by QM Dept.).\n\n    r. Conduct PSSR and close out A-category punch points.\n\n    s. Following PSSR reinstate/install insulation and cladding, as per TES IRM-SU-1381-TCO and as specified on isometric drawing 00-YYYY-L-ZZZZ.\n\n    t. Close out all B-category punch points and remove associated scaffolding.\n\n    u. Clean up the work area and demobilize from the site.\n\n7. AFTER COMPLETION OF WORK:\n\n    a. Final as-built package (including B-category Checklist) submitted to TCO QM group within 2 weeks.\n\n    b. Return excess material to TCO Warehouse.",
+  "complete": true,
+  "missing": [],
+  "merge_state": {
+    "line_class": "150H25 (B)",
+    "scope_type": [
+      "TLR",
+      "Piping section replacement"
+    ],
+    "insulation": true,
+    "heat_tracing": [
+      "electric"
+    ],
+    "hydrogen_bake_out": false,
+    "ie_doc_no": "YY-NNNN",
+    "dia_in": [
+      2.0
+    ],
+    "existing_spring_support_reuse": true,
+    "placeholders_TP": [
+      "TP25-0087/001",
+      "TP25-0087/002",
+      "TP25-0087/003"
+    ],
+    "spool_prefab": true,
+    "has_tie_ins": true,
+    "pump_compressor_vessel_psv_in_scope": false,
+    "new_piping_route": false,
+    "insufficient_vessel_internal_data": false,
+    "replace_existing_equipment_diff_weight": false
+  },
+  "route": {
+    "kind": "json",
+    "as_dict": {
+      "line_class": "150H25 (B)",
+      "scope_type": [
+        "TLR",
+        "Piping section replacement"
+      ],
+      "insulation": true,
+      "heat_tracing": [
+        "electric"
+      ],
+      "hydrogen_bake_out": false,
+      "ie_doc_no": "YY-NNNN",
+      "dia_in": [
+        2.0
+      ],
+      "existing_spring_support_reuse": true,
+      "placeholders_TP": [
+        "TP25-0087/001",
+        "TP25-0087/002",
+        "TP25-0087/003"
+      ],
+      "spool_prefab": true,
+      "has_tie_ins": true,
+      "pump_compressor_vessel_psv_in_scope": false,
+      "new_piping_route": false,
+      "insufficient_vessel_internal_data": false,
+      "replace_existing_equipment_diff_weight": false
+    },
+    "as_string": ""
+  },
+  "wps_result": "No",
+  "nde_result": "No",
+  "material": "CS"
+}

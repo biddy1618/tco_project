@@ -1,0 +1,18 @@
+16:28:53 INFO slice3 history_turns=0
+16:28:53 INFO load_state history_turns=0
+16:28:53 INFO spell_check
+16:28:58 INFO extraction line_class='150H25 (B)' scope_type=['TLR', 'Piping section replacement']
+16:28:58 INFO merge_state
+16:28:58 INFO validation complete=True missing=[]
+16:28:58 INFO ask_or_finalize complete=True
+16:29:01 INFO router kind='string'
+16:29:01 INFO wps_json_builder passthrough=True
+16:29:01 INFO search index='wps-diain' passthrough=True
+16:29:01 INFO wps_api index='wps-diain' hits=0
+16:29:01 INFO pwht_check line_class='150H25 (B)' wps_result='What is the I&E Job Pack? Type your answer like "I&E Job Pack YY-NNNN".'
+16:29:01 INFO search index='ndeee' auth='aad'
+16:29:02 INFO nde line_class='150H25 (B)' hits=1
+16:29:02 INFO nde_py nde_result='No'
+16:29:02 INFO material material='CS'
+16:29:02 INFO template passthrough=True chars=71
+16:29:02 INFO final

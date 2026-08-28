@@ -1,0 +1,39 @@
+{
+  "answer": "I&E Job Pack XX-XXXX\n\n1. **Overview:**\n   - **Job Title:** [Insert Job Title]\n   - **Pack Number:** I&E Job Pack XX-XXXX\n   - **Date:** [Insert Date]\n   - **Location:** [Insert Location]\n   - **Prepared By:** [Insert Preparer's Name]\n   - **Checked By:** [Insert Checker\u2019s Name]\n   - **Approved By:** [Insert Approver\u2019s Name]\n\n2. **Job Description:**\n   - Provide a detailed description of the job, including the primary objectives, tasks to be completed, and any relevant background information.\n\n3. **Scope of Work:**\n   - Outline the scope of work, including specific activities, boundaries, and exclusions to prevent scope creep.\n\n4. **Materials and Tools:**\n   - **Materials:** List all materials required for the job.\n   - **Tools:** List all tools and equipment needed to complete the tasks.\n\n5. **Safety Considerations:**\n   - Identify potential hazards and safety measures to mitigate those risks.\n   - Include any permits, Safety Data Sheets (SDS), and required personal protective equipment (PPE).\n\n6. **Procedure:**\n   - Provide a step-by-step procedure for executing the job. Include any diagrams, schematics, or reference documents as necessary.\n\n7. **Quality Control:**\n   - Describe the quality control checks and measures to ensure the work meets the required standards and specifications.\n\n8. **Testing and Inspection:**\n   - Detail any testing and inspection criteria needed to verify the integrity and functionality of the completed job.\n\n9. **Commissioning:**\n   - Outline the commissioning steps, if applicable, to bring the system or equipment into operational status.\n\n10. **Documentation:**\n    - List all documentation to be completed during and after the job, including checklists, inspection reports, and sign-off sheets.\n\n11. **Closeout:**\n    - Describe the closeout process, including cleanup, final inspections, and handover protocols.\n\n12. **Attachments:**\n    - Include any necessary attachments such as diagrams, schematics, permits, and additional reference materials.",
+  "complete": true,
+  "missing": [],
+  "merge_state": {
+    "line_class": "150H25 (B)",
+    "scope_type": [
+      "TLR",
+      "Piping section replacement"
+    ],
+    "insulation": true,
+    "heat_tracing": [
+      "electric"
+    ],
+    "hydrogen_bake_out": false,
+    "ie_doc_no": false,
+    "dia_in": [
+      0.75
+    ],
+    "existing_spring_support_reuse": true,
+    "placeholders_TP": [
+      "TP-001"
+    ],
+    "spool_prefab": true,
+    "has_tie_ins": true,
+    "pump_compressor_vessel_psv_in_scope": false,
+    "new_piping_route": false,
+    "insufficient_vessel_internal_data": false,
+    "replace_existing_equipment_diff_weight": false
+  },
+  "route": {
+    "kind": "string",
+    "as_dict": {},
+    "as_string": "What is the I&E Job Pack? Type your answer like \"I&E Job Pack YY-NNNN\"."
+  },
+  "wps_result": "What is the I&E Job Pack? Type your answer like \"I&E Job Pack YY-NNNN\".",
+  "nde_result": "No",
+  "material": "CS"
+}

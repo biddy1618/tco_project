@@ -1,0 +1,18 @@
+16:45:19 INFO slice3 history_turns=1
+16:45:19 INFO load_state history_turns=1
+16:45:19 INFO spell_check
+16:45:23 INFO extraction line_class='' scope_type=['Flange replacement']
+16:45:23 INFO merge_state
+16:45:23 INFO validation complete=True missing=[]
+16:45:23 INFO ask_or_finalize complete=True
+16:45:26 INFO router kind='json'
+16:45:26 INFO wps_json_builder passthrough=False
+16:45:26 INFO search index='wps-diain' auth='aad'
+16:45:28 INFO wps_api index='wps-diain' hits=1
+16:45:28 INFO pwht_check line_class='150P21' wps_result='No'
+16:45:28 INFO search index='ndeee' auth='aad'
+16:45:29 INFO nde line_class='150P21' hits=1
+16:45:29 INFO nde_py nde_result='Yes'
+16:45:29 INFO material material='SS'
+16:45:29 INFO template passthrough=False chars=2747
+16:45:29 INFO final

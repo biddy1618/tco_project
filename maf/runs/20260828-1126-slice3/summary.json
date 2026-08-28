@@ -1,0 +1,702 @@
+﻿{
+    "run_id":  "20260828-1126-slice3",
+    "started_utc":  "2026-08-28T11:26:17.8842947Z",
+    "finished_utc":  "2026-08-28T11:48:43.8736312Z",
+    "git_head":  "40e9d5c2688cdffb1df48f713a6cf3dda04dbfda",
+    "azure_subscription":  "T332 - TCO",
+    "command":  "python -m maf.slice3",
+    "cases":  [
+                  {
+                      "id":  "TC-001",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  4797,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-002",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  3222,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-003",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  4597,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-004",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "Yes",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  3561,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-005",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  true,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+                                        "I\u0026E Job Pack YY-NNNN"
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  5208,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-006",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  true,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+                                        "I\u0026E Job Pack YY-NNNN"
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  5184,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-007",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  2327,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-008",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  true,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+                                        "I\u0026E Job Pack YY-NNNN"
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  5299,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-009",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  true,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+                                        "I\u0026E Job Pack YY-NNNN"
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  5284,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-010",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  true,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+                                        "I\u0026E Job Pack YY-NNNN"
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  5428,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-011",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  true,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+                                        "I\u0026E Job Pack YY-NNNN"
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  5170,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-012",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  true,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+                                        "I\u0026E Job Pack YY-NNNN"
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  5324,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-013",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+                                        "I\u0026E Job Pack YY-NNNN"
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  3854,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-014",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+                                        "I\u0026E Job Pack YY-NNNN"
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  3763,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-015",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  true,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+                                        "I\u0026E Job Pack YY-NNNN"
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  5217,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-016",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  true,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+                                        "I\u0026E Job Pack YY-NNNN"
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  4685,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-017",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  true,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+                                        "I\u0026E Job Pack YY-NNNN"
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  5152,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-018",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  true,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+                                        "I\u0026E Job Pack YY-NNNN"
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  5315,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-019",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  true,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+                                        "I\u0026E Job Pack YY-NNNN"
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  5253,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-020",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  4604,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-021",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  4744,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-022",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  3260,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-023",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+                                        "I\u0026E Job Pack YY-NNNN"
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  3746,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-024",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  true,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+                                        "I\u0026E Job Pack YY-NNNN"
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  5270,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-025",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  4624,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-026",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "Please recheck your diameter — the mismatch might come from the diameter range value. Your diameter could be listed in the WPS table.",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  141,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-027",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+                                            "scope_type"
+                                        ],
+                      "followups":  [
+                                        "Tee replacement. Replace the pipe section."
+                                    ],
+                      "wps_result":  "Please recheck your diameter — the mismatch might come from the diameter range value. Your diameter could be listed in the WPS table.",
+                      "nde_result":  null,
+                      "material":  "CS",
+                      "answer_chars":  141,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-028",
+                      "turns":  4,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+                                            "scope_type"
+                                        ],
+                      "followups":  [
+                                        "I\u0026E Job Pack YY-NNNN",
+                                        "Flange replacement.",
+                                        "I\u0026E Job Pack YY-NNNN"
+                                    ],
+                      "wps_result":  "Yes",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  3845,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-029",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  2879,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-030",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  3215,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-031",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+                                            "scope_type",
+                                            "insulation",
+                                            "dia_in"
+                                        ],
+                      "followups":  [
+                                        "Flange replacement. Insulated. Diameter 2 inch."
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "Yes",
+                      "material":  "SS",
+                      "answer_chars":  2888,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-032",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+                                            "scope_type",
+                                            "insulation"
+                                        ],
+                      "followups":  [
+                                        "Flange replacement. Insulated."
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "Yes",
+                      "material":  "SS",
+                      "answer_chars":  2932,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-033",
+                      "turns":  4,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+                                            "scope_type"
+                                        ],
+                      "followups":  [
+                                        "I\u0026E Job Pack YY-NNNN",
+                                        "Replace the pipe section.",
+                                        "I\u0026E Job Pack YY-NNNN"
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  5322,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-034",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "Please recheck your diameter — the mismatch might come from the diameter range value. Your diameter could be listed in the WPS table.",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  141,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-035",
+                      "turns":  3,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+                                            "scope_type"
+                                        ],
+                      "followups":  [
+                                        "Replace the pipe section.",
+                                        "I\u0026E Job Pack YY-NNNN"
+                                    ],
+                      "wps_result":  "Yes",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  5824,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-036",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+                                            "insulation"
+                                        ],
+                      "followups":  [
+                                        "Insulated."
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "Yes",
+                      "material":  "SS",
+                      "answer_chars":  4669,
+                      "error":  null
+                  }
+              ]
+}

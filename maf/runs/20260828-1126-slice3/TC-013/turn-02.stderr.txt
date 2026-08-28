@@ -1,0 +1,18 @@
+16:34:01 INFO slice3 history_turns=1
+16:34:01 INFO load_state history_turns=1
+16:34:01 INFO spell_check
+16:34:07 INFO extraction line_class='' scope_type=[]
+16:34:07 INFO merge_state
+16:34:07 INFO validation complete=True missing=[]
+16:34:07 INFO ask_or_finalize complete=True
+16:34:10 INFO router kind='json'
+16:34:10 INFO wps_json_builder passthrough=False
+16:34:10 INFO search index='wps-diain' auth='aad'
+16:34:11 INFO wps_api index='wps-diain' hits=4
+16:34:11 INFO pwht_check line_class='150H25 (B)' wps_result='No'
+16:34:11 INFO search index='ndeee' auth='aad'
+16:34:12 INFO nde line_class='150H25 (B)' hits=1
+16:34:12 INFO nde_py nde_result='No'
+16:34:12 INFO material material='CS'
+16:34:12 INFO template passthrough=False chars=3550
+16:34:12 INFO final

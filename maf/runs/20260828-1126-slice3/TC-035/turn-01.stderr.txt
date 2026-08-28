@@ -1,0 +1,17 @@
+16:47:12 INFO slice3 history_turns=0
+16:47:12 INFO load_state history_turns=0
+16:47:12 INFO spell_check
+16:47:20 INFO extraction line_class='150H25 (A)' scope_type=[]
+16:47:20 INFO merge_state
+16:47:20 INFO validation complete=False missing=['scope_type']
+16:47:20 INFO ask_or_finalize complete=False
+16:47:23 INFO router kind='string'
+16:47:23 INFO wps_json_builder passthrough=True
+16:47:23 INFO search index='wps-diain' passthrough=True
+16:47:23 INFO wps_api index='wps-diain' hits=0
+16:47:23 INFO pwht_check line_class='150H25 (A)' wps_result='What type of scope do you need for your project?'
+16:47:23 INFO nde skipped=True
+16:47:23 INFO nde_py skipped=True
+16:47:23 INFO material material='No'
+16:47:23 INFO template passthrough=True chars=48
+16:47:23 INFO final

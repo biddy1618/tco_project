@@ -1,0 +1,17 @@
+16:44:21 INFO slice3 history_turns=0
+16:44:21 INFO load_state history_turns=0
+16:44:21 INFO spell_check
+16:44:25 INFO extraction line_class='150P21' scope_type=[]
+16:44:25 INFO merge_state
+16:44:25 INFO validation complete=False missing=['scope_type', 'insulation', 'dia_in']
+16:44:25 INFO ask_or_finalize complete=False
+16:44:28 INFO router kind='string'
+16:44:28 INFO wps_json_builder passthrough=True
+16:44:28 INFO search index='wps-diain' passthrough=True
+16:44:28 INFO wps_api index='wps-diain' hits=0
+16:44:28 INFO pwht_check line_class='150P21' wps_result='Could you provide the scope type, insulation details, and the diameter information?'
+16:44:28 INFO nde skipped=True
+16:44:28 INFO nde_py skipped=True
+16:44:28 INFO material material='No'
+16:44:28 INFO template passthrough=True chars=83
+16:44:28 INFO final
