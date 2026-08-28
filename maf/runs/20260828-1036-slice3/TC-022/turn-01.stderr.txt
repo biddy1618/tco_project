@@ -1,0 +1,17 @@
+15:45:07 INFO slice3 history_turns=0
+15:45:07 INFO load_state history_turns=0
+15:45:07 INFO spell_check
+15:45:14 INFO extraction line_class='150H25 (B)' scope_type=['Piping section replacement']
+15:45:14 INFO merge_state
+15:45:14 INFO validation complete=False missing=['placeholders_TP']
+15:45:14 INFO ask_or_finalize complete=False
+15:45:17 INFO router kind='string'
+15:45:17 INFO wps_json_builder passthrough=True
+15:45:17 INFO search index='wps-diain' passthrough=True
+15:45:17 INFO wps_api index='wps-diain' hits=0
+15:45:17 INFO pwht_check line_class='150H25 (B)' wps_result='Could you provide the required details for placeholders for temporary pieces?'
+15:45:17 INFO nde skipped=True
+15:45:17 INFO nde_py skipped=True
+15:45:17 INFO material material='No'
+15:45:17 INFO template passthrough=True chars=77
+15:45:17 INFO final

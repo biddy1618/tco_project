@@ -1,0 +1,39 @@
+{
+  "answer": "I&E Job Pack XX-YYYY\n\n1. **Job Title**: [Provide the title of the job]\n2. **Job Location**: [Provide the specific location of the job]\n3. **Job Duration**: [Indicate the duration of the job]\n4. **Job Description**:\n    - **Scope of Work**: [Detailed description of the work scope]\n    - **Objectives**: [State the project\u2019s objectives]\n    - **Tasks to be Performed**: [List of tasks to be performed]\n5. **Responsibilities**:\n    - **Roles**: [Define roles of each team member]\n    - **Safety and Compliance**: [Detail the safety and compliance measures]\n6. **Materials Required**:\n    - **List of Materials**: [Comprehensive list of materials needed]\n7. **Tools and Equipment**:\n    - [List all necessary tools and equipment]\n8. **Quality Assurance**:\n    - **Standards**: [Mention the quality standards to be followed]\n    - **Inspection**: [Inspection criteria and process]\n9. **Timeline**:\n    - **Schedule**: [Detailed schedule including start and end dates]\n10. **Budget**:\n    - **Estimated Costs**: [Provide an estimate of the project\u2019s costs]\n11. **Contact Information**:\n    - **Project Manager**: [Name, phone number, and email]\n    - **Team Members**: [List of team members with their contact details]\n\n---\n\n1. **Job Title**: [INSERT JOB TITLE HERE]\n2. **Job Location**: [INSERT JOB LOCATION HERE]\n3. **Job Duration**: [INSERT JOB DURATION HERE]\n4. **Job Description**:\n    - **Scope of Work**: [INSERT SCOPE OF WORK HERE]\n    - **Objectives**: [INSERT OBJECTIVES HERE]\n    - **Tasks to be Performed**: [INSERT TASKS TO BE PERFORMED HERE]\n5. **Responsibilities**:\n    - **Roles**: [INSERT ROLES HERE]\n    - **Safety and Compliance**: [INSERT SAFETY AND COMPLIANCE DETAILS HERE]\n6. **Materials Required**:\n    - **List of Materials**: [INSERT LIST OF MATERIALS HERE]\n7. **Tools and Equipment**:\n    - [INSERT TOOLS AND EQUIPMENT HERE]\n8. **Quality Assurance**:\n    - **Standards**: [INSERT STANDARDS HERE]\n    - **Inspection**: [INSERT INSPECTION DETAILS HERE]\n9. **Timeline**:\n    - **Schedule**: [INSERT SCHEDULE HERE]\n10. **Budget**:\n    - **Estimated Costs**: [INSERT ESTIMATED COSTS HERE]\n11. **Contact Information**:\n    - **Project Manager**: [INSERT PROJECT MANAGER CONTACT INFO HERE]\n    - **Team Members**: [INSERT TEAM MEMBERS CONTACT INFO HERE]\n\n---\n\nPlease fill in the placeholders with the relevant information.",
+  "complete": true,
+  "missing": [],
+  "merge_state": {
+    "line_class": "150H25 (B)",
+    "scope_type": [
+      "TLR",
+      "Piping section replacement"
+    ],
+    "insulation": true,
+    "heat_tracing": [
+      "electric"
+    ],
+    "hydrogen_bake_out": false,
+    "ie_doc_no": false,
+    "dia_in": [
+      0.75
+    ],
+    "existing_spring_support_reuse": true,
+    "placeholders_TP": [
+      "TP-001"
+    ],
+    "spool_prefab": true,
+    "has_tie_ins": true,
+    "pump_compressor_vessel_psv_in_scope": false,
+    "new_piping_route": false,
+    "insufficient_vessel_internal_data": false,
+    "replace_existing_equipment_diff_weight": false
+  },
+  "route": {
+    "kind": "string",
+    "as_dict": {},
+    "as_string": "What is the I&E Job Pack? Type your answer like \"I&E Job Pack YY-NNNN\"."
+  },
+  "wps_result": "What is the I&E Job Pack? Type your answer like \"I&E Job Pack YY-NNNN\".",
+  "nde_result": "No",
+  "material": "CS"
+}

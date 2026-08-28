@@ -1,0 +1,17 @@
+15:53:49 INFO slice3 history_turns=0
+15:53:49 INFO load_state history_turns=0
+15:53:49 INFO spell_check
+15:53:54 INFO extraction line_class='150P21' scope_type=['Flange replacement']
+15:53:54 INFO merge_state
+15:53:54 INFO validation complete=False missing=['insulation']
+15:53:54 INFO ask_or_finalize complete=False
+15:53:56 INFO router kind='string'
+15:53:56 INFO wps_json_builder passthrough=True
+15:53:56 INFO search index='wps-diain' passthrough=True
+15:53:56 INFO wps_api index='wps-diain' hits=0
+15:53:56 INFO pwht_check line_class='150P21' wps_result='What is the required insulation type for the scope?'
+15:53:56 INFO nde skipped=True
+15:53:56 INFO nde_py skipped=True
+15:53:56 INFO material material='No'
+15:53:56 INFO template passthrough=True chars=51
+15:53:56 INFO final

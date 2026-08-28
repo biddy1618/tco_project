@@ -1,0 +1,36 @@
+{
+  "answer": "1. **Purpose:** \n   - Explain the function of Threaded Pipe (TP) placeholders in engineering design and systems.\n\n2. **Materials:** \n   - List the types of materials commonly used for Threaded Pipe (TP) placeholders.\n\n3. **Specifications:**\n   - Detail the standard specifications for dimensions, threads, and compatibility.\n\n4. **Applications:** \n   - Describe the typical applications where Threaded Pipe (TP) placeholders are used.\n\n5. **Advantages:**\n   - Highlight the advantages of using Threaded Pipe (TP) placeholders in engineering applications.\n\n6. **Installation:** \n   - Provide guidance on the proper method for installing Threaded Pipe (TP) placeholders.\n\n7. **Maintenance:**\n   - Describe the maintenance requirements to ensure the longevity and proper functioning of Threaded Pipe (TP) placeholders.\n\n8. **Manufacturers:**\n   - List notable manufacturers or suppliers of Threaded Pipe (TP) placeholders.",
+  "complete": false,
+  "missing": [
+    "placeholders_TP"
+  ],
+  "merge_state": {
+    "line_class": "150K21",
+    "scope_type": [
+      "Piping section replacement"
+    ],
+    "insulation": true,
+    "heat_tracing": false,
+    "hydrogen_bake_out": true,
+    "ie_doc_no": false,
+    "dia_in": [
+      4.0
+    ],
+    "existing_spring_support_reuse": true,
+    "placeholders_TP": null,
+    "spool_prefab": true,
+    "has_tie_ins": false,
+    "pump_compressor_vessel_psv_in_scope": false,
+    "new_piping_route": false,
+    "insufficient_vessel_internal_data": false,
+    "replace_existing_equipment_diff_weight": false
+  },
+  "route": {
+    "kind": "string",
+    "as_dict": {},
+    "as_string": "Could you provide information about the Threaded Pipe (TP) placeholders?"
+  },
+  "wps_result": "Could you provide information about the Threaded Pipe (TP) placeholders?",
+  "nde_result": null,
+  "material": "No"
+}

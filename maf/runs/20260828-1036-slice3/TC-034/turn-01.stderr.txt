@@ -1,0 +1,18 @@
+15:52:58 INFO slice3 history_turns=0
+15:52:59 INFO load_state history_turns=0
+15:52:59 INFO spell_check
+15:53:03 INFO extraction line_class='150H21' scope_type=['Piping section replacement']
+15:53:03 INFO merge_state
+15:53:03 INFO validation complete=True missing=[]
+15:53:03 INFO ask_or_finalize complete=True
+15:53:06 INFO router kind='json'
+15:53:06 INFO wps_json_builder passthrough=False
+15:53:06 INFO search index='wps-diain' auth='aad'
+15:53:07 INFO wps_api index='wps-diain' hits=0
+15:53:07 INFO pwht_check line_class='150H21' wps_result='Please recheck your diameter � the mismatch might come from the diameter range value. Your di...'
+15:53:07 INFO search index='ndeee' auth='aad'
+15:53:09 INFO nde line_class='150H21' hits=1
+15:53:09 INFO nde_py nde_result='No'
+15:53:09 INFO material material='CS'
+15:53:09 INFO template passthrough=True chars=133
+15:53:09 INFO final

@@ -1,0 +1,17 @@
+15:47:40 INFO slice3 history_turns=0
+15:47:41 INFO load_state history_turns=0
+15:47:41 INFO spell_check
+15:47:45 INFO extraction line_class='300H21(A)' scope_type=[]
+15:47:45 INFO merge_state
+15:47:45 INFO validation complete=False missing=['scope_type']
+15:47:45 INFO ask_or_finalize complete=False
+15:47:48 INFO router kind='string'
+15:47:48 INFO wps_json_builder passthrough=True
+15:47:48 INFO search index='wps-diain' passthrough=True
+15:47:48 INFO wps_api index='wps-diain' hits=0
+15:47:48 INFO pwht_check line_class='300H21(A)' wps_result='What type of scope are we dealing with in this repair? Is it mechanical, process, or somethin...'
+15:47:48 INFO nde skipped=True
+15:47:48 INFO nde_py skipped=True
+15:47:48 INFO material material='No'
+15:47:48 INFO template passthrough=True chars=100
+15:47:48 INFO final

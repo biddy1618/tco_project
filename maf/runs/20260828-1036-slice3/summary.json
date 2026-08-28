@@ -1,0 +1,705 @@
+﻿{
+    "run_id":  "20260828-1036-slice3",
+    "started_utc":  "2026-08-28T10:36:17.1015222Z",
+    "finished_utc":  "2026-08-28T10:54:22.5659879Z",
+    "git_head":  "6e8d2a0c7f67284d7566917ed27534b1e063e9fc",
+    "azure_subscription":  "T332 - TCO",
+    "command":  "python -m maf.slice3",
+    "cases":  [
+                  {
+                      "id":  "TC-001",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  4855,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-002",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+                                            "placeholders_TP"
+                                        ],
+                      "followups":  [
+                                        "Tie-ins at TP-001 and TP-002."
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  4888,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-003",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  4673,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-004",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+                                            "placeholders_TP"
+                                        ],
+                      "followups":  [
+                                        "Tie-ins at TP-001 and TP-002."
+                                    ],
+                      "wps_result":  "Yes",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  5460,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-005",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "What is the I\u0026E Job Pack? Type your answer like \"I\u0026E Job Pack YY-NNNN\".",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  20,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-006",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "What is the I\u0026E Job Pack? Type your answer like \"I\u0026E Job Pack YY-NNNN\".",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  71,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-007",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+                                            "placeholders_TP"
+                                        ],
+                      "followups":  [
+                                        "Tie-ins at TP-001 and TP-002."
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  3917,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-008",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "What is the I\u0026E Job Pack? Type your answer like \"I\u0026E Job Pack YY-NNNN\".",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  20,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-009",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "What is the I\u0026E Job Pack? Type your answer like \"I\u0026E Job Pack YY-NNNN\".",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  71,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-010",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "What is the I\u0026E Job Pack? Type your answer like \"I\u0026E Job Pack YY-NNNN\".",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  20,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-011",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "What is the I\u0026E Job Pack? Type your answer like \"I\u0026E Job Pack YY-NNNN\".",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  20,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-012",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "What is the I\u0026E Job Pack? Type your answer like \"I\u0026E Job Pack YY-NNNN\".",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  20,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-013",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+                                            "placeholders_TP"
+                                        ],
+                      "followups":  [
+                                        "Tie-ins at TP-001 and TP-002."
+                                    ],
+                      "wps_result":  "What is the I\u0026E Job Pack? Type your answer like \"I\u0026E Job Pack YY-NNNN\".",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  20,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-014",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+                                            "placeholders_TP"
+                                        ],
+                      "followups":  [
+                                        "Tie-ins at TP-001 and TP-002."
+                                    ],
+                      "wps_result":  "What is the I\u0026E Job Pack? Type your answer like \"I\u0026E Job Pack YY-NNNN\".",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  71,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-015",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "What is the I\u0026E Job Pack? Type your answer like \"I\u0026E Job Pack YY-NNNN\".",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  2336,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-016",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "What is the I\u0026E Job Pack? Type your answer like \"I\u0026E Job Pack YY-NNNN\".",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  71,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-017",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "What is the I\u0026E Job Pack? Type your answer like \"I\u0026E Job Pack YY-NNNN\".",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  20,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-018",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "What is the I\u0026E Job Pack? Type your answer like \"I\u0026E Job Pack YY-NNNN\".",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  20,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-019",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "What is the I\u0026E Job Pack? Type your answer like \"I\u0026E Job Pack YY-NNNN\".",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  71,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-020",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  4662,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-021",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  4733,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-022",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+                                            "placeholders_TP"
+                                        ],
+                      "followups":  [
+                                        "Tie-ins at TP-001 and TP-002."
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  4743,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-023",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+                                            "placeholders_TP"
+                                        ],
+                      "followups":  [
+                                        "Tie-ins at TP-001 and TP-002."
+                                    ],
+                      "wps_result":  "What is the I\u0026E Job Pack? Type your answer like \"I\u0026E Job Pack YY-NNNN\".",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  71,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-024",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "What is the I\u0026E Job Pack? Type your answer like \"I\u0026E Job Pack YY-NNNN\".",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  71,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-025",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  4798,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-026",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+                                            "placeholders_TP"
+                                        ],
+                      "followups":  [
+                                        "Tie-ins at TP-001 and TP-002."
+                                    ],
+                      "wps_result":  "Please recheck your diameter — the mismatch might come from the diameter range value. Your diameter could be listed in the WPS table.",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  177,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-027",
+                      "turns":  6,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  false,
+                      "stuck":  true,
+                      "missing_first":  [
+                                            "scope_type"
+                                        ],
+                      "followups":  [
+                                        "Tee replacement.",
+                                        "Tee replacement.",
+                                        "Tee replacement.",
+                                        "Tee replacement.",
+                                        "Tee replacement.",
+                                        "Tee replacement."
+                                    ],
+                      "wps_result":  "What type of scope is involved in this repair?",
+                      "nde_result":  null,
+                      "material":  "No",
+                      "answer_chars":  46,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-028",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+                                            "scope_type",
+                                            "placeholders_TP"
+                                        ],
+                      "followups":  [
+                                        "Flange replacement. Tie-ins at TP-001 and TP-002."
+                                    ],
+                      "wps_result":  "What is the I\u0026E Job Pack? Type your answer like \"I\u0026E Job Pack YY-NNNN\".",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  71,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-029",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+                                            "placeholders_TP"
+                                        ],
+                      "followups":  [
+                                        "Tie-ins at TP-001 and TP-002."
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  4546,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-030",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+                                            "placeholders_TP"
+                                        ],
+                      "followups":  [
+                                        "Tie-ins at TP-001 and TP-002."
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  4857,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-031",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+                                            "scope_type",
+                                            "insulation",
+                                            "dia_in",
+                                            "placeholders_TP"
+                                        ],
+                      "followups":  [
+                                        "Flange replacement. Insulated. Diameter 2 inch. Tie-ins at TP-001 and TP-002."
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "Yes",
+                      "material":  "SS",
+                      "answer_chars":  4733,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-032",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+                                            "scope_type",
+                                            "insulation",
+                                            "placeholders_TP"
+                                        ],
+                      "followups":  [
+                                        "Flange replacement. Insulated. Tie-ins at TP-001 and TP-002."
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "Yes",
+                      "material":  "SS",
+                      "answer_chars":  4782,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-033",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+                                            "scope_type"
+                                        ],
+                      "followups":  [
+                                        "Replace the pipe section."
+                                    ],
+                      "wps_result":  "What is the I\u0026E Job Pack? Type your answer like \"I\u0026E Job Pack YY-NNNN\".",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  20,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-034",
+                      "turns":  1,
+                      "asked":  false,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+
+                                        ],
+                      "followups":  [
+
+                                    ],
+                      "wps_result":  "Please recheck your diameter — the mismatch might come from the diameter range value. Your diameter could be listed in the WPS table.",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  141,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-035",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+                                            "scope_type"
+                                        ],
+                      "followups":  [
+                                        "Replace the pipe section."
+                                    ],
+                      "wps_result":  "What is the I\u0026E Job Pack? Type your answer like \"I\u0026E Job Pack YY-NNNN\".",
+                      "nde_result":  "No",
+                      "material":  "CS",
+                      "answer_chars":  71,
+                      "error":  null
+                  },
+                  {
+                      "id":  "TC-036",
+                      "turns":  2,
+                      "asked":  true,
+                      "unexpected_ask":  false,
+                      "complete_final":  true,
+                      "stuck":  false,
+                      "missing_first":  [
+                                            "insulation"
+                                        ],
+                      "followups":  [
+                                        "Insulated."
+                                    ],
+                      "wps_result":  "No",
+                      "nde_result":  "Yes",
+                      "material":  "SS",
+                      "answer_chars":  4816,
+                      "error":  null
+                  }
+              ]
+}

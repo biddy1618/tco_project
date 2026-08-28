@@ -1,0 +1,17 @@
+15:51:47 INFO slice3 history_turns=0
+15:51:47 INFO load_state history_turns=0
+15:51:47 INFO spell_check
+15:51:52 INFO extraction line_class='150P21' scope_type=[]
+15:51:52 INFO merge_state
+15:51:52 INFO validation complete=False missing=['scope_type', 'insulation', 'placeholders_TP']
+15:51:52 INFO ask_or_finalize complete=False
+15:51:55 INFO router kind='string'
+15:51:55 INFO wps_json_builder passthrough=True
+15:51:55 INFO search index='wps-diain' passthrough=True
+15:51:55 INFO wps_api index='wps-diain' hits=0
+15:51:55 INFO pwht_check line_class='150P21' wps_result='Can you provide the scope type, insulation details, and placeholders for temporary piping?'
+15:51:55 INFO nde skipped=True
+15:51:55 INFO nde_py skipped=True
+15:51:55 INFO material material='No'
+15:51:55 INFO template passthrough=True chars=90
+15:51:55 INFO final

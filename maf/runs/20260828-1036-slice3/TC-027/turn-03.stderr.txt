@@ -1,0 +1,17 @@
+15:48:13 INFO slice3 history_turns=2
+15:48:13 INFO load_state history_turns=2
+15:48:13 INFO spell_check
+15:48:17 INFO extraction line_class='' scope_type=[]
+15:48:17 INFO merge_state
+15:48:17 INFO validation complete=False missing=['scope_type']
+15:48:17 INFO ask_or_finalize complete=False
+15:48:20 INFO router kind='string'
+15:48:20 INFO wps_json_builder passthrough=True
+15:48:20 INFO search index='wps-diain' passthrough=True
+15:48:20 INFO wps_api index='wps-diain' hits=0
+15:48:20 INFO pwht_check line_class='300H21(A)' wps_result='Could you describe the scope type for this repair?'
+15:48:20 INFO nde skipped=True
+15:48:20 INFO nde_py skipped=True
+15:48:20 INFO material material='No'
+15:48:20 INFO template passthrough=True chars=50
+15:48:20 INFO final

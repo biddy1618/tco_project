@@ -1,0 +1,18 @@
+15:47:23 INFO slice3 history_turns=1
+15:47:23 INFO load_state history_turns=1
+15:47:23 INFO spell_check
+15:47:27 INFO extraction line_class='' scope_type=[]
+15:47:27 INFO merge_state
+15:47:27 INFO validation complete=True missing=[]
+15:47:27 INFO ask_or_finalize complete=True
+15:47:30 INFO router kind='json'
+15:47:30 INFO wps_json_builder passthrough=False
+15:47:30 INFO search index='wps-diain' auth='aad'
+15:47:31 INFO wps_api index='wps-diain' hits=0
+15:47:31 INFO pwht_check line_class='150H09' wps_result='Please recheck your diameter � the mismatch might come from the diameter range value. Your di...'
+15:47:31 INFO search index='ndeee' auth='aad'
+15:47:33 INFO nde line_class='150H09' hits=1
+15:47:33 INFO nde_py nde_result='No'
+15:47:33 INFO material material='CS'
+15:47:33 INFO template passthrough=True chars=133
+15:47:33 INFO final
