@@ -21,8 +21,8 @@ job_pack.docx
 .env
 maf/.env
 history.json
-# maf/runs/*
-!maf/runs/.gitkeep
+maf/runs/*
+!maf/runs/slice3-tracker.md
 
 # OS / editor
 .DS_Store

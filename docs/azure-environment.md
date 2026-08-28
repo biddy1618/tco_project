@@ -9,7 +9,7 @@ Related:
 - `flow.dag.yaml` — runtime wiring (endpoints, connection names, deployments)
 - [maf/README.md](../maf/README.md) — Agent Framework slices
 
-Last updated: 2026-08-27.
+Last updated: 2026-08-28.
 
 ---
 
@@ -164,15 +164,33 @@ Code implications (already applied): map `nde` `field_mapping.content` to
 | `pwht` | Edm.String |
 
 `pwht` across 266 docs: `N` (128), `Y` (103), blank (18), `N see Note (7)` (17).
-Blank is treated as `"No"` in `pf_jobpack/pwht.py`.
+Blank is treated as `"No"` in `pf_jobpack/pwht.py`. Index `line_class` for
+the 300H21 A-variant is spelled `300H21(A)` (no space).
+
+Checked 2026-08-28 (keyword + semantic diameter filter). Gaps that match
+Tracker misses:
+
+| Query | Docs | Notes |
+|---|---|---|
+| `150H09` | 0 | Class not in the index (TC-026) |
+| `150H21` | 3 | NPS `0.5–3.0` (N), `14–48` (N), `24–24` (Y). **4″ and 6″ miss** (TC-034) |
+| `300H21(A)` | 3 | NPS `0.5–3.0` (N), `14–30` (N), `24–48` (Y). **4″ misses** (TC-027) |
+
+Semantic search at 4″ for `300H21(A)` can rank neighbor classes
+(`150H25 (A)`, `300H25 (A)`, range `3.1–100`) first. `pwht_check` must
+match the requested class, not `value[0]`.
 
 ---
 
 ## 6. Still open
 
-- Exact RBAC role names on the OpenAI and Search resources
-- MAF slice 3 (Search lookups + job-pack `template` + `final`) — code in
-  `maf/slice3.py`; live Search still needs `az login` on T332.
+- Exact RBAC role names on the classic OpenAI and Search resources
+  (invoke already works via group assignment)
+- Hosted Foundry agent: blocked until there is an ACR this identity can
+  **push** to, and **Foundry Project Manager** (or Azure AI Project
+  Manager / Owner) on the project. Current project role is
+  `Chevron Azure AI User`. Reader on the account RG is not enough.
+  Recreate `maf/hosted/` when both exist. See §8.
 
 ---
 
@@ -227,7 +245,7 @@ Other chat deployments on the same account (not used by this POC):
 `gpt-4_1-mini-gb-2025-04-14`.
 
 MAF uses the same three PF names on this Foundry endpoint. Hosted-agent
-container publish is a separate, blocked path (see §8).
+container publish is blocked (see §8); CLI slices do not need it.
 
 What this means, based only on what was checked:
 
@@ -281,9 +299,21 @@ What this means, based only on what was checked:
 - Ready to create a hosted agent in this project: **NO** (blocked by missing
   ACR/image-push target, and no project-manager role was found).
 
+To unblock, need **both**:
+
+1. An ACR this identity can push to (`AcrPush` or Contributor on the
+   registry, plus a successful `az acr login`). None in T332 today.
+2. **Foundry Project Manager** / Azure AI Project Manager (or Owner) on
+   `pf-t332-t-aif-use2-c3-jobpack-project`. `Chevron Azure AI User` and
+   RG Reader are not enough.
+
+Roles to look for on a later check: Foundry/Azure AI Project Manager,
+Foundry/Azure AI User, Foundry/Azure AI Owner, Contributor, Owner,
+AcrPush, AcrPull, ACR Contributor.
+
 ---
 
-## 9. Portal-visible ACRs checked from the VDI (2026-08-27)
+## 9. Portal-visible ACRs outside T332 (2026-08-27)
 
 These are the registries visible in the Azure portal screenshot that were
 checked directly with Azure CLI. They are **not** in the T332 subscription.

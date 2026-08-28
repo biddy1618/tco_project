@@ -8,7 +8,7 @@ Framework rewrite, built **one slice at a time**. Python logic stays in
 |---|---|---|
 | 1 | `spell_check` → `extraction` | working |
 | 2 | `load_state` → `merge_state` → `validation` → `ask_or_finalize` (+ `router`) | working |
-| 3 | complete-gate → WPS/NDE/material → `template` → `final` | ready to run |
+| 3 | complete-gate → WPS/NDE/material → `template` → `final` | working |
 
 Client: `FoundryChatClient` + `AzureCliCredential` against
 `https://pf-t332-t-aif-use2-c3.cognitiveservices.azure.com/` (same deployment
@@ -98,9 +98,7 @@ python -m maf.slice3
 python -m maf.slice3 --history history.json "2 inch, NPS"
 ```
 
-To batch all Tracker cases, run `.\run_slice3_tracker.ps1` from the repo root
-(see [docs/maf-tracker-eval-run.md](../docs/maf-tracker-eval-run.md)). Artifacts
-go under `maf/runs/`. Copy that folder back for review.
+Tracker replay (commands + follow-ups): [maf/runs/slice3-tracker.md](runs/slice3-tracker.md).
 
 Output adds `wps_result`, `nde_result`, `material`. The chat `answer` is
 either the follow-up question or the formatted job pack.

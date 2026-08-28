@@ -177,7 +177,7 @@ def _responses_server(agent: Slice2Agent):
         except ImportError as exc:
             raise ImportError(
                 "ResponsesHostServer is not installed. In an isolated env: "
-                "pip install -r maf/hosted/requirements.txt"
+                "pip install agent-framework-foundry-hosting in an isolated env"
             ) from exc
     return ResponsesHostServer(agent)
 

@@ -92,6 +92,5 @@ Tracker and procedure tables: `archive/baseline-2026-08-24/docs/jp/`.
 
 **Omit**
 
-- `docs/questions-for-azure.md` (internal checklist)
 - `__pycache__/`, `.venv/`, `.promptflow/`, `.runs/`, `history.json`, `.env`
 - `.git/` unless they asked for history
