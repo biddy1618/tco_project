@@ -1,0 +1,218 @@
+{
+  "TC-001": {
+    "ewo": "EWO 22-0294",
+    "line_number": "051-TL01-1/2-150H03",
+    "cohort": "TLR single-removal",
+    "deducted_prompt": "051-TL01-1/2-150H03. Dismantle clamp and replace damaged pipe section. Tie-ins at TP-001 and TP-002. Insulated, no heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-002": {
+    "ewo": "EWO 22-0430",
+    "line_number": "120-SL04-24-150H03",
+    "cohort": "TLR single-removal",
+    "deducted_prompt": "120-SL04-24-150H03. to repair and dismantle the clamp during TA-2024 Tie-ins at [tie-in IDs TBD]. Insulated, no heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-003": {
+    "ewo": "22-0385",
+    "line_number": "031-TL40-2-150H03",
+    "cohort": "TLR single-removal",
+    "deducted_prompt": "031-TL40-2-150H03. 11-0300-PH-300 During 2024TA, TLR-21044 on TL-1/2-150H03 needs to be removed (water leakage on USA-11 condensate tap in PH-300. Tie-ins at TP-001/002. Insulated, no heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-004": {
+    "ewo": "23-0474",
+    "line_number": "031-DHC-90-4-150K01,\n031-DHC07-4-150K01,\n031-DHC101-2-150K02,\n031-DHC105-2-150K02,\n031-DMD23-4-150K01",
+    "cohort": "Pipe section repl.",
+    "deducted_prompt": "031-DHC-90-4-150K01,\n031-DHC07-4-150K01,\n031-DHC101-2-150K02,\n031-DHC105-2-150K02,\n031-DMD23-4-150K01. It is necessary to replace the line 031-DHC-90-4-150K01 and make a coating repair for: 031-DHC07-4-150K01, 031-DHC101-2-150K02, 031-DHC105-2-150K02, 031-DMD23-4-150K01 Tie-ins at [tie-in IDs TBD]. Insulated, no heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-005": {
+    "ewo": "25-0048",
+    "line_number": "63-9100-TL-2034-3/4\"-150H22-HCW5",
+    "cohort": "Pipe section repl.",
+    "deducted_prompt": "63-9100-TL-2034-3/4\"-150H22-HCW5. Replace section of pipeline 63-9100-TL-2034-3/4\"-150H22-HCW5. Tie-ins at TP-002. Insulated, electric heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-006": {
+    "ewo": "25-0046",
+    "line_number": "63-9100-SL-2153-3/4\"-150H22-HCW5",
+    "cohort": "TLR single-removal",
+    "deducted_prompt": "63-9100-SL-2153-3/4\"-150H22-HCW5. TLR#22201/22202/22203/22204/23002 will be removed and section of line 63-1000-SL-2153-3/4”-150H22-HCW5 will be replaced in-kind. Tie-ins at TP-002. Insulated, electric heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-007": {
+    "ewo": "25-0047",
+    "line_number": "63-9100-BV-1326-12''-150H22-NI",
+    "cohort": "Pipe extension",
+    "deducted_prompt": "63-9100-BV-1326-12''-150H22-NI. It is required to extend the vent pipe to ensure no condensate drops on the carcase of the vessel therefore causing corrosion under the insulation. Tie-ins at [tie-in IDs TBD]. Uninsulated, no heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-008": {
+    "ewo": "25-0049",
+    "line_number": "63-9100-TL-2003-3/4\"-150H22-HCW5",
+    "cohort": "Flange replacement",
+    "deducted_prompt": "63-9100-TL-2003-3/4\"-150H22-HCW5. Replace section of pipeline 63-9100-TL-2003-3/4\"-150H22-HCW5. Tie-ins at TP-002. Insulated, electric heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-009": {
+    "ewo": "25-0050",
+    "line_number": "63-9100-TL-2018-1 1/2\"-150H22-HCW5",
+    "cohort": "Flange replacement",
+    "deducted_prompt": "63-9100-TL-2018-1 1/2\"-150H22-HCW5. Replace section of pipeline 63-9100-TL-2018-1 1/2\"-150H22-HCW5. Tie-ins at TP-001/002/003/004 and TP-005. Insulated, electric heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-010": {
+    "ewo": "23-0060",
+    "line_number": "63-9100-SL-1702-1-1/2\"-150H22-HC",
+    "cohort": "TLR multi-removal",
+    "deducted_prompt": "63-9100-SL-1702-1-1/2\"-150H22-HC. It is required to replace pipe sections of line 63-9100-SL-1702-1-1/2\"-150H22-HC due to revealed leakage. Tie-ins at TP-001. Insulated, electric heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-011": {
+    "ewo": "25-0068",
+    "line_number": "63-9100-SH-1049-3/4''-900H22-HC",
+    "cohort": "Flange replacement",
+    "deducted_prompt": "63-9100-SH-1049-3/4''-900H22-HC. Replacement of the leaking flange on the line # 63-9100-SH-1049-3/4''-900H22-HC Tie-ins at TP-001. Insulated, electric heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-012": {
+    "ewo": "25-0071",
+    "line_number": "63-9100-TL-1089-2\"-150H22-HCW5",
+    "cohort": "Pipe section repl.",
+    "deducted_prompt": "63-9100-TL-1089-2\"-150H22-HCW5. Replace the section of line 63-9100-TL-1089-2\"-150H22-HCW5 currently fitted with a clamp. Tie-ins at TP-001 and TP-002 and TP-003. Insulated, electric heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-013": {
+    "ewo": "25-0072",
+    "line_number": "63-9100-TL-1992-1½\"-150H22-HCW5",
+    "cohort": "TLR single-removal",
+    "deducted_prompt": "63-9100-TL-1992-1½\"-150H22-HCW5. Replace damaged section of 63-9100-TL-1992-1 ½ -150H22-HCW5 line due to leak. Tie-ins at [tie-in IDs TBD]. Insulated, electric heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-014": {
+    "ewo": "25-0073",
+    "line_number": "63-9100-TL-1085-6\"-150H22-HCW5",
+    "cohort": "TLR single-removal",
+    "deducted_prompt": "63-9100-TL-1085-6\"-150H22-HCW5. Replace damaged section of 63-9100-TL-1085-6\"-150H22-HCW5 line due to leak. Tie-ins at [tie-in IDs TBD]. Insulated, electric heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-015": {
+    "ewo": "25-0078",
+    "line_number": "63-9100-SL-1333-3/4''-150H22-HCW5",
+    "cohort": "TLR single-removal",
+    "deducted_prompt": "63-9100-SL-1333-3/4''-150H22-HCW5. It is required to replace the line # 63-9100-SL-1333-3/4''-150H22-HCW5 with TLR #20210. Tie-ins at TP-001. Insulated, electric heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-016": {
+    "ewo": "25-0079",
+    "line_number": "63-9100-TL-5054-2''-150H22-HCW5",
+    "cohort": "Elbow replacement",
+    "deducted_prompt": "63-9100-TL-5054-2''-150H22-HCW5. It is required to replace the elbow due to corrosion damage. Tie-ins at TP-001 and TP-002. Insulated, electric heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-017": {
+    "ewo": "25-0085",
+    "line_number": "62-0400-TL-1014-1 1/2\"-150H22-HCW5",
+    "cohort": "TLR single-removal",
+    "deducted_prompt": "62-0400-TL-1014-1 1/2\"-150H22-HCW5. TLR#22264 will be removed and section of line 62-0400-TL-1014-1. Tie-ins at TP-001 and TP-002. Insulated, electric heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-018": {
+    "ewo": "25-0086",
+    "line_number": "63-9100-TL-1650-2’’-150H22-HCW5",
+    "cohort": "TLR single-removal",
+    "deducted_prompt": "63-9100-TL-1650-2’’-150H22-HCW5. Replace the leaking line with TLR #22235 on the new piping spool. Tie-ins at TP25-0086/001 and TP25-0086/002. Insulated, electric heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-019": {
+    "ewo": "25-0087",
+    "line_number": "62-0400-TL-3301-2\"-150H22",
+    "cohort": "TLR multi-removal",
+    "deducted_prompt": "62-0400-TL-3301-2\"-150H22. There was a leak on the line # 62-0400-TL-3301-2\"-150H22, few TLR were installed in place #22252,22250,21206,20206, as per IR it is recommended to replace the section of the pipe. Tie-ins at TP25-0087/001 and TP25-0087/002 and TP25-0087/003. Insulated, electric heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-020": {
+    "ewo": "25-0088",
+    "line_number": "63-9100-SL-1280-24\"-150H22-HC",
+    "cohort": "TLR single-removal",
+    "deducted_prompt": "63-9100-SL-1280-24\"-150H22-HC. TLR#20286 will be removed with replacement of flange. Tie-ins at TP-001. Insulated, no heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-021": {
+    "ewo": "25-0093",
+    "line_number": "63-9100-SL-2082-1 1/2\"-150H22-HC",
+    "cohort": "TLR single-removal",
+    "deducted_prompt": "63-9100-SL-2082-1 1/2\"-150H22-HC. Replace the damaged pipe section on TV-07006 bypass line during TA26. Tie-ins at TP-001. Insulated, no heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-022": {
+    "ewo": "25-0112",
+    "line_number": "63-9100-SL-5038-3/4\"-150H22-HC",
+    "cohort": "TLR single-removal",
+    "deducted_prompt": "63-9100-SL-5038-3/4\"-150H22-HC. It is required to replace damaged pipe section of SL steam line 63-9100-SL-5038-3/4\"-150H22- HC. Tie-ins at [tie-in IDs TBD]. Insulated, no heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-023": {
+    "ewo": "25-0114",
+    "line_number": "62-0400-TL-2148-1 1/2\"-150H22-HCW5",
+    "cohort": "TLR single-removal",
+    "deducted_prompt": "62-0400-TL-2148-1 1/2\"-150H22-HCW5. Replace damaged TEE of TL condensate line 62-0400-TL-2148-1 1/2\"-150H22-HCW5. Tie-ins at [tie-in IDs TBD]. Insulated, electric heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-024": {
+    "ewo": "25-0120",
+    "line_number": "63-9100-TL-2046-1.5”-150H22-HCW5",
+    "cohort": "TLR single-removal",
+    "deducted_prompt": "63-9100-TL-2046-1.5”-150H22-HCW5. TLR#20019 will be removed with repalement of pipe in kind. Tie-ins at TP25-0120/003. Insulated, electric heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-025": {
+    "ewo": "25-0464",
+    "line_number": "051-TL06-1/2\"-150H03",
+    "cohort": "TLR multi-removal",
+    "deducted_prompt": "051-TL06-1/2\"-150H03. It is necessary to remove two (2) clamps installed on the TL line at 051‑USA‑07 (#21082 / #21072), which were installed under Work Order (WO) 1391984 / 1392194. Tie-ins at TP-001 and TP-002 and TP-003 and TP25-0464/001. Insulated, no heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-026": {
+    "ewo": "25-0542",
+    "line_number": "042-CS21-4\"/6\"-150H09",
+    "cohort": "Pipe section repl.",
+    "deducted_prompt": "042-CS21-4\"/6\"-150H09. The pipeline section is planned to be replaced and the steam jacket modified to ensure adequate heating. Tie-ins at [tie-in IDs TBD]. Insulated, no heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-027": {
+    "ewo": "EWO-2180860",
+    "line_number": "O-3200-FG4027-4\"-300H21-NI",
+    "cohort": "Tee/branch repl.",
+    "deducted_prompt": "O-3200-FG4027-4\"-300H21-NI. It is necessary to eliminate the leak detected in the above-ground line of the fuel gas purge valve. Tie-ins at TP-001. Uninsulated, no heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-028": {
+    "ewo": "EWO-1381685",
+    "line_number": "64-3200-WSR-1003-4\"-150K21-HCW5",
+    "cohort": "Flange replacement",
+    "deducted_prompt": "64-3200-WSR-1003-4\"-150K21-HCW5. Leak on the pipe , line number 64-3200-WSR-1003-4\"-150K21-HCW5. Tie-ins at [tie-in IDs TBD]. Insulated, electric heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-029": {
+    "ewo": "EWO-1924975",
+    "line_number": "64-3500-FGH-4001-2\"-600H21-NI",
+    "cohort": "Pipe section repl.",
+    "deducted_prompt": "64-3500-FGH-4001-2\"-600H21-NI. Due to this discrepancy, piping spool highlighted in the isometric drawing L6435AA-FGH-4001-05 must be replaced by new piping spool with modified dimensions. Tie-ins at [tie-in IDs TBD]. Uninsulated, no heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-030": {
+    "ewo": "EWO-2013037",
+    "line_number": "43-9100-SH-011053-3/4\"-900H21-HC",
+    "cohort": "Section + support",
+    "deducted_prompt": "43-9100-SH-011053-3/4\"-900H21-HC. The bent piping and associated supports will be replaced in kind. Tie-ins at [tie-in IDs TBD]. Insulated, no heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-031": {
+    "ewo": "EWO-2029651",
+    "line_number": "X60.WP.3.3009.2.150P01",
+    "cohort": "Flange replacement",
+    "deducted_prompt": "X60.WP.3.3009.2.150P01. It is advised to fabricate two pipe spools with flanges according to recommended scope. Tie-ins at [tie-in IDs TBD]. [insulation tbd], no heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-032": {
+    "ewo": "EWO-2029652",
+    "line_number": "X-604-WP-3009-2\"-150P01",
+    "cohort": "Flange replacement",
+    "deducted_prompt": "X-604-WP-3009-2\"-150P01. It is recommended to fabricate a spool according to the specified scope. Tie-ins at [tie-in IDs TBD]. [insulation tbd], no heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-033": {
+    "ewo": "EWO-2107378",
+    "line_number": "062-WE-4082-3”-150H22-HCW5",
+    "cohort": "Pipe section repl.",
+    "deducted_prompt": "062-WE-4082-3”-150H22-HCW5. N/A Tie-ins at TP2107. Insulated, electric heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-034": {
+    "ewo": "EWO-2126781",
+    "line_number": "060-BV-3005-6\"-150H21-NI",
+    "cohort": "Pipe section repl.",
+    "deducted_prompt": "060-BV-3005-6\"-150H21-NI. Replacement of the corroded section of the ventilation pipe in workshop GX-5 Tie-ins at TP-001. Uninsulated, no heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-035": {
+    "ewo": "EWO-2127713",
+    "line_number": "63-9900-CCS-1004-2\"-150H25-HCW5",
+    "cohort": "Pipe section repl.",
+    "deducted_prompt": "63-9900-CCS-1004-2\"-150H25-HCW5. N/A Tie-ins at TP-001 and TP-002. Insulated, electric heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  },
+  "TC-036": {
+    "ewo": "EWO-2127910",
+    "line_number": "X60.WP.2.3010.1 ½”-150P01",
+    "cohort": "Flange replacement",
+    "deducted_prompt": "X60.WP.2.3010.1 ½”-150P01. In kind replacement of the flange pair of line X60. Tie-ins at TP-001. [insulation tbd], no heat tracing. Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
+  }
+}

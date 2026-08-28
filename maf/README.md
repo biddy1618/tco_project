@@ -19,11 +19,16 @@ Python 3.10+. Install with `pip install -r maf/requirements.txt` unless
 `agent_framework` is already on the interpreter. From the **repo root**:
 
 ```bash
-az account show   # must be T332 - TCO
 python -m maf.slice1
+python -m maf.slice1 TC-002
 python -m maf.slice2
 python -m maf.slice3
 ```
+
+A bare `TC-001` / `TC-002` (through `TC-036`) is looked up in
+`maf/tracker_cases.json` (Tracker sheet **2. Test Cases**, Deducted prompt).
+Any other string is the repair-scope text, same as Prompt Flow. Default with
+no argument is `TC-001`.
 
 Optional env overrides:
 
@@ -50,10 +55,10 @@ PowerShell: `$env:MAF_LOG = "DEBUG"`.
 
 ## Slice 1
 
-Default input is Tracker TC-001. Expect JSON with `corrected` and `state`
-(15 fields). `state.line_class` is legacy-mapped (e.g. `150H03` → `150H25`);
-`placeholders_TP` should include `TP-001` / `TP-002`. `dia_in` is often `[]`
-because `1/2` in the line id is not parsed as NPS.
+Default input is Tracker TC-001 (resolved to the deducted prompt). Expect JSON
+with `corrected` and `state` (15 fields). `state.line_class` is legacy-mapped
+(e.g. `150H03` → `150H25`); `placeholders_TP` should include `TP-001` /
+`TP-002`; `dia_in` is `[0.5]` from the short line id `051-TL01-1/2-150H03`.
 
 ```bash
 python -m maf.slice1 "051-TL01-1/2-150H03. Repleacement of damaged pipe section."
@@ -61,9 +66,10 @@ python -m maf.slice1 "051-TL01-1/2-150H03. Repleacement of damaged pipe section.
 
 ## Slice 2
 
-Merge + validate + ask-or-finalize. Empty `[]` from extraction does **not**
-overwrite `null` in merge, so TC-001 usually **asks for diameter**
-(`missing: ["dia_in"]`, `route.kind` = `string`):
+Merge + validate + ask-or-finalize. TC-001's deducted prompt carries line
+class, NPS `1/2`, insulation, heat tracing, and tie-ins, so the first turn
+should be **complete** (job pack path), matching Nur's Run Log — not a
+follow-up question.
 
 ```bash
 python -m maf.slice2
@@ -91,6 +97,10 @@ turns still only ask; Search is not hit for a follow-up question string.
 python -m maf.slice3
 python -m maf.slice3 --history history.json "2 inch, NPS"
 ```
+
+To batch all Tracker cases (answer follow-ups, save JSON, **do not change
+code**), follow [docs/maf-tracker-eval-run.md](../docs/maf-tracker-eval-run.md).
+Write artifacts under `maf/runs/` and copy that folder back for review.
 
 Output adds `wps_result`, `nde_result`, `material`. The chat `answer` is
 either the follow-up question or the formatted job pack.

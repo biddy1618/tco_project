@@ -425,6 +425,11 @@ def extract_dia_in(text: str) -> list:
         rf'-({size_pattern})\s*(?:"|\'\'|in\b)\s*-\s*(\d+[A-Za-z]+\d*[A-Za-z]*)(?=[\s\.,;:]|$)',
         rf'\b({size_pattern})\s*(?:"|inches\b|inch\b|in\b)',
         rf'-({size_pattern})\s*(?:"|in\b)\s*-\s*\d+[A-Za-z]+\d*',
+        # TCO short line id encodes NPS without an inch mark, e.g. 051-TL01-1/2-150H03.
+        # Original PF required " / in, so TC-001 left dia_in empty and the MAF port
+        # asked for diameter. Tracker Run Log first output is a job pack (Nur:
+        # mandatory fields are already in the deducted prompt). Parse that token.
+        rf'\b\d+-[a-z][a-z0-9]*-({size_pattern})-(\d+[a-z]+\d*[a-z]*)',
     ]
 
     for pattern in patterns:

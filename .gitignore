@@ -21,6 +21,8 @@ job_pack.docx
 .env
 maf/.env
 history.json
+maf/runs/*
+!maf/runs/.gitkeep
 
 # OS / editor
 .DS_Store

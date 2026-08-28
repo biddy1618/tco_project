@@ -29,7 +29,8 @@ from agent_framework import (
 )
 
 from maf.client import agent_text
-from maf.slice2 import TC001, run as slice2_run
+from maf.cases import resolve_question
+from maf.slice2 import run as slice2_run
 
 _STATE_FENCE = re.compile(r"```jp_state\s*(\{.*?\})\s*```", re.DOTALL)
 
@@ -204,7 +205,7 @@ def main() -> None:
     )
     args = parser.parse_args()
     if args.once is not None:
-        asyncio.run(_once(args.once or TC001))
+        asyncio.run(_once(resolve_question(args.once or "TC-001")))
         return
     if not args.serve:
         parser.print_help()

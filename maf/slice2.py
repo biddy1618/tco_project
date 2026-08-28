@@ -20,17 +20,12 @@ from typing import Any, Never
 
 from agent_framework import Executor, WorkflowBuilder, WorkflowContext, handler
 
+from maf.cases import resolve_question
 from maf.client import ASK_OR_FINALIZE_DEPLOYMENT, agent_text, make_chat_client
 from maf.prompts import ASK_OR_FINALIZE, SPELL_CHECK
 from maf.trace import debug, setup, step
 from pf_jobpack.extraction import build_scope_json_from_input
 from pf_jobpack.state import load_state, merge_state, route_prev, validate_state
-
-TC001 = (
-    "051-TL01-1/2-150H03. Dismantle clamp and replace damaged pipe section. "
-    "Tie-ins at TP-001 and TP-002. Insulated, no heat tracing. "
-    "Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
-)
 
 
 def _ask_user_message(state: dict, complete: bool, missing: list) -> str:
@@ -200,6 +195,7 @@ def _append_history(path: Path, question: str, merge_state_out: dict) -> None:
 
 async def run(question: str, chat_history: list | None = None) -> dict:
     setup()
+    question = resolve_question(question)
     history = chat_history or []
     step("slice2", history_turns=len(history))
     result = await build_workflow().run(
@@ -218,8 +214,8 @@ def main() -> None:
     parser.add_argument(
         "question",
         nargs="?",
-        default=TC001,
-        help="This turn's repair-scope text (default: TC-001)",
+        default="TC-001",
+        help="This turn's repair-scope text, or a Tracker ID like TC-001",
     )
     parser.add_argument(
         "--history",

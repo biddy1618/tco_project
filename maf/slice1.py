@@ -14,17 +14,11 @@ from typing import Any, Never
 
 from agent_framework import Executor, WorkflowBuilder, WorkflowContext, handler
 
+from maf.cases import resolve_question
 from maf.client import agent_text, make_chat_client
 from maf.prompts import SPELL_CHECK
 from maf.trace import setup, step
 from pf_jobpack.extraction import build_scope_json_from_input
-
-# Tracker TC-001 "deducted prompt" (same text used while learning the PF DAG).
-TC001 = (
-    "051-TL01-1/2-150H03. Dismantle clamp and replace damaged pipe section. "
-    "Tie-ins at TP-001 and TP-002. Insulated, no heat tracing. "
-    "Process conditions: Pdes [TBD], Poper [TBD], Tdes [TBD], Toper [TBD]."
-)
 
 
 class SpellCheckExecutor(Executor):
@@ -72,6 +66,7 @@ def build_workflow():
 
 async def run(question: str) -> dict:
     setup()
+    question = resolve_question(question)
     step("slice1")
     result = await build_workflow().run(question)
     outputs = result.get_outputs()
@@ -85,8 +80,8 @@ def main() -> None:
     parser.add_argument(
         "question",
         nargs="?",
-        default=TC001,
-        help="Repair-scope text (default: TC-001 deducted prompt)",
+        default="TC-001",
+        help="Repair-scope text, or a Tracker ID like TC-001 / TC-002",
     )
     args = parser.parse_args()
     payload = asyncio.run(run(args.question))

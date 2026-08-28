@@ -24,8 +24,8 @@ from maf.client import ASK_OR_FINALIZE_DEPLOYMENT, agent_text, make_chat_client
 from maf.prompts import FINAL
 from maf.search_client import WPS_INDEX, nde_lookup_items, run_search
 from maf.trace import debug, setup, step
+from maf.cases import resolve_question
 from maf.slice2 import (
-    TC001,
     AskOrFinalizeExecutor,
     ExtractionExecutor,
     LoadStateExecutor,
@@ -231,6 +231,7 @@ def build_workflow():
 
 async def run(question: str, chat_history: list | None = None) -> dict:
     setup()
+    question = resolve_question(question)
     history = chat_history or []
     step("slice3", history_turns=len(history))
     result = await build_workflow().run(
@@ -249,8 +250,8 @@ def main() -> None:
     parser.add_argument(
         "question",
         nargs="?",
-        default=TC001,
-        help="This turn's repair-scope text (default: TC-001)",
+        default="TC-001",
+        help="This turn's repair-scope text, or a Tracker ID like TC-001",
     )
     parser.add_argument(
         "--history",

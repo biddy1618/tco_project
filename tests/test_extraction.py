@@ -68,6 +68,12 @@ class TestDiameter:
     def test_none(self):
         assert extract_dia_in("no size given") == []
 
+    def test_tco_short_line_id_half_inch(self):
+        assert extract_dia_in("051-TL01-1/2-150H03. Dismantle clamp.") == [0.5]
+
+    def test_tco_short_line_id_integer_nps(self):
+        assert extract_dia_in("120-SL04-24-150H03. repair and dismantle the clamp.") == [24.0]
+
 
 class TestIeDocNo:
     def test_extracts_doc_no(self):
