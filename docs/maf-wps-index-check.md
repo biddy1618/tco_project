@@ -48,3 +48,52 @@ for q, dia in [('150H09', 4.0), ('150H09', 6.0), ('300H21(A)', 4.0),
 
 Paste the full stdout. Do not interpret, do not re-run slice 3, do not open
 Portal. If Search fails, paste the traceback and stop.
+
+## Raw stdout:
+
+```
+=== 150H09 keyword no filter hits= 0 ===
+=== 150H21 keyword no filter hits= 3 ===
+  '150H21' pwht= 'N' dia= 14.0 - 48.0
+  '150H21' pwht= 'Y' dia= 24.0 - 24.0
+  '150H21' pwht= 'N' dia= 0.5 - 3.0
+=== 300H21 keyword no filter hits= 6 ===
+  '300H21 (B)' pwht= 'Y' dia= 24.0 - 48.0
+  '300H21(A)' pwht= 'N' dia= 14.0 - 30.0
+  '300H21(A)' pwht= 'Y' dia= 24.0 - 48.0
+  '300H21 (B)' pwht= 'Y' dia= 14.0 - 30.0
+  '300H21(A)' pwht= 'N' dia= 0.5 - 3.0
+  '300H21 (B)' pwht= 'Y' dia= 0.5 - 3.0
+=== 300H21(A) keyword no filter hits= 10 ===
+  '300H21(A)' pwht= 'N' dia= 14.0 - 30.0
+  '300H21(A)' pwht= 'Y' dia= 24.0 - 48.0
+  '300H21(A)' pwht= 'N' dia= 0.5 - 3.0
+  '150H25 (A)' pwht= 'Y' dia= 0.5 - 3.0
+  '300H21 (B)' pwht= 'Y' dia= 24.0 - 48.0
+  '150H25 (A)' pwht= 'Y' dia= 3.1 - 100.0
+  '300H25 (A)' pwht= 'N' dia= 3.1 - 100.0
+  '300H21 (B)' pwht= 'Y' dia= 14.0 - 30.0
+  '300H25 (A)' pwht= 'N' dia= 0.5 - 3.0
+  '300H21 (B)' pwht= 'Y' dia= 0.5 - 3.0
+=== 300H21 (A) keyword no filter hits= 10 ===
+  '300H21(A)' pwht= 'N' dia= 14.0 - 30.0
+  '300H21(A)' pwht= 'Y' dia= 24.0 - 48.0
+  '300H21(A)' pwht= 'N' dia= 0.5 - 3.0
+  '150H25 (A)' pwht= 'Y' dia= 0.5 - 3.0
+  '300H21 (B)' pwht= 'Y' dia= 24.0 - 48.0
+  '150H25 (A)' pwht= 'Y' dia= 3.1 - 100.0
+  '300H25 (A)' pwht= 'N' dia= 3.1 - 100.0
+  '300H21 (B)' pwht= 'Y' dia= 14.0 - 30.0
+  '300H25 (A)' pwht= 'N' dia= 0.5 - 3.0
+  '300H21 (B)' pwht= 'Y' dia= 0.5 - 3.0
+=== 150H09 semantic dia=4.0 hits= 0 ===
+=== 150H09 semantic dia=6.0 hits= 0 ===
+=== 300H21(A) semantic dia=4.0 hits= 2 ===
+  '150H25 (A)' pwht= 'Y' dia= 3.1 - 100.0
+  '300H25 (A)' pwht= 'N' dia= 3.1 - 100.0
+=== 300H21 (A) semantic dia=4.0 hits= 2 ===
+  '150H25 (A)' pwht= 'Y' dia= 3.1 - 100.0
+  '300H25 (A)' pwht= 'N' dia= 3.1 - 100.0
+=== 150H21 semantic dia=4.0 hits= 0 ===
+=== 150H21 semantic dia=6.0 hits= 0 ===
+```
